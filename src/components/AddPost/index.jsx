@@ -1,18 +1,12 @@
 import styled from "@emotion/styled";
 import { Form } from "react-router-dom";
-import defaultCloudy from "../../icons/cloudy/default.svg";
-import defaultSunny from "../../icons/sunny/default.svg";
-import defaultRainy from "../../icons/rainy/default.svg";
-import defaultThunder from "../../icons/thunder/default.svg";
-import clickedSunny from "../../icons/sunny/clicked.svg";
-import clickedCloudy from "../../icons/cloudy/clicked.svg";
-import clickedRainy from "../../icons/rainy/clicked.svg";
-import clickedThunder from "../../icons/thunder/clicked.svg";
+
 import { useOverlay } from "../../Context/OverlayProvider";
 import { v4 } from "uuid";
 import ContentBox from "../ContentBox";
 import useSessionStorage from "../../hooks/useSessionStorage";
 import { useCallback, useEffect } from "react";
+import EmotionSelectBox from "../EmotionSelectBox";
 
 const StyledForm = styled(Form)`
     position: relative;
@@ -105,20 +99,6 @@ const InputDate = styled.input`
     outline: none;
 `;
 
-const EmotionSelectBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-
-    width: 100%;
-    height: 70px;
-
-    background: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 15px;
-`;
-
 const Contents = styled.div`
     display: flex;
     flex-direction: column;
@@ -128,23 +108,6 @@ const Contents = styled.div`
     width: 100%;
     height: auto;
     gap: 20px;
-`;
-
-const EmotionIcon = styled.input`
-    appearance: none;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: 50px;
-    height: 50px;
-    border-radius: 15px;
-    background-image: url(${({ src }) => src});
-    background-size: cover;
-    /* border: 3px solid rgba(0, 0, 0, 0); */
-    &:hover {
-        /* border: 3px solid #d3eaff; */
-        cursor: pointer;
-    }
 `;
 
 export async function action({ request, params }) {
@@ -220,7 +183,20 @@ export default function AddPost() {
     );
 
     return (
-        <StyledForm method="post">
+        <StyledForm
+            method="post"
+            onSubmit={async (e) => {
+                e.preventDefault();
+                closeOverlay();
+                // 데이터 전송 및 응답 기다림
+                // data에 업데이트
+                // 만약 debounce 시간이 안 지났는데 저장을 누르면 해당 textarea에 있는 값을 tmpDiary에 넣어야 됨. 어떻게?
+                const { currentTarget } = e;
+                console.log(currentTarget);
+                setDiarys([...diarys, tmpDiary]);
+                setTmpDiary(InitialData(v4()));
+            }}
+        >
             <InputBox>
                 <Question>날짜를 선택해주세요.</Question>
                 <InputDate
@@ -235,80 +211,10 @@ export default function AddPost() {
             </InputBox>
             <InputBox>
                 <Question>기분을 선택해주세요.</Question>
-                <EmotionSelectBox>
-                    <EmotionIcon
-                        type="radio"
-                        id="good"
-                        value="good"
-                        name="emotion"
-                        src={
-                            tmpDiary.emotion === "good"
-                                ? clickedSunny
-                                : defaultSunny
-                        }
-                        onClick={(e) => {
-                            setTmpDiary({
-                                ...tmpDiary,
-                                emotion: e.target.value,
-                            });
-                        }}
-                        defaultChecked={tmpDiary.emotion === "good"}
-                    />
-                    <EmotionIcon
-                        type="radio"
-                        id="so so"
-                        value="so so"
-                        name="emotion"
-                        src={
-                            tmpDiary.emotion === "so so"
-                                ? clickedCloudy
-                                : defaultCloudy
-                        }
-                        defaultChecked={tmpDiary.emotion === "so so"}
-                        onClick={(e) => {
-                            setTmpDiary({
-                                ...tmpDiary,
-                                emotion: e.target.value,
-                            });
-                        }}
-                    />
-                    <EmotionIcon
-                        type="radio"
-                        id="bad"
-                        value="bad"
-                        name="emotion"
-                        src={
-                            tmpDiary.emotion === "bad"
-                                ? clickedRainy
-                                : defaultRainy
-                        }
-                        defaultChecked={tmpDiary.emotion === "bad"}
-                        onClick={(e) => {
-                            setTmpDiary({
-                                ...tmpDiary,
-                                emotion: e.target.value,
-                            });
-                        }}
-                    />
-                    <EmotionIcon
-                        type="radio"
-                        id="terrible"
-                        value="terrible"
-                        name="emotion"
-                        src={
-                            tmpDiary.emotion === "terrible"
-                                ? clickedThunder
-                                : defaultThunder
-                        }
-                        defaultChecked={tmpDiary.emotion === "terrible"}
-                        onClick={(e) => {
-                            setTmpDiary({
-                                ...tmpDiary,
-                                emotion: e.target.value,
-                            });
-                        }}
-                    />
-                </EmotionSelectBox>
+                <EmotionSelectBox
+                    tmpDiary={tmpDiary}
+                    setTmpDiary={setTmpDiary}
+                />
             </InputBox>
             <InputBox>
                 <Question>오늘 하루 어떤 일들이 있었나요?</Question>
@@ -351,29 +257,7 @@ export default function AddPost() {
                 >
                     취소
                 </Button>
-                <Button
-                    type="submit"
-                    onClick={async (e) => {
-                        e.preventDefault();
-                        closeOverlay();
-                        // 데이터 전송 및 응답 기다림
-                        // data에 업데이트
-                        // [
-                        //     {
-                        //         emotion,
-                        //         date,
-                        //         contents : [{imgSrc, comment},]
-                        //         registerDate,
-                        //         latestModifiedDate,
-                        //     },
-                        // ]
-                        // 만약 debounce 시간이 안 지났는데 저장을 누르면 해당 textarea에 있는 값을 tmpDiary에 넣어야 됨. 어떻게?
-                        setDiarys([...diarys, tmpDiary]);
-                        setTmpDiary(InitialData(v4()));
-                    }}
-                >
-                    저장
-                </Button>
+                <Button type="submit">저장</Button>
             </BtnBox>
         </StyledForm>
     );

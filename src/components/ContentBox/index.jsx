@@ -79,7 +79,7 @@ export default function ContentBox({
     const handleCommentChange = useCallback(
         debounce((newComment) => {
             onChanged(contentId, imgSrc, newComment);
-        }, 500),
+        }, 5000),
         []
     );
 

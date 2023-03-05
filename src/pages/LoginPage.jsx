@@ -3,7 +3,6 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { Form, redirect } from "react-router-dom";
 import CreateDiaryModal from "../components/CreateDiaryModal";
-import { useOverlay } from "../Context/OverlayProvider";
 import { ReactComponent as LoginLogo } from "../icons/Logo/Login.svg";
 
 const Container = styled.div`

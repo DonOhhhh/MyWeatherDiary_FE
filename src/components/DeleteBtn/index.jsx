@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useEffect } from "react";
 
 const BtnBackground = styled.div`
     right: 2px;
