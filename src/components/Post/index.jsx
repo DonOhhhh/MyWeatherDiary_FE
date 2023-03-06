@@ -7,6 +7,7 @@ import clickedThunder from "../../icons/thunder/clicked.svg";
 import Pagination from "../Pagination";
 import ContentReplaceButton from "../ContentReplaceButton";
 import { useState } from "react";
+import PostUpdateDeleteBtns from "../PostUpdateDeleteBtns";
 
 const TotalContainer = styled.div`
     display: flex;
@@ -142,6 +143,12 @@ export default function Post({ postId, emotion, date, contents, ...props }) {
                 <DateBox>{dateStr}</DateBox>
                 <DayBox>{dayStr}</DayBox>
             </TopBox>
+            <PostUpdateDeleteBtns
+                style={{
+                    transform: "translateX(580px)",
+                    marginBottom: "-100px",
+                }}
+            />
             <ContentReplaceButton
                 size={24}
                 leftClick={() => {
@@ -169,9 +176,7 @@ export default function Post({ postId, emotion, date, contents, ...props }) {
             />
             <ContentsContainer>
                 <ContentContainer contentNum={contentNum}>
-                    {imgSrc && (
-                        <Image src={imgSrc}>{/* <img src={imgSrc} /> */}</Image>
-                    )}
+                    {imgSrc && <Image src={imgSrc} />}
                     {imgSrc && comment && (
                         <Divider lineColor="#E0E0E0" width="100%" />
                     )}

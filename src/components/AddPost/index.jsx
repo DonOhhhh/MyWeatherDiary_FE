@@ -191,6 +191,7 @@ export default function AddPost() {
                 // 데이터 전송 및 응답 기다림
                 // data에 업데이트
                 // 만약 debounce 시간이 안 지났는데 저장을 누르면 해당 textarea에 있는 값을 tmpDiary에 넣어야 됨. 어떻게?
+                // 그리고 debounce callback 실행을 막아야 함.
                 const { currentTarget } = e;
                 console.log(currentTarget);
                 setDiarys([...diarys, tmpDiary]);
