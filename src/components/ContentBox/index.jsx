@@ -67,22 +67,8 @@ export default function ContentBox({
     comment,
     onChanged,
     onDelete,
+    onCommentChange,
 }) {
-    const debounce = useCallback((callback, delay) => {
-        let timer;
-        return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => callback(...args), delay);
-        };
-    }, []);
-
-    const handleCommentChange = useCallback(
-        debounce((newComment) => {
-            onChanged(contentId, imgSrc, newComment);
-        }, 5000),
-        []
-    );
-
     return (
         <Container>
             <DeleteBtn
@@ -131,10 +117,9 @@ export default function ContentBox({
                 name={`comment${index}`}
                 defaultValue={comment}
                 onClick={(e) => e.stopPropagation()}
-                onChange={(e) => {
-                    // onChanged(contentId, imgSrc, e.target.value);
-                    handleCommentChange(e.target.value);
-                }}
+                // onChange={(e) => {
+                //     onCommentChange(contentId, imgSrc, e.target.value);
+                // }}
             />
         </Container>
     );

@@ -7,6 +7,7 @@ import ContentBox from "../ContentBox";
 import useSessionStorage from "../../hooks/useSessionStorage";
 import { useCallback, useEffect } from "react";
 import EmotionSelectBox from "../EmotionSelectBox";
+import { debounce } from "lodash";
 
 const StyledForm = styled(Form)`
     position: relative;
@@ -140,7 +141,7 @@ export default function AddPost() {
     useEffect(() => {
         sessionStorage.getItem("tmpDiary") === null && setTmpDiary(tmpDiary);
         sessionStorage.getItem("diarys") === null && setDiarys(diarys);
-    }, []);
+    }, [diarys, setDiarys, setTmpDiary, tmpDiary]);
 
     // console.log(tmpDiary.contents.forEach(({ id }) => console.log(id)));
 
@@ -157,7 +158,6 @@ export default function AddPost() {
             ],
         });
     }, [setTmpDiary, tmpDiary]);
-    const DELAYTIME = 5000;
     const updateContents = useCallback(
         (id, imgSrc, comment) => {
             setTmpDiary({
@@ -168,6 +168,12 @@ export default function AddPost() {
             });
         },
         [setTmpDiary, tmpDiary]
+    );
+
+    const DELAYTIME = 5000;
+    const updateContentDelay = debounce(
+        (id, imgSrc, comment) => updateContents(id, imgSrc, comment),
+        DELAYTIME
     );
 
     const deleteContent = useCallback(
@@ -189,12 +195,12 @@ export default function AddPost() {
                 e.preventDefault();
                 closeOverlay();
                 // 데이터 전송 및 응답 기다림
-                // data에 업데이트
                 // 만약 debounce 시간이 안 지났는데 저장을 누르면 해당 textarea에 있는 값을 tmpDiary에 넣어야 됨. 어떻게?
-                // 그리고 debounce callback 실행을 막아야 함.
-                const { currentTarget } = e;
-                console.log(currentTarget);
+                const { target } = e;
+                console.log(target[`image0`].value);
+                console.log(target[`comment0`].value);
                 setDiarys([...diarys, tmpDiary]);
+                updateContentDelay.cancel();
                 setTmpDiary(InitialData(v4()));
             }}
         >
@@ -230,6 +236,9 @@ export default function AddPost() {
                                 imgSrc={imgSrc}
                                 comment={comment}
                                 onChanged={updateContents}
+                                onCommentChange={(id, imgSrc, comment) =>
+                                    updateContentDelay(id, imgSrc, comment)
+                                }
                                 onDelete={deleteContent}
                             />
                         );

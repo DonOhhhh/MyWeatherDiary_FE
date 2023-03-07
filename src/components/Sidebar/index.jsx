@@ -14,10 +14,11 @@ const Container = styled.div`
     padding: 0;
     margin: 0 10px;
 
-    position: sticky;
+    position: fixed;
+    top: 270px;
+    left: 1020px;
     width: 70px;
     height: fit-content;
-    transform: translateY(250px);
     background-color: #c5e3ff;
     border-radius: 15px;
 `;

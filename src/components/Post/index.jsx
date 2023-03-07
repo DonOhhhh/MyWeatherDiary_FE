@@ -138,17 +138,17 @@ export default function Post({ postId, emotion, date, contents, ...props }) {
 
     return (
         <TotalContainer>
-            <TopBox>
-                <EmotionBox src={emotionEmoji[emotion]} />
-                <DateBox>{dateStr}</DateBox>
-                <DayBox>{dayStr}</DayBox>
-            </TopBox>
             <PostUpdateDeleteBtns
                 style={{
                     transform: "translateX(580px)",
                     marginBottom: "-100px",
                 }}
             />
+            <TopBox>
+                <EmotionBox src={emotionEmoji[emotion]} />
+                <DateBox>{dateStr}</DateBox>
+                <DayBox>{dayStr}</DayBox>
+            </TopBox>
             <ContentReplaceButton
                 size={24}
                 leftClick={() => {
