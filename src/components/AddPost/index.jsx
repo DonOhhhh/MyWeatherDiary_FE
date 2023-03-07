@@ -157,7 +157,7 @@ export default function AddPost() {
             ],
         });
     }, [setTmpDiary, tmpDiary]);
-
+    const DELAYTIME = 5000;
     const updateContents = useCallback(
         (id, imgSrc, comment) => {
             setTmpDiary({

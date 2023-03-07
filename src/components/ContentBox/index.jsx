@@ -132,6 +132,7 @@ export default function ContentBox({
                 defaultValue={comment}
                 onClick={(e) => e.stopPropagation()}
                 onChange={(e) => {
+                    // onChanged(contentId, imgSrc, e.target.value);
                     handleCommentChange(e.target.value);
                 }}
             />
