@@ -197,8 +197,15 @@ export default function AddPost() {
                 // 데이터 전송 및 응답 기다림
                 // 만약 debounce 시간이 안 지났는데 저장을 누르면 해당 textarea에 있는 값을 tmpDiary에 넣어야 됨. 어떻게?
                 const { target } = e;
-                console.log(target[`image0`].value);
-                console.log(target[`comment0`].value);
+                for (
+                    let i = 0,
+                        imgSrc = target[`image${i}`],
+                        comment = target[`comment${i}`];
+                    imgSrc;
+                    i++
+                ) {
+                    console.log(imgSrc, comment);
+                }
                 setDiarys([...diarys, tmpDiary]);
                 updateContentDelay.cancel();
                 setTmpDiary(InitialData(v4()));
