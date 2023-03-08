@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useCallback, useContext, useEffect } from "react";
 import useSessionStorage from "../hooks/useSessionStorage";
 import axios from "axios";
+import { v4 } from "uuid";
 
 const OverlayContext = createContext();
 export const useOverlay = () => useContext(OverlayContext);
@@ -10,6 +11,27 @@ export default function OverlayProvider({ children }) {
         isVisible: false,
     });
 
+    const InitialData = useCallback(
+        (id) => ({
+            date: new Date(Date.now() + 9 * 60 * 60 * 1000)
+                .toISOString()
+                .slice(0, 10),
+            emotion: "good",
+            contents: [
+                {
+                    id,
+                    imgSrc: "",
+                    comment: "",
+                },
+            ],
+        }),
+        []
+    );
+
+    const [tmpDiary, setTmpDiary] = useSessionStorage(
+        "tmpDiary",
+        InitialData(v4())
+    );
     const [diarys, setDiarys] = useSessionStorage("diarys", []);
 
     useEffect(() => {

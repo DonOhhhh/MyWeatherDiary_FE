@@ -132,7 +132,6 @@ const InitialData = (id) => ({
 
 export default function AddPost() {
     const { closeOverlay, diarys, setDiarys } = useOverlay();
-
     const [tmpDiary, setTmpDiary] = useSessionStorage(
         "tmpDiary",
         InitialData(v4())
@@ -158,6 +157,7 @@ export default function AddPost() {
             ],
         });
     }, [setTmpDiary, tmpDiary]);
+
     const updateContents = useCallback(
         (id, imgSrc, comment) => {
             setTmpDiary({
@@ -171,9 +171,12 @@ export default function AddPost() {
     );
 
     const DELAYTIME = 5000;
-    const updateContentDelay = debounce(
-        (id, imgSrc, comment) => updateContents(id, imgSrc, comment),
-        DELAYTIME
+    const updateContentDelay = useCallback(
+        debounce(
+            (id, imgSrc, comment) => updateContents(id, imgSrc, comment),
+            DELAYTIME
+        ),
+        []
     );
 
     const deleteContent = useCallback(
@@ -193,22 +196,32 @@ export default function AddPost() {
             method="post"
             onSubmit={async (e) => {
                 e.preventDefault();
-                closeOverlay();
                 // 데이터 전송 및 응답 기다림
                 // 만약 debounce 시간이 안 지났는데 저장을 누르면 해당 textarea에 있는 값을 tmpDiary에 넣어야 됨. 어떻게?
                 const { target } = e;
+                if (!(target[`image0`].value || target[`comment0`].value)) {
+                    alert(
+                        "사진과 일기 중 하나는 반드시 1개 이상 작성되어야 합니다."
+                    );
+                    return;
+                }
+                // debounce를 취소함함
+                updateContentDelay.cancel();
                 for (
                     let i = 0,
-                        imgSrc = target[`image${i}`],
-                        comment = target[`comment${i}`];
-                    imgSrc;
-                    i++
+                        imgSrc = target[`image${i}`].value,
+                        comment = target[`comment${i}`].value;
+                    imgSrc || comment;
+                    i++,
+                        imgSrc = target[`image${i}`]?.value,
+                        comment = target[`comment${i}`]?.value
                 ) {
-                    console.log(imgSrc, comment);
+                    updateContents(i, imgSrc, comment);
                 }
+                console.log(tmpDiary.contents);
                 setDiarys([...diarys, tmpDiary]);
-                updateContentDelay.cancel();
                 setTmpDiary(InitialData(v4()));
+                closeOverlay();
             }}
         >
             <InputBox>
@@ -256,6 +269,18 @@ export default function AddPost() {
                 <Button
                     onClick={(e) => {
                         e.preventDefault();
+                        // const target = e.target.parentElement.previousSibling;
+                        // for (
+                        //     let i = 0,
+                        //         imgSrc = target[`image${i}`].value,
+                        //         comment = target[`comment${i}`].value;
+                        //     imgSrc || comment;
+                        //     i++,
+                        //         imgSrc = target[`image${i}`]?.value,
+                        //         comment = target[`comment${i}`]?.value
+                        // ) {
+                        //     updateContents(i, imgSrc, comment);
+                        // }
                         if (tmpDiary.contents.length <= 10) addContents();
                         else alert("하루에 10개까지만 추가 가능합니다.");
                     }}
