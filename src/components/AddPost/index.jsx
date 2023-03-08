@@ -170,14 +170,9 @@ export default function AddPost() {
         [setTmpDiary, tmpDiary]
     );
 
-    const DELAYTIME = 5000;
-    const updateContentDelay = useCallback(
-        debounce(
-            (id, imgSrc, comment) => updateContents(id, imgSrc, comment),
-            DELAYTIME
-        ),
-        []
-    );
+    const updateContentDelay = useCallback(debounce(updateContents, 5000), [
+        updateContents,
+    ]);
 
     const deleteContent = useCallback(
         (id) => {
@@ -217,8 +212,8 @@ export default function AddPost() {
                         comment = target[`comment${i}`]?.value
                 ) {
                     updateContents(i, imgSrc, comment);
+                    console.log(imgSrc, comment);
                 }
-                console.log(tmpDiary.contents);
                 setDiarys([...diarys, tmpDiary]);
                 setTmpDiary(InitialData(v4()));
                 closeOverlay();
@@ -269,18 +264,6 @@ export default function AddPost() {
                 <Button
                     onClick={(e) => {
                         e.preventDefault();
-                        // const target = e.target.parentElement.previousSibling;
-                        // for (
-                        //     let i = 0,
-                        //         imgSrc = target[`image${i}`].value,
-                        //         comment = target[`comment${i}`].value;
-                        //     imgSrc || comment;
-                        //     i++,
-                        //         imgSrc = target[`image${i}`]?.value,
-                        //         comment = target[`comment${i}`]?.value
-                        // ) {
-                        //     updateContents(i, imgSrc, comment);
-                        // }
                         if (tmpDiary.contents.length <= 10) addContents();
                         else alert("하루에 10개까지만 추가 가능합니다.");
                     }}

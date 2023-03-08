@@ -6,7 +6,7 @@ import clickedRainy from "../../icons/rainy/clicked.svg";
 import clickedThunder from "../../icons/thunder/clicked.svg";
 import Pagination from "../Pagination";
 import ContentReplaceButton from "../ContentReplaceButton";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import PostUpdateDeleteBtns from "../PostUpdateDeleteBtns";
 import { useOverlay } from "../../Context/OverlayProvider";
 
@@ -132,14 +132,11 @@ const emotionEmoji = {
 };
 
 export default function Post({ postId, emotion, date, contents, ...props }) {
-    const dayStr = useMemo(weekday[new Date(date).getDay()], [date]);
-    const dateStr = useMemo(date, [date]);
+    const dayStr = weekday[new Date(date).getDay()];
+    const dateStr = date;
     const [contentNum, setContentNum] = useState(0);
-    const { imgSrc, comment } = useMemo(contents[contentNum], [
-        contents,
-        contentNum,
-    ]);
-    const { diarys, setDiarys } = useOverlay();
+    const { imgSrc, comment } = contents[contentNum];
+    // const { diarys, setDiarys } = useOverlay();
 
     return (
         <TotalContainer>
