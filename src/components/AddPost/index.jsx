@@ -251,9 +251,7 @@ export default function AddPost() {
                                 imgSrc={imgSrc}
                                 comment={comment}
                                 onChanged={updateContents}
-                                onCommentChange={(id, imgSrc, comment) =>
-                                    updateContentDelay(id, imgSrc, comment)
-                                }
+                                onCommentChange={updateContentDelay}
                                 onDelete={deleteContent}
                             />
                         );

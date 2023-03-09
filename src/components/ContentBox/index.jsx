@@ -67,6 +67,7 @@ export default function ContentBox({
     comment,
     onChanged,
     onDelete,
+    onCommentChange,
 }) {
     return (
         <Container>
@@ -116,6 +117,9 @@ export default function ContentBox({
                 name={`comment${index}`}
                 defaultValue={comment}
                 onClick={(e) => e.stopPropagation()}
+                onChange={() =>
+                    onCommentChange(contentId, imgSrc, e.target.value)
+                }
             />
         </Container>
     );
