@@ -1,9 +1,12 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import styled from "@emotion/styled";
 import Sidebar from "../components/Sidebar";
 import PostSection from "../components/PostSection";
 import { useOverlay } from "../Context/OverlayProvider";
 import Overlay from "../components/Overlay";
+import UserInfo from "../components/UserInfo";
+import Icon from "../components/Icon";
+import { ReactComponent as SmallLogo } from "../icons/small_logo.svg";
 
 const Container = styled.div`
     position: absolute;
@@ -21,15 +24,10 @@ const Left = styled.div`
     grid-template-rows: 100px 1fr;
 `;
 
-const Logo = styled.div`
-    display: flex;
-    width: 100%;
-    height: 100px;
-`;
-
-const MyInfo = styled.div`
-    position: relative;
-    height: 100%;
+const Logo = styled(SmallLogo)`
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 export const loader = ({ params }) => params.userId;
@@ -41,8 +39,10 @@ export default function PostsPage() {
     return (
         <Container>
             <Left>
-                <Logo />
-                <MyInfo>userId : {userId}</MyInfo>
+                <Link to="/">
+                    <Logo />
+                </Link>
+                <UserInfo />
             </Left>
             <PostSection />
             <Sidebar />
