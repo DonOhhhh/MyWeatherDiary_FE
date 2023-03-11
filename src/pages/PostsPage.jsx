@@ -20,7 +20,8 @@ const Container = styled.div`
 `;
 
 const Left = styled.div`
-    direction: grid;
+    max-width: 420px;
+    display: grid;
     grid-template-rows: 100px 1fr;
 `;
 

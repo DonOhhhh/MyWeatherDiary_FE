@@ -6,6 +6,7 @@ import { useOverlay } from "../../Context/OverlayProvider";
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    /* min-width: 600px; */
     width: 100%;
     min-height: 1000px;
     padding: 0;

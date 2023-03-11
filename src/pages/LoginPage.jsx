@@ -78,22 +78,20 @@ export async function action({ request }) {
     if (res.type === "login") {
         if (res.key === "8901") return redirect("/4/posts");
         alert("Diary가 존재하지 않습니다.");
+        return;
     } else if (res.type === "createDiary") {
         // 키를 받아오고 email로 전송 modal 표시내용 바꿈.
         const now = new Date().toISOString().slice(0, 19);
         const req = { diary_title: res.title, createDate: now };
         try {
-            const result = await axios.post(
-                "http://192.168.0.47:8080/auth/register",
-                req
-            );
-            console.log(result.enter_key);
+            const result = await axios.post("/auth/register", req);
+            console.log(result.data);
+            return result.data.enter_key;
         } catch (error) {
             console.log(error.message);
+            return;
         }
-        return "8901";
     }
-    return res;
 }
 
 export default function LoginPage() {
