@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { Form } from "react-router-dom";
 
-import { useOverlay } from "../../Context/OverlayProvider";
+import { useOverlay } from "../../../Context/OverlayProvider";
 import { v4 } from "uuid";
-import ContentBox from "../ContentBox";
-import useSessionStorage from "../../hooks/useSessionStorage";
+import ContentBox from "../../ContentBox";
+import useSessionStorage from "../../../hooks/useSessionStorage";
 import { useCallback, useEffect } from "react";
-import EmotionSelectBox from "../EmotionSelectBox";
+import EmotionSelectBox from "./EmotionSelectBox";
 import { debounce } from "lodash";
 
 const StyledForm = styled(Form)`

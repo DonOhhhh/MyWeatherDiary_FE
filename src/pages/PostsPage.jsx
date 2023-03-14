@@ -5,7 +5,6 @@ import PostSection from "../components/PostSection";
 import { useOverlay } from "../Context/OverlayProvider";
 import Overlay from "../components/Overlay";
 import UserInfo from "../components/UserInfo";
-import Icon from "../components/Icon";
 import { ReactComponent as SmallLogo } from "../icons/small_logo.svg";
 
 const Container = styled.div`

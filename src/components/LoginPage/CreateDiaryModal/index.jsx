@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { Form, useActionData } from "react-router-dom";
-import useClickAway from "../../hooks/useClickAway";
+import useClickAway from "../../../hooks/useClickAway";
 import CopyIcon from "../../icons/copy.svg";
 import CopyFilledIcon from "../../icons/copy_filled.svg";
 

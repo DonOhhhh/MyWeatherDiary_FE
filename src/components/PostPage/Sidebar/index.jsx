@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import Icon from "../Icon";
+import Icon from "../../Icon";
 import Add from "../../icons/add.svg";
 import Calendar from "../../icons/calendar.svg";
 import Chart from "../../icons/chart.svg";
 import Export from "../../icons/export.svg";
 import More from "../../icons/more.svg";
-import Divider from "../Divider";
-import { useOverlay } from "../../Context/OverlayProvider";
+import Divider from "../../Divider";
+import { useOverlay } from "../../../Context/OverlayProvider";
 
 const Container = styled.div`
     display: flex;

@@ -7,12 +7,11 @@ import { Buffer } from "buffer";
 import Bulb from "../../icons/bulb.svg";
 import Email from "../../icons/email.svg";
 import Work from "../../icons/work.svg";
-import InfoItem from "../InfoItem";
+import InfoItem from "./InfoItem";
 import { ReactComponent as Facebook } from "../../icons/Facebook.svg";
 import { ReactComponent as Github } from "../../icons/Github.svg";
 import { ReactComponent as Twitter } from "../../icons/Twitter.svg";
 import { ReactComponent as Instagram } from "../../icons/Instagram.svg";
-import Icon from "../Icon";
 
 const getUserInfo = async (userId) => {
     return await axios.post("/user", {

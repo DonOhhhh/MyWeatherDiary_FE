@@ -1,7 +1,7 @@
-import Post from "../Post";
-import Divider from "../Divider";
+import Post from "../../Post";
+import Divider from "../../Divider";
 import styled from "@emotion/styled";
-import { useOverlay } from "../../Context/OverlayProvider";
+import { useOverlay } from "../../../Context/OverlayProvider";
 
 const Container = styled.div`
     display: flex;
