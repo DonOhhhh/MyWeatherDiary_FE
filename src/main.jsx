@@ -3,28 +3,49 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-import LoginPage, { action as LoginAction } from "./pages/LoginPage";
-import PostsPage from "./pages/PostPage";
-import EditPage from "./pages/EditPage";
+import Login, { action as LoginAction } from "./pages/Login";
+import Main from "./pages/Main";
+import Diarys from "./pages/Menu/Diarys";
+import Profile from "./pages/Menu/Profile";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
-        // errorElement: <h1>404 Not Found</h1>,
+        errorElement: <h1>404 Not Found</h1>,
+    },
+    {
+        path: "/login",
+        element: <Login />,
+        action: LoginAction,
+    },
+    {
+        path: "/main",
+        element: <Main />,
         children: [
             {
-                path: "/",
-                element: <LoginPage />,
-                action: LoginAction,
+                path: "/main",
+                element: <Diarys />,
             },
             {
-                path: "/diarys",
-                element: <PostsPage />,
+                path: "/main/profile",
+                element: <Profile />,
             },
             {
-                path: "/edit",
-                element: <EditPage />,
+                path: "/main/edit",
+                element: <div>Edit</div>,
+            },
+            {
+                path: "/main/calendar",
+                element: <div>Calendar</div>,
+            },
+            {
+                path: "/main/activity",
+                element: <div>Activity</div>,
+            },
+            {
+                path: "/main/export",
+                element: <div>Export</div>,
             },
         ],
     },
