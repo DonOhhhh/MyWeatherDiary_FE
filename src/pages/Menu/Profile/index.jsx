@@ -126,7 +126,9 @@ export default function Profile({ userId }) {
                         >
                             <EditDeleteBtn
                                 variant="outlined"
-                                sx={{ color: "#6398eb" }}
+                                sx={{
+                                    color: "#6398eb",
+                                }}
                             >
                                 <Edit3 />
                                 {"Edit"}

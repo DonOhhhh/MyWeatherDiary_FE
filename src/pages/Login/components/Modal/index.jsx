@@ -37,28 +37,20 @@ function CreateDiary() {
             email: "",
         },
         onSubmit: async (values) => {
-            console.log(values);
             // if (values.topic) {
             //     const res = await axios.post("/auth/register", {
             //         diary_title: values.topic,
             //     });
+            //     if (!res.ok) {
+            //         console.error("API 통신 오류!");
+            //         return;
+            //     }
             //     values.key = res.data.enter_key;
             //     setSubmit(true);
             //     values.topic = null;
             // }
-        },
-        validate: (values) => {
-            const { topic, email } = values;
-            let errors = {};
-            if (!topic) {
-                errors.topic = "Required";
-            }
-            if (!email) {
-                errors.email = "Required";
-            } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email)) {
-                errors.email = "Invalid email format";
-            }
-            return errors;
+            setSubmit(true);
+            console.log(values);
         },
     });
     const [copy, setCopy] = useState(false);
@@ -78,14 +70,7 @@ function CreateDiary() {
                     {formik.errors.topic ? (
                         <FormError errorMessage={formik.errors.topic} />
                     ) : null}
-                    <CustomButton
-                        type="submit"
-                        onClick={() => {
-                            setSubmit(true);
-                        }}
-                    >
-                        Create
-                    </CustomButton>
+                    <CustomButton type="submit">Create</CustomButton>
                 </>
             ) : (
                 <>

@@ -25,6 +25,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/main",
+                element: <div>Activity</div>,
+            },
+            {
+                path: "/main/diarys",
                 element: <Diarys />,
             },
             {
@@ -38,10 +42,6 @@ const router = createBrowserRouter([
             {
                 path: "/main/calendar",
                 element: <div>Calendar</div>,
-            },
-            {
-                path: "/main/activity",
-                element: <div>Activity</div>,
             },
             {
                 path: "/main/export",

@@ -42,11 +42,11 @@ function ControlMenu() {
         <Container>
             <List sx={listStyle}>
                 <ListItem sx={listItemStyle}>
-                    <ListItemButton onClick={() => navigate(`/main/profile`)}>
+                    <ListItemButton onClick={() => navigate(`/main/diarys`)}>
                         <ListItemIcon>
-                            <User />
+                            <Activity />
                         </ListItemIcon>
-                        <ListItemText>Profile</ListItemText>
+                        <ListItemText>Diarys</ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem sx={listItemStyle}>
@@ -58,11 +58,11 @@ function ControlMenu() {
                     </ListItemButton>
                 </ListItem>
                 <ListItem sx={listItemStyle}>
-                    <ListItemButton onClick={() => navigate(`/main/activity`)}>
+                    <ListItemButton onClick={() => navigate(`/main/profile`)}>
                         <ListItemIcon>
-                            <Activity />
+                            <User />
                         </ListItemIcon>
-                        <ListItemText>Activity</ListItemText>
+                        <ListItemText>Profile</ListItemText>
                     </ListItemButton>
                 </ListItem>
                 <ListItem sx={listItemStyle}>
@@ -74,7 +74,7 @@ function ControlMenu() {
                     </ListItemButton>
                 </ListItem>
                 <ListItem sx={listItemStyle}>
-                    <ListItemButton>
+                    <ListItemButton onClick={() => navigate("/login")}>
                         <ListItemIcon>
                             <Unlock />
                         </ListItemIcon>

@@ -71,6 +71,7 @@ export async function action({ request }) {
 
 export default function Login() {
     const [open, setOpen] = React.useState(false);
+    const ref = useRef();
     return (
         <Container>
             <Center method="post">
@@ -79,6 +80,11 @@ export default function Login() {
                     placeholder="Enter your key..."
                     name="enter_key"
                     required
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            ref.current.click();
+                        }
+                    }}
                 />
                 <ButtonBox>
                     <CustomButton
@@ -89,7 +95,7 @@ export default function Login() {
                     >
                         Generate Key
                     </CustomButton>
-                    <CustomButton>Login</CustomButton>
+                    <CustomButton ref={ref}>Login</CustomButton>
                 </ButtonBox>
             </Center>
             <Dialog
