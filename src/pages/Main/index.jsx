@@ -18,7 +18,8 @@ const Container = styled.div`
 
 const Left = styled.div`
     width: 100%;
-    background: linear-gradient(to right, #daedff, white);
+    /* background: linear-gradient(to top, #daedff, white); */
+    background-color: #ebf5ff;
     display: grid;
     grid-template-rows: 100px 1fr;
     justify-content: center;

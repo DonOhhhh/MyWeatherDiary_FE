@@ -24,7 +24,7 @@ const router = createBrowserRouter([
         element: <Main />,
         children: [
             {
-                path: "/main",
+                path: "/main/activity",
                 element: <div>Activity</div>,
             },
             {
@@ -38,14 +38,6 @@ const router = createBrowserRouter([
             {
                 path: "/main/edit",
                 element: <div>Edit</div>,
-            },
-            {
-                path: "/main/calendar",
-                element: <div>Calendar</div>,
-            },
-            {
-                path: "/main/export",
-                element: <div>Export</div>,
             },
         ],
     },
