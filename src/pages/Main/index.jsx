@@ -11,7 +11,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 15% 85%;
     text-align: center;
     justify-content: center;
 `;

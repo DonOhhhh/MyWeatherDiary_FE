@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App";
 import "./index.css";
+import App from "./App";
 import Login, { action as LoginAction } from "./pages/Login";
 import Main from "./pages/Main";
 import Diarys from "./pages/Menu/Diarys";
 import Profile from "./pages/Menu/Profile";
+import Edit from "./pages/Menu/Edit";
+import { Provider } from "react-redux";
+import store from "./rtk/store";
 
 const router = createBrowserRouter([
     {
@@ -37,7 +40,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/main/edit",
-                element: <div>Edit</div>,
+                element: <Edit />,
             },
         ],
     },
@@ -45,6 +48,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
     </React.StrictMode>
 );
