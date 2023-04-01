@@ -18,14 +18,14 @@ const editSlice = createSlice({
     name: "edit",
     initialState,
     reducers: {
-        saved: (_, action) => {
+        save: (_, action) => {
             return action.payload;
         },
-        cleared: () => {
+        clear: () => {
             return initialState;
         },
     },
 });
 
 export default editSlice.reducer;
-export const { saved, cleared } = editSlice.actions;
+export const { save, clear } = editSlice.actions;

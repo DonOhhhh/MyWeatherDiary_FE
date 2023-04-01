@@ -5,20 +5,9 @@ import { ReactComponent as Sunny } from "../../icons/sunny.svg";
 import { ReactComponent as Cloudy } from "../../icons/cloudy.svg";
 import { ReactComponent as Rainy } from "../../icons/rainy.svg";
 import { ReactComponent as Thunder } from "../../icons/thunder.svg";
+import EditItemBox from "../EditItemBox";
+import Container from "../EditContainer";
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-
-    width: fit-content;
-    height: fit-content;
-
-    background: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 15px;
-`;
 const IconBox = styled.div`
     appearance: none;
     display: inline-block;
@@ -42,31 +31,38 @@ const StyledField = styled(Field)`
 export default function EmotionBox({ emotion }) {
     return (
         <Container role="group" aria-labelledby="Emotion-box">
-            <label>
-                <IconBox>
-                    <StyledField type="radio" name="emotion" value="0" />
-                    <Sunny fill={emotion === "0" ? "#ffc350" : "#cacaca"} />
-                </IconBox>
-            </label>
-            <label>
-                <IconBox>
-                    <StyledField type="radio" name="emotion" value="1" />
-                    <Cloudy fill={emotion === "1" ? "#3d3d3d" : "#cacaca"} />
-                </IconBox>
-            </label>
-            <label>
-                <IconBox>
-                    <StyledField type="radio" name="emotion" value="2" />
-                    <Rainy fill={emotion === "2" ? "#2784DA" : "#cacaca"} />
-                </IconBox>
-            </label>
-            <label>
-                <IconBox>
-                    <StyledField type="radio" name="emotion" value="3" />
-                    <Thunder fill={emotion === "3" ? "#FFE227" : "#cacaca"} />
-                </IconBox>
-            </label>
-            <ErrorMessage name="emotion" component={FormError} />
+            <EditItemBox>기분을 선택해주세요</EditItemBox>
+            <EditItemBox>
+                <label>
+                    <IconBox>
+                        <StyledField type="radio" name="emotion" value="0" />
+                        <Sunny fill={emotion === "0" ? "#ffc350" : "#cacaca"} />
+                    </IconBox>
+                </label>
+                <label>
+                    <IconBox>
+                        <StyledField type="radio" name="emotion" value="1" />
+                        <Cloudy
+                            fill={emotion === "1" ? "#3d3d3d" : "#cacaca"}
+                        />
+                    </IconBox>
+                </label>
+                <label>
+                    <IconBox>
+                        <StyledField type="radio" name="emotion" value="2" />
+                        <Rainy fill={emotion === "2" ? "#2784DA" : "#cacaca"} />
+                    </IconBox>
+                </label>
+                <label>
+                    <IconBox>
+                        <StyledField type="radio" name="emotion" value="3" />
+                        <Thunder
+                            fill={emotion === "3" ? "#FFE227" : "#cacaca"}
+                        />
+                    </IconBox>
+                </label>
+                <ErrorMessage name="emotion" component={FormError} />
+            </EditItemBox>
         </Container>
     );
 }
