@@ -1,7 +1,4 @@
 import styled from "@emotion/styled";
-import DeleteBtn from "../DeleteBtn";
-import AddCircleIcon from "../../icons/add_circle.svg";
-import Icon from "../Icon";
 import { useCallback } from "react";
 
 const Container = styled.div`
