@@ -12,6 +12,11 @@ import { v4 } from "uuid";
 import * as Yup from "yup";
 import FormError from "../../../common/components/FormError";
 import { added } from "../Diarys/reducer/diarysSlice";
+import DateBox from "./components/DateBox";
+import EmotionBox from "./components/EmotionBox";
+import ContentBox from "./components/ContentBox";
+import ButtonBox from "./components/ButtonBox";
+import DeleteBtn from "./components/DeleteBtn";
 
 function EditPage() {
     const initialValues = useSelector((state) => state.edit);
@@ -45,33 +50,8 @@ function EditPage() {
         >
             {({ values }) => (
                 <Form>
-                    <div role="group" aria-labelledby="Date-box">
-                        <label>
-                            <Field type="date" name="date" />
-                            Date
-                        </label>
-                        <ErrorMessage name="date" component={FormError} />
-                    </div>
-
-                    <div role="group" aria-labelledby="Emotion-box">
-                        <label>
-                            <Field type="radio" name="emotion" value="0" />
-                            sunny
-                        </label>
-                        <label>
-                            <Field type="radio" name="emotion" value="1" />
-                            cloudy
-                        </label>
-                        <label>
-                            <Field type="radio" name="emotion" value="2" />
-                            rainy
-                        </label>
-                        <label>
-                            <Field type="radio" name="emotion" value="3" />
-                            thunder
-                        </label>
-                        <ErrorMessage name="emotion" component={FormError} />
-                    </div>
+                    <DateBox />
+                    <EmotionBox emotion={values.emotion} />
                     <div role="group" aria-labelledby="Content-box">
                         <FieldArray name="contents">
                             {(fieldArrayProps) => {
@@ -80,30 +60,23 @@ function EditPage() {
                                 const { contents } = form.values;
                                 return (
                                     <>
-                                        {contents.map(
-                                            (
-                                                { id, imgSrc, comment },
-                                                index
-                                            ) => (
-                                                <div key={index}>
-                                                    <button onClick={remove}>
-                                                        -
-                                                    </button>
-                                                    <br />
-                                                    <Field
-                                                        type="file"
-                                                        name={`contents[${index}].imgSrc`}
-                                                        accept="image/*"
-                                                        multiple
-                                                    />
-                                                    <br />
-                                                    <Field
-                                                        as="textarea"
-                                                        name={`contents[${index}].comment`}
-                                                    />
-                                                </div>
-                                            )
-                                        )}
+                                        {contents.map((_, index) => (
+                                            <div key={index}>
+                                                <DeleteBtn onClick={remove} />
+                                                <br />
+                                                <Field
+                                                    type="file"
+                                                    name={`contents[${index}].imgSrc`}
+                                                    accept="image/*"
+                                                    multiple
+                                                />
+                                                <br />
+                                                <Field
+                                                    as="textarea"
+                                                    name={`contents[${index}].comment`}
+                                                />
+                                            </div>
+                                        ))}
                                     </>
                                 );
                             }}

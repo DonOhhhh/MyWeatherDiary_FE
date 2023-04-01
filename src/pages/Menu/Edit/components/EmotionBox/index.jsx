@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { ErrorMessage, Field } from "formik";
 import FormError from "../../../../../common/components/FormError";
+import { ReactComponent as Sunny } from "../../icons/sunny.svg";
+import { ReactComponent as Cloudy } from "../../icons/cloudy.svg";
+import { ReactComponent as Rainy } from "../../icons/rainy.svg";
+import { ReactComponent as Thunder } from "../../icons/thunder.svg";
 
 const Container = styled.div`
     display: flex;
@@ -8,14 +12,14 @@ const Container = styled.div`
     justify-content: space-evenly;
     align-items: center;
 
-    width: 100%;
-    height: 70px;
+    width: fit-content;
+    height: fit-content;
 
     background: #ffffff;
     border: 1px solid #000000;
     border-radius: 15px;
 `;
-const EmotionIcon = styled.input`
+const IconBox = styled.div`
     appearance: none;
     display: inline-block;
     margin: 0;
@@ -23,35 +27,46 @@ const EmotionIcon = styled.input`
     width: 50px;
     height: 50px;
     border-radius: 15px;
-    background-image: url(${({ src }) => src});
-    background-size: cover;
-    /* border: 3px solid rgba(0, 0, 0, 0); */
     &:hover {
-        /* border: 3px solid #d3eaff; */
         cursor: pointer;
     }
 `;
 
-export default function EmotionBox() {
+const StyledField = styled(Field)`
+    appearance: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+`;
+
+export default function EmotionBox({ emotion }) {
     return (
-        <div role="group" aria-labelledby="Emotion-box">
+        <Container role="group" aria-labelledby="Emotion-box">
             <label>
-                <Field type="radio" name="emotion" value="0" />
-                sunny
+                <IconBox>
+                    <StyledField type="radio" name="emotion" value="0" />
+                    <Sunny fill={emotion === "0" ? "#ffc350" : "#cacaca"} />
+                </IconBox>
             </label>
             <label>
-                <Field type="radio" name="emotion" value="1" />
-                cloudy
+                <IconBox>
+                    <StyledField type="radio" name="emotion" value="1" />
+                    <Cloudy fill={emotion === "1" ? "#3d3d3d" : "#cacaca"} />
+                </IconBox>
             </label>
             <label>
-                <Field type="radio" name="emotion" value="2" />
-                rainy
+                <IconBox>
+                    <StyledField type="radio" name="emotion" value="2" />
+                    <Rainy fill={emotion === "2" ? "#2784DA" : "#cacaca"} />
+                </IconBox>
             </label>
             <label>
-                <Field type="radio" name="emotion" value="3" />
-                thunder
+                <IconBox>
+                    <StyledField type="radio" name="emotion" value="3" />
+                    <Thunder fill={emotion === "3" ? "#FFE227" : "#cacaca"} />
+                </IconBox>
             </label>
             <ErrorMessage name="emotion" component={FormError} />
-        </div>
+        </Container>
     );
 }

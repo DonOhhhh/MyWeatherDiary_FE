@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
+import { ErrorMessage, Field, FieldArray } from "formik";
 import { useCallback } from "react";
+import FormError from "../../../../../common/components/FormError";
 
 const Container = styled.div`
     display: flex;
@@ -57,67 +59,38 @@ const InputComment = styled.textarea`
     }
 `;
 
-export default function ContentBox({
-    index,
-    contentId,
-    imgSrc,
-    comment,
-    onChanged,
-    onDelete,
-    onCommentChange,
-}) {
+export default function ContentBox({ pushFunction }) {
     return (
-        <Container>
-            <DeleteBtn
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(contentId);
-                    // alert("DeleteBtn");
+        <div role="group" aria-labelledby="Content-box">
+            <FieldArray name="contents">
+                {(fieldArrayProps) => {
+                    const { remove, push, form } = fieldArrayProps;
+                    pushFunction = push;
+                    const { contents } = form.values;
+                    return (
+                        <>
+                            {contents.map(({ id, imgSrc, comment }, index) => (
+                                <div key={index}>
+                                    <button onClick={remove}>-</button>
+                                    <br />
+                                    <Field
+                                        type="file"
+                                        name={`contents[${index}].imgSrc`}
+                                        accept="image/*"
+                                        multiple
+                                    />
+                                    <br />
+                                    <Field
+                                        as="textarea"
+                                        name={`contents[${index}].comment`}
+                                    />
+                                </div>
+                            ))}
+                        </>
+                    );
                 }}
-            />
-            <InputImageBox src={imgSrc}>
-                <input
-                    type="file"
-                    accept="image/*"
-                    name={`image${index}`}
-                    style={{ display: "none" }}
-                    onClick={(e) => {
-                        // alert("input[type=file]");
-                        e.stopPropagation();
-                    }}
-                    onChange={(e) => {
-                        const file = e.target.files[0];
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = () => {
-                            // onChanged(
-                            //     contentId,
-                            //     URL.createObjectURL(file),
-                            //     comment
-                            // );
-                            onChanged(contentId, reader.result, comment);
-                        };
-                    }}
-                />
-                {imgSrc ? null : (
-                    <>
-                        <Icon svgUrl={AddCircleIcon} size="70px" />
-                        <div
-                            style={{ color: "#9b9b9b" }}
-                        >{`사진을 선택해주세요(필수x)`}</div>
-                    </>
-                )}
-            </InputImageBox>
-            <InputComment
-                type="text"
-                placeholder="some comments..."
-                name={`comment${index}`}
-                defaultValue={comment}
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) =>
-                    onCommentChange(contentId, imgSrc, e.target.value)
-                }
-            />
-        </Container>
+            </FieldArray>
+            <ErrorMessage name="contents" component={FormError} />
+        </div>
     );
 }

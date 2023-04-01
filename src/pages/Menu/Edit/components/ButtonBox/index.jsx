@@ -6,7 +6,7 @@ export default function ButtonBox({ onAddClick }) {
         imgSrc: "",
         comment: "",
     });
-    console.log(onAddClick);
+
     return (
         <div role="group" aria-labelledby="Button-box">
             <button
