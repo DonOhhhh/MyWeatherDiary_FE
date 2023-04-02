@@ -8,6 +8,9 @@ const diarysSlice = createSlice({
     reducers: {
         added: (state, action) => {
             state.push(action.payload);
+            return state.sort((a, b) =>
+                new Date(b.date) - new Date(a.date) ? 1 : -1
+            );
         },
         updated: (state, action) => {
             state = state.map((diary) =>

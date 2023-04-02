@@ -26,6 +26,7 @@ const StyledForm = styled(Form)`
     justify-content: flex-start;
     align-items: center;
     gap: 30px;
+    width: 30%;
     height: 100%;
     padding: 30px 30px;
     background-color: #d3eaff;
@@ -143,6 +144,7 @@ function EditPage() {
                                                             fontWeight: "400",
                                                             overflow: "scroll",
                                                             height: "200px",
+                                                            width: "100%",
                                                         }}
                                                     />
                                                 </StyledContent>
