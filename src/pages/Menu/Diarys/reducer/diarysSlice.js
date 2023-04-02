@@ -6,18 +6,20 @@ const diarysSlice = createSlice({
     name: "diarys",
     initialState,
     reducers: {
-        added: (state, action) => {
+        diaryAdd: (state, action) => {
             state.push(action.payload);
             return state.sort((a, b) =>
                 new Date(b.date) - new Date(a.date) ? 1 : -1
             );
         },
-        updated: (state, action) => {
-            state = state.map((diary) =>
+        diaryUpdate: (state, action) => {
+            console.log(state.map((diary) => diary.id));
+            console.log(action.payload);
+            return state.map((diary) =>
                 diary.id === action.payload.id ? action.payload : diary
             );
         },
-        deleted: (state, action) => {
+        diaryDelete: (state, action) => {
             const index = state.findIndex(
                 (diary) => diary.id === action.payload.id
             );
@@ -27,4 +29,4 @@ const diarysSlice = createSlice({
 });
 
 export default diarysSlice.reducer;
-export const { added, updated, deleted } = diarysSlice.actions;
+export const { diaryAdd, diaryUpdate, diaryDelete } = diarysSlice.actions;

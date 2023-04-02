@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
 const initialState = {
-    id: v4(),
+    id: "",
     date: new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10),
     emotion: 0,
     contents: [
@@ -18,7 +18,7 @@ const editSlice = createSlice({
     name: "edit",
     initialState,
     reducers: {
-        save: (_, action) => {
+        diaryImport: (_, action) => {
             return action.payload;
         },
         clear: () => {
@@ -28,4 +28,4 @@ const editSlice = createSlice({
 });
 
 export default editSlice.reducer;
-export const { save, clear } = editSlice.actions;
+export const { diaryImport, clear } = editSlice.actions;

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
 import * as Yup from "yup";
 import FormError from "../../../common/components/FormError";
-import { added } from "../Diarys/reducer/diarysSlice";
+import { diaryAdd, diaryUpdate } from "../Diarys/reducer/diarysSlice";
 import DateBox from "./components/DateBox";
 import EmotionBox from "./components/EmotionBox";
 import DeleteBtn from "./components/DeleteBtn";
@@ -77,10 +77,16 @@ const StyledBtn = styled.button`
 
 function EditPage() {
     const initialValues = useSelector((state) => state.edit);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const onSubmit = (values) => {
-        dispatch(added(values));
+        if (!values.id) values.id = v4();
+        dispatch(
+            location.pathname === "/main/newdiary"
+                ? diaryAdd(values)
+                : diaryUpdate(values)
+        );
         navigate("/main/diarys");
     };
     const validationSchema = Yup.object({

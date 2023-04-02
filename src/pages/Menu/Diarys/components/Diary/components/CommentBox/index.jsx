@@ -5,7 +5,7 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     text-align: left;
-    padding: 10px 20px;
+    padding: 10px;
     gap: 10px;
     width: 100%;
     height: fit-content;

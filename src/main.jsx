@@ -35,6 +35,10 @@ const router = createBrowserRouter([
                 element: <Diarys />,
             },
             {
+                path: "/main/newdiary",
+                element: <Edit />,
+            },
+            {
                 path: "/main/profile",
                 element: <Profile />,
             },

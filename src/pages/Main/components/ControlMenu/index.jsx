@@ -27,7 +27,7 @@ function ControlMenu() {
         },
         {
             itemText: "New diary",
-            href: "/main/edit",
+            href: "/main/newdiary",
             icon: <Edit2 />,
         },
         {
