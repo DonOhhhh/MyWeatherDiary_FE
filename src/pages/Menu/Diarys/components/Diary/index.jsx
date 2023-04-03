@@ -49,7 +49,7 @@ export default function Diary({ postId, date, emotion, contents }) {
                 }}
                 onDelete={() => {
                     if (confirm("삭제하시겠습니까?")) {
-                        dispatch(diaryDelete({ postId }));
+                        dispatch(diaryDelete({ id: postId }));
                     }
                 }}
             />

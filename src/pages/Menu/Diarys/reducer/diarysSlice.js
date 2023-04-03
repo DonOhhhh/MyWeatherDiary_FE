@@ -13,17 +13,12 @@ const diarysSlice = createSlice({
             );
         },
         diaryUpdate: (state, action) => {
-            console.log(state.map((diary) => diary.id));
-            console.log(action.payload);
             return state.map((diary) =>
                 diary.id === action.payload.id ? action.payload : diary
             );
         },
         diaryDelete: (state, action) => {
-            const index = state.findIndex(
-                (diary) => diary.id === action.payload.id
-            );
-            if (index > -1) state.splice(index, 1);
+            return state.filter((diary) => diary.id !== action.payload.id);
         },
     },
 });

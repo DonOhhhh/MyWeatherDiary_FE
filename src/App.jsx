@@ -7,7 +7,7 @@ axios.defaults.baseURL = "http://localhost:8080";
 export default function App() {
     const navigate = useNavigate();
     useEffect(() => {
-        return navigate("/login");
+        navigate("/home/login");
     }, []);
     return <div>App</div>;
 }

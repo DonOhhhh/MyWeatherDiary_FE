@@ -56,13 +56,13 @@ const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const emotionEmoji = (emotion, size = 40) => {
     switch (emotion) {
-        case 0:
+        case "0":
             return <Sunny width={size} height={size} />;
-        case 1:
+        case "1":
             return <Cloudy width={size} height={size} />;
-        case 2:
+        case "2":
             return <Rainy width={size} height={size} />;
-        case 3:
+        case "3":
             return <Thunder width={size} height={size} />;
     }
 };

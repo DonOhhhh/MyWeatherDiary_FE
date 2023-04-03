@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    /* min-width: 600px; */
+    min-width: 580px;
     width: 40%;
     padding: 0;
 `;

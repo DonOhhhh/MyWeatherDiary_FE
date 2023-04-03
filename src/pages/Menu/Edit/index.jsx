@@ -26,7 +26,8 @@ const StyledForm = styled(Form)`
     justify-content: flex-start;
     align-items: center;
     gap: 30px;
-    width: 30%;
+    width: 40%;
+    min-width: 400px;
     height: 100%;
     padding: 30px 30px;
     background-color: #d3eaff;
@@ -37,24 +38,12 @@ const StyledContent = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 2px;
-    gap: 5px;
+    gap: 10px;
 
     width: 100%;
     height: 100%;
 
     border: 1px dashed #898989;
-    border-radius: 15px;
-`;
-
-const StyledTextarea = styled(Field)`
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 15px;
-    gap: 10px;
-
-    background: #ffffff;
-    border: 1px solid #dddddd;
     border-radius: 15px;
 `;
 
@@ -68,7 +57,12 @@ const StyledBtn = styled.button`
     font-size: 20px;
     padding: 4px 0;
     width: 100%;
-    height: 100%;
+    height: fit-content;
+
+    font-family: "Jua";
+    font-size: 24px;
+    font-weight: 50;
+
     &:hover {
         cursor: pointer;
         background-color: #aaa;
@@ -130,12 +124,10 @@ function EditPage() {
                                                     <DeleteBtn
                                                         onClick={remove}
                                                     />
-                                                    <br />
                                                     <Field
                                                         name={`contents[${index}].imgSrc`}
                                                         component={ImageBox}
                                                     />
-                                                    <br />
                                                     <Field
                                                         as="textarea"
                                                         placeholder="some comments..."

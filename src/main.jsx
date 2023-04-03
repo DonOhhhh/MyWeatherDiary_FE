@@ -2,14 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import store from "./rtk/store";
 import App from "./App";
-import Login, { action as LoginAction } from "./pages/Login";
 import Main from "./pages/Main";
+import Home from "./pages/Home";
 import Diarys from "./pages/Menu/Diarys";
 import Profile from "./pages/Menu/Profile";
 import Edit from "./pages/Menu/Edit";
 import { Provider } from "react-redux";
-import store from "./rtk/store";
+import Login from "./pages/Home/components/Login";
+import SignUp from "./pages/Home/components/Signup";
+import Key from "./pages/Home/components/Key";
+import ProfileEdit from "./pages/Menu/ProfileEdit";
 
 const router = createBrowserRouter([
     {
@@ -18,9 +22,22 @@ const router = createBrowserRouter([
         errorElement: <h1>404 Not Found</h1>,
     },
     {
-        path: "/login",
-        element: <Login />,
-        action: LoginAction,
+        path: "/home",
+        element: <Home />,
+        children: [
+            {
+                path: "/home/login",
+                element: <Login />,
+            },
+            {
+                path: "/home/signup",
+                element: <SignUp />,
+            },
+            {
+                path: "/home/key",
+                element: <Key />,
+            },
+        ],
     },
     {
         path: "/main",
@@ -45,6 +62,10 @@ const router = createBrowserRouter([
             {
                 path: "/main/edit",
                 element: <Edit />,
+            },
+            {
+                path: "/main/profileedit",
+                element: <ProfileEdit />,
             },
         ],
     },

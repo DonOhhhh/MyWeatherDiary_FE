@@ -11,7 +11,7 @@ const Container = styled.div`
     height: fit-content;
     margin: 0;
     padding: 0;
-    transform: translate(320px, 15px);
+    transform: translate(320px, -150px);
     margin-bottom: -100px;
 `;
 
@@ -21,7 +21,7 @@ const UpdateBtn = styled(Edit2)`
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     &:hover {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        stroke: red;
+        stroke: #6398eb;
         cursor: pointer;
     }
 `;
@@ -32,12 +32,12 @@ const DeleteBtn = styled(Trash2)`
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     &:hover {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        stroke: red;
+        stroke: #dc7f86;
         cursor: pointer;
     }
 `;
 
-export default function ButtonGroup({ onUpdate, onDelete }) {
+export default function UpdateBox({ onUpdate, onDelete }) {
     return (
         <Container>
             <UpdateBtn

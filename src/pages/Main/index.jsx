@@ -1,8 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import styled from "@emotion/styled";
-import { ReactComponent as SmallLogo } from "./icons/Logo/Post.svg";
-import { useState } from "react";
-import ControlMenu from "./components/ControlMenu";
+import { ReactComponent as SmallLogo } from "./icons/Logo/logo.svg";
+import Sidebar from "./components/Sidebar";
 
 const Container = styled.div`
     position: absolute;
@@ -17,7 +16,8 @@ const Container = styled.div`
 `;
 
 const Left = styled.div`
-    width: 100%;
+    width: fit-content;
+    word-break: keep-all;
     /* background: linear-gradient(to top, #daedff, white); */
     background-color: #ebf5ff;
     display: grid;
@@ -26,21 +26,20 @@ const Left = styled.div`
 `;
 
 const Logo = styled(SmallLogo)`
+    margin: 10px;
     &:hover {
         cursor: pointer;
     }
 `;
 
 export default function Main() {
-    const [profile, setProfile] = useState(false);
-    const [menu, setMenu] = useState(false);
     return (
         <Container>
             <Left>
-                <Link to="/main">
+                <Link to="/main/diarys">
                     <Logo />
                 </Link>
-                <ControlMenu />
+                <Sidebar />
             </Left>
             <Outlet />
         </Container>
