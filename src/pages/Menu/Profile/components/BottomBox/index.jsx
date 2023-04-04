@@ -20,14 +20,30 @@ const SNSIcons = styled.div`
 `;
 
 export default function BottomBox({ sns }) {
-    // const { instagram, facebook, twitter, github } = sns;
+    const { instagram = "", facebook = "", twitter = "", github = "" } = sns;
     const size = 30;
     return (
         <SNSIcons>
-            <Instagram width={size} height={size} />
-            <Facebook width={size} height={size} />
-            <Twitter width={size} height={size} />
-            <Github width={size} height={size} />
+            {instagram && (
+                <a href={instagram} target="_blank">
+                    <Instagram width={size} height={size} />
+                </a>
+            )}
+            {facebook && (
+                <a href={facebook} target="_blank">
+                    <Facebook width={size} height={size} />
+                </a>
+            )}
+            {twitter && (
+                <a href={twitter} target="_blank">
+                    <Twitter width={size} height={size} />
+                </a>
+            )}
+            {github && (
+                <a href={github} target="_blank">
+                    <Github width={size} height={size} />
+                </a>
+            )}
         </SNSIcons>
     );
 }

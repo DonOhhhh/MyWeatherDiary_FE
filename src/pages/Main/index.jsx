@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import styled from "@emotion/styled";
 import { ReactComponent as SmallLogo } from "./icons/Logo/logo.svg";
 import Sidebar from "./components/Sidebar";
+import UserInfo from "./components/UserInfo";
 
 const Container = styled.div`
     position: absolute;
@@ -25,11 +26,23 @@ const Left = styled.div`
     justify-content: center;
 `;
 
+const Content = styled.div`
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+`;
+
 const Logo = styled(SmallLogo)`
     margin: 10px;
     &:hover {
         cursor: pointer;
     }
+`;
+
+const UserInfoContainer = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 50px;
 `;
 
 export default function Main() {
@@ -41,7 +54,12 @@ export default function Main() {
                 </Link>
                 <Sidebar />
             </Left>
-            <Outlet />
+            <Content>
+                <Outlet />
+            </Content>
+            <UserInfoContainer>
+                <UserInfo />
+            </UserInfoContainer>
         </Container>
     );
 }

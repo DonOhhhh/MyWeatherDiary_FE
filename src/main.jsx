@@ -14,6 +14,7 @@ import Login from "./pages/Home/components/Login";
 import SignUp from "./pages/Home/components/Signup";
 import Key from "./pages/Home/components/Key";
 import ProfileEdit from "./pages/Menu/ProfileEdit";
+import Activity from "./pages/Menu/Activity";
 
 const router = createBrowserRouter([
     {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/main/activity",
-                element: <div>Activity</div>,
+                element: <Activity />,
             },
             {
                 path: "/main/diarys",

@@ -1,55 +1,44 @@
 import { avataaars } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 import styled from "@emotion/styled";
+import { useSelector } from "react-redux";
 import { Buffer } from "buffer";
-import { Button } from "@mui/material";
 
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    min-width: 350px;
-    gap: 40px;
+    gap: 10px;
+`;
+
+const Username = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-family: Jua;
+    font-size: 24px;
 `;
 
 const Avatar = styled.div`
     display: inline-block;
-    width: 150px;
-    height: 150px;
+    width: ${({ size }) => (size ? size : "40px")};
+    height: ${({ size }) => (size ? size : "40px")};
     background-image: url(${({ src }) => src});
     background-repeat: no-repeat;
     background-size: contain;
 `;
 
-const UsernameBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const Username = styled.div`
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    vertical-align: middle;
-    font-family: Jua;
-    font-weight: 700;
-    font-size: 30px;
-    line-height: 36px;
-`;
-
-export default function TopBox({ username }) {
+export default function UserInfo() {
+    const { username } = useSelector((state) => state.profile);
     const avatar = createAvatar(avataaars, {
         seed: username,
-        size: 1000,
-        radius: 10,
-        backgroundColor: ["D5D0E5", "F3E6E8"],
+        style: ["circle"],
+        size: 60,
         backgroundType: ["gradientLinear"],
+        backgroundColor: ["D5D0E5", "F3E6E8"],
         backgroundRotation: [90],
     }).toString();
-
     return (
         <Container>
             <Avatar
@@ -58,10 +47,7 @@ export default function TopBox({ username }) {
                     Buffer.from(avatar).toString("base64")
                 }
             />
-            <UsernameBox>
-                <Username>{username}</Username>
-                <Username>{"님의 일기장"}</Username>
-            </UsernameBox>
+            <Username>{username} 님</Username>
         </Container>
     );
 }

@@ -63,6 +63,7 @@ const ButtonGroup = styled.div`
     width: 100%;
     height: fit-content;
     gap: 10px;
+    margin: 20px 0;
 `;
 
 const StyledLabel = styled.label`
@@ -73,6 +74,13 @@ const StyledLabel = styled.label`
     font-size: 24px;
     font-weight: 200;
     color: #747474;
+`;
+
+const RedStar = styled.span`
+    color: red;
+    font-weight: 100;
+    font-size: 30px;
+    margin-right: 5px;
 `;
 
 export default function ProfileEdit() {
@@ -96,19 +104,25 @@ export default function ProfileEdit() {
                 // validationSchema={validationSchema}
             >
                 <StyledForm>
-                    <StyledLabel htmlFor="username">Username</StyledLabel>
+                    <StyledLabel htmlFor="username">
+                        <RedStar>*</RedStar>Username
+                    </StyledLabel>
                     <StyledField name="username" placeholder="username" />
                     <ErrorMessage name="username">
                         {(errMsg) => <FormError errorMessage={errMsg} />}
                     </ErrorMessage>
 
-                    <StyledLabel htmlFor="diaryTitle">Diary Title</StyledLabel>
+                    <StyledLabel htmlFor="diaryTitle">
+                        <RedStar>*</RedStar>Diary Title
+                    </StyledLabel>
                     <StyledField name="diaryTitle" placeholder="diaryTitle" />
                     <ErrorMessage name="diaryTitle">
                         {(errMsg) => <FormError errorMessage={errMsg} />}
                     </ErrorMessage>
 
-                    <StyledLabel htmlFor="email">Email</StyledLabel>
+                    <StyledLabel htmlFor="email">
+                        <RedStar>*</RedStar>Email
+                    </StyledLabel>
                     <StyledField name="email" placeholder="email" />
                     <ErrorMessage name="email">
                         {(errMsg) => <FormError errorMessage={errMsg} />}

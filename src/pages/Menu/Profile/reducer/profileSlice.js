@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    username: "",
-    diaryTitle: "",
-    email: "",
-    job: "",
+    username: "오동준",
+    diaryTitle: "일기",
+    email: "aaaa@a.com",
+    job: "괴발자",
     sns: {
         instagram: "",
         facebook: "",
