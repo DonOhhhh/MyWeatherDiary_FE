@@ -8,9 +8,9 @@ const ListItem = styled.div`
     justify-content: flex-start;
     align-items: center;
     border-radius: 0 15px 15px 0;
-    padding: 20px;
-    width: 100%;
-    height: 4rem;
+    padding: 10px 20px;
+    width: fit-content;
+    height: 3rem;
     & svg {
         stroke: black;
     }
@@ -18,7 +18,7 @@ const ListItem = styled.div`
         cursor: pointer;
         background-color: #c5e3ff;
         color: white;
-        width: calc(100% + 20px);
+        width: calc(100% + 10px);
         & svg {
             stroke: white;
         }
@@ -28,7 +28,7 @@ const ListItem = styled.div`
 const SelectedListItem = styled(ListItem)`
     background-color: #c5e3ff;
     color: white;
-    width: calc(100% + 20px);
+    width: calc(100% + 10px);
     & svg {
         stroke: white;
     }
@@ -40,20 +40,33 @@ const ListText = styled.div`
     text-align: left;
     vertical-align: middle;
     font-family: Inter;
+    width: fit-content;
 `;
 
-export default function MenuItem({ children, href, itemText, path }) {
+export default function MenuItem({ children, href, itemText, path, isExpand }) {
     const navigate = useNavigate();
     const [, , lastPath] = location.pathname.split("/");
     return lastPath === path ? (
         <SelectedListItem onClick={() => navigate(`${href}`)}>
-            <ListItemIcon>{children}</ListItemIcon>
-            <ListText>{itemText}</ListText>
+            {isExpand ? (
+                <>
+                    <ListItemIcon>{children}</ListItemIcon>
+                    <ListText>{itemText}</ListText>
+                </>
+            ) : (
+                children
+            )}
         </SelectedListItem>
     ) : (
         <ListItem onClick={() => navigate(`${href}`)}>
-            <ListItemIcon>{children}</ListItemIcon>
-            <ListText>{itemText}</ListText>
+            {isExpand ? (
+                <>
+                    <ListItemIcon>{children}</ListItemIcon>
+                    <ListText>{itemText}</ListText>
+                </>
+            ) : (
+                children
+            )}
         </ListItem>
     );
 }

@@ -12,6 +12,8 @@ const Wrapper = styled.div`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     min-width: 580px;
     width: 40%;
     padding: 0;

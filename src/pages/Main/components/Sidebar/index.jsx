@@ -1,5 +1,16 @@
 import styled from "@emotion/styled";
-import { Edit2, Activity, User, Unlock, BookOpen } from "react-feather";
+import { ListItemIcon } from "@mui/material";
+import { useState } from "react";
+import {
+    Edit2,
+    Activity,
+    User,
+    Unlock,
+    BookOpen,
+    ChevronLeft,
+    ChevronRight,
+} from "react-feather";
+import { ReactComponent as Shrink } from "../../icons/shrink.svg";
 import MenuItem from "../MenuItem";
 
 const Container = styled.div`
@@ -12,7 +23,7 @@ const List = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 0;
 `;
 
@@ -48,9 +59,43 @@ const ITEMS = [
     },
 ];
 
-export default function Sidebar() {
+const WidthControllerContainer = styled.div`
+    --width: 20px;
+    --height: calc(var(--width) * 2);
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: var(--width);
+    height: var(--height);
+    border-radius: 0 10px 10px 0;
+    border: 0;
+    padding: 5px;
+    background-color: #ebf5ff;
+    position: relative;
+    left: ${({ parentWidth }) => parentWidth}px;
+    top: -70px;
+    /* transform: translate(${({ parentWidth }) => parentWidth}px, -70px); */
+    margin-bottom: -30px;
+    &:hover {
+        /* background-color: #7dbffd; */
+        & polyline {
+            stroke: white;
+        }
+        cursor: pointer;
+    }
+`;
+
+export default function Sidebar({ width, isExpand, onChevronClick }) {
     return (
         <Container>
+            <WidthControllerContainer
+                parentWidth={width}
+                onClick={onChevronClick}
+            >
+                {isExpand ? <ChevronLeft /> : <ChevronRight />}
+            </WidthControllerContainer>
             <List>
                 {ITEMS.map(({ itemText, href, icon, pathname }, index) => (
                     <MenuItem
@@ -58,6 +103,7 @@ export default function Sidebar() {
                         href={href}
                         itemText={itemText}
                         path={pathname}
+                        isExpand={isExpand}
                     >
                         {icon}
                     </MenuItem>

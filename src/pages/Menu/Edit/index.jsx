@@ -17,7 +17,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: fit-content;
 `;
 
 const StyledForm = styled(Form)`
@@ -28,9 +28,11 @@ const StyledForm = styled(Form)`
     gap: 30px;
     width: 40%;
     min-width: 400px;
-    height: 100%;
+    height: fit-content;
     padding: 30px 30px;
     background-color: #d3eaff;
+    /* overflow: scroll;
+    scrollbar-width: none; */
 `;
 
 const StyledContent = styled.div`
@@ -71,7 +73,6 @@ const StyledBtn = styled.button`
 
 function EditPage() {
     const initialValues = useSelector((state) => state.edit);
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const onSubmit = (values) => {

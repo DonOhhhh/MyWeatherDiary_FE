@@ -1,8 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
 import styled from "@emotion/styled";
-import { ReactComponent as SmallLogo } from "./icons/Logo/logo.svg";
+import { ReactComponent as SmallLogo } from "./icons/logo.svg";
 import Sidebar from "./components/Sidebar";
 import UserInfo from "./components/UserInfo";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const Container = styled.div`
     position: absolute;
@@ -10,10 +11,8 @@ const Container = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    display: grid;
-    grid-template-columns: 15% 85%;
-    text-align: center;
-    justify-content: center;
+    display: flex;
+    flex-direction: row;
 `;
 
 const Left = styled.div`
@@ -22,7 +21,7 @@ const Left = styled.div`
     /* background: linear-gradient(to top, #daedff, white); */
     background-color: #ebf5ff;
     display: grid;
-    grid-template-rows: 100px 1fr;
+    grid-template-rows: 78px 1fr;
     justify-content: center;
 `;
 
@@ -32,8 +31,11 @@ const Content = styled.div`
     overflow: scroll;
 `;
 
-const Logo = styled(SmallLogo)`
-    margin: 10px;
+const LogoLink = styled(Link)`
+    display: flex;
+    justify-content: center;
+    margin: 10px 10px;
+    height: 78px;
     &:hover {
         cursor: pointer;
     }
@@ -46,13 +48,27 @@ const UserInfoContainer = styled.div`
 `;
 
 export default function Main() {
+    const sidebarRef = useRef();
+    const [width, setWidth] = useState(0);
+    const [isExpand, setIsExpand] = useState(true);
+    useEffect(() => {
+        setWidth(sidebarRef.current.offsetWidth);
+    }, [sidebarRef, isExpand]);
+
+    const onChevronClick = () => {
+        setIsExpand(!isExpand);
+    };
     return (
         <Container>
-            <Left>
-                <Link to="/main/diarys">
-                    <Logo />
-                </Link>
-                <Sidebar />
+            <Left ref={sidebarRef}>
+                <LogoLink to="/main/diarys">
+                    <SmallLogo />
+                </LogoLink>
+                <Sidebar
+                    width={width}
+                    isExpand={isExpand}
+                    onChevronClick={onChevronClick}
+                />
             </Left>
             <Content>
                 <Outlet />
