@@ -20,29 +20,31 @@ const Container = styled.div`
 `;
 
 export default function Diarys() {
-    const diarys = useSelector((state) => state.diarys);
+    const diarys = useSelector((state) => state.diarys).slice();
     return (
         <Wrapper>
             <Container>
                 {diarys.length ? (
-                    diarys.map(({ id, date, emotion, contents }, i) => (
-                        <div key={i}>
-                            <Diary
-                                postId={id}
-                                date={date}
-                                emotion={emotion}
-                                contents={contents}
-                            />
-                            {i !== diarys.length - 1 ? (
-                                <hr
-                                    style={{
-                                        border: "0",
-                                        borderTop: "1px dashed lightgray",
-                                    }}
+                    diarys
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .map(({ id, date, emotion, contents }, i) => (
+                            <div key={i}>
+                                <Diary
+                                    postId={id}
+                                    date={date}
+                                    emotion={emotion}
+                                    contents={contents}
                                 />
-                            ) : null}
-                        </div>
-                    ))
+                                {i !== diarys.length - 1 ? (
+                                    <hr
+                                        style={{
+                                            border: "0",
+                                            borderTop: "1px dashed lightgray",
+                                        }}
+                                    />
+                                ) : null}
+                            </div>
+                        ))
                 ) : (
                     <div>일기가 없습니다</div>
                 )}

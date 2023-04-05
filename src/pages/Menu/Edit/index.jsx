@@ -76,7 +76,6 @@ function EditPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const onSubmit = (values) => {
-        if (!values.id) values.id = v4();
         dispatch(
             location.pathname === "/main/newdiary"
                 ? diaryAdd(values)

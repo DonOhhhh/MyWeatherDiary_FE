@@ -35,7 +35,7 @@ const LogoLink = styled(Link)`
     display: flex;
     justify-content: center;
     margin: 10px 10px;
-    height: 78px;
+    height: ${({ isexpand }) => isexpand};
     &:hover {
         cursor: pointer;
     }
@@ -61,7 +61,10 @@ export default function Main() {
     return (
         <Container>
             <Left ref={sidebarRef}>
-                <LogoLink to="/main/diarys">
+                <LogoLink
+                    to="/main/diarys"
+                    isexpand={isExpand ? "78px" : "24px"}
+                >
                     <SmallLogo />
                 </LogoLink>
                 <Sidebar

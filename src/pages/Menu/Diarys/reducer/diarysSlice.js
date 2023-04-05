@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
+import { v4 } from "uuid";
 
 const initialState = [];
 
@@ -7,10 +8,7 @@ const diarysSlice = createSlice({
     initialState,
     reducers: {
         diaryAdd: (state, action) => {
-            state.push(action.payload);
-            return state.sort((a, b) =>
-                new Date(b.date) - new Date(a.date) ? 1 : -1
-            );
+            state.push({ ...action.payload, id: v4() });
         },
         diaryUpdate: (state, action) => {
             return state.map((diary) =>
