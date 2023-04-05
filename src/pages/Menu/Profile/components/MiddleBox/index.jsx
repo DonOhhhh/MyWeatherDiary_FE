@@ -19,8 +19,8 @@ export default function MiddleBox({ middleBoxInfo }) {
     return (
         <Container>
             <InfoItem svgUrl={Bulb} text={diaryTitle} />
-            <InfoItem svgUrl={Email} text={email} />
-            <InfoItem svgUrl={Work} text={job} />
+            {email && <InfoItem svgUrl={Email} text={email} />}
+            {job && <InfoItem svgUrl={Work} text={job} />}
         </Container>
     );
 }

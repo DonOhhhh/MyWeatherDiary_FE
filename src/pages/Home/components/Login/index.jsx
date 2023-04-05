@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import { ReactComponent as Logo } from "./icons/logo_reversed.svg";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import InputBox from "./components/InputBox";
 import ButtonBox from "./components/ButtonBox";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { StyledForm } from "../StyledFormik";
 import { useDispatch } from "react-redux";
-import { updateProfile } from "../../../Menu/Profile/reducer/profileSlice";
+import { useState } from "react";
+import { Box, Dialog, DialogTitle, Fade, Modal } from "@mui/material";
+import GenerateKeyModal from "./components/GenerateKeyModal";
 
 const LogoBox = styled.div`
     margin: 0;
@@ -39,6 +41,8 @@ export default function Login() {
         email: Yup.string().email().required("Email required"),
         password: Yup.string().required("Password required"),
     });
+
+    const [open, setOpen] = useState(false);
     return (
         <Formik
             initialValues={initialState}
@@ -51,7 +55,8 @@ export default function Login() {
                         <LoginLogo />
                     </LogoBox>
                     <InputBox />
-                    <ButtonBox />
+                    <ButtonBox onGenerateKeyClick={setOpen} />
+                    <GenerateKeyModal open={open} setOpen={setOpen} />
                 </StyledForm>
             )}
         </Formik>

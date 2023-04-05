@@ -1,6 +1,4 @@
 import styled from "@emotion/styled";
-import { ListItemIcon } from "@mui/material";
-import { useState } from "react";
 import {
     Edit2,
     Activity,
@@ -10,7 +8,6 @@ import {
     ChevronLeft,
     ChevronRight,
 } from "react-feather";
-import { ReactComponent as Shrink } from "../../icons/shrink.svg";
 import MenuItem from "../MenuItem";
 
 const Container = styled.div`
@@ -35,16 +32,10 @@ const ITEMS = [
         pathname: "activity",
     },
     {
-        itemText: "Diarys",
+        itemText: "Diary",
         href: "/main/diarys",
         icon: <BookOpen />,
         pathname: "diarys",
-    },
-    {
-        itemText: "New diary",
-        href: "/main/newdiary",
-        icon: <Edit2 />,
-        pathname: "newdiary",
     },
     {
         itemText: "Profile",

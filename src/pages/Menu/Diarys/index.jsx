@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { Divider } from "@mui/material";
 import { useSelector } from "react-redux";
 import Diary from "./components/Diary";
+import NewDiary from "./components/NewDiary";
 
 const Wrapper = styled.div`
     display: flex;
@@ -23,6 +24,7 @@ export default function Diarys() {
     const diarys = useSelector((state) => state.diarys).slice();
     return (
         <Wrapper>
+            <NewDiary />
             <Container>
                 {diarys.length ? (
                     diarys

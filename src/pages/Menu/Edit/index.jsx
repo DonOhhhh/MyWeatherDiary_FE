@@ -122,7 +122,9 @@ function EditPage() {
                                             {contents.map((_, index) => (
                                                 <StyledContent key={index}>
                                                     <DeleteBtn
-                                                        onClick={remove}
+                                                        onClick={() =>
+                                                            remove(index)
+                                                        }
                                                     />
                                                     <Field
                                                         name={`contents[${index}].imgSrc`}
