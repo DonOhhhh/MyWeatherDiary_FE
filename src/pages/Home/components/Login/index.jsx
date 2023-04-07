@@ -14,7 +14,7 @@ import GenerateKeyModal from "./components/GenerateKeyModal";
 const LogoBox = styled.div`
     margin: 0;
     width: 100%;
-    /* height: fit-content; */
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,8 +38,7 @@ export default function Login() {
         navigate("/main/diarys");
     };
     const validationSchema = Yup.object({
-        email: Yup.string().email().required("Email required"),
-        password: Yup.string().required("Password required"),
+        enterKey: Yup.string().required("Password required"),
     });
 
     const [open, setOpen] = useState(false);

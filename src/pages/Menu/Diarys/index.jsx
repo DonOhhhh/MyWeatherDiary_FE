@@ -48,7 +48,7 @@ export default function Diarys() {
                             </div>
                         ))
                 ) : (
-                    <div>일기가 없습니다</div>
+                    <div>일기가 존재하지 않습니다.</div>
                 )}
             </Container>
         </Wrapper>
