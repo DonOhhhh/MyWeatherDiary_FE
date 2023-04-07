@@ -94,14 +94,13 @@ export default function ProfileEdit() {
     const validationSchema = Yup.object({
         username: Yup.string().required("Username is required"),
         diaryTitle: Yup.string().required("Diary Title is required"),
-        email: Yup.string().email().required("Email is required"),
     });
     return (
         <Wrapper>
             <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}
-                // validationSchema={validationSchema}
+                validationSchema={validationSchema}
             >
                 <StyledForm>
                     <StyledLabel htmlFor="username">
@@ -120,9 +119,7 @@ export default function ProfileEdit() {
                         {(errMsg) => <FormError errorMessage={errMsg} />}
                     </ErrorMessage>
 
-                    <StyledLabel htmlFor="email">
-                        <RedStar>*</RedStar>Email
-                    </StyledLabel>
+                    <StyledLabel htmlFor="email">Email</StyledLabel>
                     <StyledField name="email" placeholder="email" />
                     <ErrorMessage name="email">
                         {(errMsg) => <FormError errorMessage={errMsg} />}

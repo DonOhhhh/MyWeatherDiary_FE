@@ -15,16 +15,8 @@ const Wrapper = styled.div`
 export default function InputBox() {
     return (
         <Wrapper>
-            <StyledField name="email" placeholder="Email" />
-            <ErrorMessage name="email">
-                {(errorMsg) => <FormError errorMessage={errorMsg} />}
-            </ErrorMessage>
-            <StyledField
-                type="password"
-                placeholder="Password"
-                name="password"
-            />
-            <ErrorMessage name="password">
+            <StyledField name="enterKey" placeholder="enter your key..." />
+            <ErrorMessage name="enterKey">
                 {(errorMsg) => <FormError errorMessage={errorMsg} />}
             </ErrorMessage>
         </Wrapper>

@@ -76,7 +76,6 @@ function EditPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const onSubmit = (values) => {
-        if (!values.id) values.id = v4();
         dispatch(
             location.pathname === "/main/newdiary"
                 ? diaryAdd(values)
@@ -123,7 +122,9 @@ function EditPage() {
                                             {contents.map((_, index) => (
                                                 <StyledContent key={index}>
                                                     <DeleteBtn
-                                                        onClick={remove}
+                                                        onClick={() =>
+                                                            remove(index)
+                                                        }
                                                     />
                                                     <Field
                                                         name={`contents[${index}].imgSrc`}

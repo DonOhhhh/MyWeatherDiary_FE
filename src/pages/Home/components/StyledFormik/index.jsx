@@ -13,7 +13,7 @@ export const StyledForm = styled(Form)`
 export const StyledField = styled(Field)`
     width: 100%;
     padding: 20px 30px;
-    border: 5px solid #a1d2ff;
+    border: 5px solid #c4c4c4;
     border-radius: 20px;
 
     font-family: "Jua";
