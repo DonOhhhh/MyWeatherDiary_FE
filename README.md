@@ -6,7 +6,6 @@
 
 - git clone을 받은 후 root 경로에서 다음 명령어를 실행
 ```bash
-npm i -g yarn
 yarn install
 yarn run dev
 ```
