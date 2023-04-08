@@ -1,15 +1,14 @@
 FROM node:lts
 
-RUN mkdir -p /usr/src/app
+RUN mkdir -p /app
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY . /usr/src/app
+COPY . /app
 
-RUN yarn install
-
-RUN yarn build
+RUN yarn install && \
+    yarn build
 
 EXPOSE 80
 
-CMD ["yarn", "run", "preview"]
+CMD ["yarn", "run", "preview", "--host"]
