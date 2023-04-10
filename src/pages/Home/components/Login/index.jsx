@@ -14,7 +14,7 @@ import GenerateKeyModal from "./components/GenerateKeyModal";
 const LogoBox = styled.div`
     margin: 0;
     width: 100%;
-    /* height: fit-content; */
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;

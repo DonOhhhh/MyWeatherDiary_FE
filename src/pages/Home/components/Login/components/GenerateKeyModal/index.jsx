@@ -75,7 +75,10 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                         <StyledField
                                             name="enterKey"
                                             disabled
-                                            style={{ textAlign: "center" }}
+                                            style={{
+                                                textAlign: "center",
+                                                color: "#aaa",
+                                            }}
                                         />
                                         <IconContainer>
                                             <Copy size={iconSize} />
