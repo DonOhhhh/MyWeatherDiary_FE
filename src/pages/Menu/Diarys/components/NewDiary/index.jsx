@@ -11,7 +11,8 @@ const Container = styled(Link)`
     --size: 50px;
     --color: #7f7f7f;
     position: fixed;
-    transform: translate(730px, 780px);
+    right: 220px;
+    top: 15px;
     width: fit-content;
     height: fit-content;
     padding: 5px;
