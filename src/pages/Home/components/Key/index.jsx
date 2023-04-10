@@ -20,7 +20,13 @@ export default function Key() {
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
             <StyledForm>
-                <StyledLabel style={{ width: "100%", textAlign: "center" }}>
+                <StyledLabel
+                    style={{
+                        width: "100%",
+                        textAlign: "center",
+                        fontSize: "10px",
+                    }}
+                >
                     Key
                 </StyledLabel>
                 <StyledField

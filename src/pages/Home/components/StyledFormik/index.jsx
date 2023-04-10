@@ -6,7 +6,7 @@ export const StyledForm = styled(Form)`
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    width: 30%;
+    width: 50%;
     gap: 10px;
 `;
 
