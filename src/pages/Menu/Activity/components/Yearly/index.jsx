@@ -6,9 +6,10 @@ import { makeFakeData } from "../../reducer/activitySlice";
 
 const Wrapper = styled.div`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: fit-content;
     height: 300px;
     /* position: relative; */
 `;
@@ -28,7 +29,7 @@ const Container = styled.div`
         "days table";
     gap: 10px;
 
-    width: 100%;
+    width: fit-content;
     overflow-x: scroll;
     padding: 20px;
     scrollbar-width: thin;
@@ -36,8 +37,9 @@ const Container = styled.div`
     border: 1px solid #848383;
     border-radius: 6px;
     border-collapse: collapse;
-    position: absolute;
-    left: 0;
+
+    /* position: absolute;
+    left: 0; */
 `;
 
 const MonthTable = styled.div`
@@ -139,30 +141,29 @@ const months = [
 const color = ["#d1e5ff", "#afd2ff", "#89bcff", "#60a5ff", "#3a8fff"];
 const color2 = ["#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
 
-export default function Yearly({ startDate }) {
-    const dispatch = useDispatch();
-    const calendar = useSelector((state) => state.activity);
+export default function Yearly({ calendar, onCheckboxClick }) {
     const [startRow, setStartRow] = useState(1);
     useEffect(() => {
-        if (!calendar.length) {
-            dispatch(makeFakeData(startDate));
-        }
-    }, []);
-
-    useEffect(() => {
-        if (calendar.length) {
-            const date = new Date(calendar[0].date_format).toLocaleDateString(
-                "en-US",
-                {
-                    weekday: "short",
-                }
-            );
-            setStartRow(days.indexOf(date) + 1);
-        }
+        setStartRow(new Date(calendar[0].date_format).getDay() + 1);
     }, [calendar]);
 
     return (
         <Wrapper>
+            <div
+                style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginBottom: "10px",
+                }}
+            >
+                <input
+                    type="checkbox"
+                    id="fromJan1st"
+                    onChange={onCheckboxClick}
+                />
+                <label htmlFor="fromJan1st">1월 1일부터</label>
+            </div>
             <Container>
                 <MonthTable>
                     {months.map((e, i) => (

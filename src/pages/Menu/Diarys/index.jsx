@@ -6,10 +6,12 @@ import NewDiary from "./components/NewDiary";
 
 const Wrapper = styled.div`
     display: flex;
-    min-height: 100vh;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+    min-height: calc(100vh-20px);
     height: fit-content;
     /* min-width: 600px; */
-    justify-content: center;
     position: relative;
 `;
 

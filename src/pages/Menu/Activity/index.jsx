@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Monthly from "./components/Monthly";
 import Yearly from "./components/Yearly";
+import { useDispatch, useSelector } from "react-redux";
+import { makeFakeData } from "./reducer/activitySlice";
 
 const Container = styled.div`
     display: flex;
@@ -63,16 +65,30 @@ const ActivityContainer = styled.div`
 `;
 
 export default function Activity() {
-    const [type, setType] = useState("yearly");
+    const KST = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    const [type, setType] = useState("monthly");
+    const [startDate, setStartDate] = useState(KST.toISOString().split("T", 1));
+    const handleOnChecked = (e) => {
+        if (e.target.checked) setStartDate(`${KST.getFullYear()}-01-01`);
+        else setStartDate(KST.toISOString().split("T", 1)[0]);
+    };
+    const calendar = useSelector((state) => state.activity);
+    const dispatch = useDispatch();
     const handleChange = (e) => {
         setType(e.target.value);
     };
+    useEffect(() => {
+        dispatch(makeFakeData(startDate));
+    }, [startDate]);
     return (
         <Container>
             <Center>
                 <SelectContainer>
-                    <SelectType name="type" onChange={handleChange}>
-                        <option hidden>선택하세요</option>
+                    <SelectType
+                        name="type"
+                        onChange={handleChange}
+                        defaultValue={type}
+                    >
                         <option name="type" value="yearly">
                             Yearly
                         </option>
@@ -83,9 +99,12 @@ export default function Activity() {
                 </SelectContainer>
                 <ActivityContainer>
                     {type === "yearly" ? (
-                        <Yearly startDate={"2023-04-11"} />
+                        <Yearly
+                            calendar={calendar}
+                            onCheckboxClick={handleOnChecked}
+                        />
                     ) : (
-                        <Monthly />
+                        <Monthly calendar={calendar} />
                     )}
                 </ActivityContainer>
             </Center>

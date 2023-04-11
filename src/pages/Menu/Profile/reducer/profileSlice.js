@@ -4,7 +4,7 @@ const initialState = {
     username: "오동준",
     diaryTitle: "일기",
     email: "aaaa@a.com",
-    job: "괴발자",
+    job: "개발자",
     sns: {
         instagram: "",
         facebook: "",

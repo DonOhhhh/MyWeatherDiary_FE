@@ -39,6 +39,7 @@ const DateBox = styled.div`
     grid-template-columns: repeat(7, 1fr);
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
 `;
 
 const DateCell = styled.div`
@@ -56,18 +57,30 @@ const CalendarTable = styled.div`
             7,
             minmax(10px, 1fr)
         );
-    & div:first-of-type {
+    /* & div:first-of-type {
         grid-column-start: ${({ startCol }) => startCol};
-    }
+    } */
     height: calc(104px * 6);
+    border: 1px solid black;
+    grid-gap: 1px;
+    background-color: black;
 `;
 
 const CalendarCell = styled.div`
     /* border-left: 1px solid black;
     border-top: 1px solid black; */
-    border: 1px solid black;
     font-family: Jua;
     position: relative;
+    background-color: white;
+`;
+
+const OutsideCell = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.5);
 `;
 
 const EmotionBox = styled.div`
@@ -82,48 +95,44 @@ const EmotionBox = styled.div`
 `;
 
 const getEmoji = (emotion) => {
-    console.log(emotion);
     switch (emotion) {
-        case 0:
-            return <Sunny width={100} height={100} />;
         case 1:
-            return <Cloudy width={100} height={100} />;
+            return <Sunny width={100} height={100} />;
         case 2:
-            return <Rainy width={100} height={100} />;
+            return <Cloudy width={100} height={100} />;
         case 3:
+            return <Rainy width={100} height={100} />;
+        case 4:
             return <Thunder width={100} height={100} />;
     }
 };
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function Monthly() {
-    const dispatch = useDispatch();
-    const calendar = useSelector((state) => state.activity);
-    const [startCol, setStartCol] = useState(1);
+export default function Monthly({ calendar }) {
+    // calendar.sort((a, b) => new Date(a.date_format) - new Date(b.date_format));
+    const [preMonDays, setPreMonDays] = useState(0);
+    const [postMonDays, setPostMonDays] = useState(0);
     const [curYear, setCurYear] = useState(new Date().getFullYear());
     const [curMonth, setCurMonth] = useState(new Date().getMonth());
     const [curMonthEmotions, setCurMonthEmotions] = useState([]);
     useEffect(() => {
-        const date = new Date(curYear, curMonth, 1).toLocaleDateString(
-            "en-US",
-            {
-                weekday: "short",
-            }
-        );
-        setStartCol(days.indexOf(date) + 1);
+        setPreMonDays(new Date(curYear, curMonth, 1).getDay() + 1);
     }, []);
 
     useEffect(() => {
+        console.log(calendar);
         const res = calendar.filter(
             ({ date_format }) =>
                 new Date(date_format).getMonth() === curMonth &&
                 new Date(date_format).getFullYear() === curYear
         );
         // .map(({ emotion }) => emotion);
+        // 0번째 데이터의 day를 구해서 day만큼 앞 달의 날짜를 가져온다.
+        // 마지막 데이터의 day를 구해서 (6-day === 0 ? 7 : 6-day)만큼 뒷 달의 날짜를 가져온다.
         console.log(res);
         setCurMonthEmotions(res);
-    }, [calendar, curMonth, curYear]);
+    }, [curMonth, curYear]);
 
     return (
         <Wrapper>
@@ -140,16 +149,13 @@ export default function Monthly() {
                     <DateCell color="black">Fri</DateCell>
                     <DateCell color="blue">Sat</DateCell>
                 </DateBox>
-                <CalendarTable startCol={startCol}>
-                    {curMonthEmotions.map(({ emotion }, i) => (
+                <CalendarTable>
+                    {new Array(42).fill().map((_, i) => (
                         <CalendarCell key={i}>
-                            {i + 1}
-                            <EmotionBox>{getEmoji(Number(emotion))}</EmotionBox>
+                            {/* {i + 1} */}
+                            {/* <EmotionBox>{getEmoji(Number(emotion))}</EmotionBox> */}
                         </CalendarCell>
                     ))}
-                    {/* {new Array(30).fill().map((_, i) => {
-                        return <CalendarCell key={i}>{i + 1}</CalendarCell>;
-                    })} */}
                 </CalendarTable>
             </CalendarBox>
         </Wrapper>
