@@ -114,7 +114,7 @@ export default function Monthly({ calendar }) {
     const [preMonDays, setPreMonDays] = useState(0);
     const [postMonDays, setPostMonDays] = useState(0);
     const [curYear, setCurYear] = useState(new Date().getFullYear());
-    const [curMonth, setCurMonth] = useState(new Date().getMonth());
+    const [curMonth, setCurMonth] = useState(new Date().getMonth() + 1);
     const [curMonthEmotions, setCurMonthEmotions] = useState([]);
     useEffect(() => {
         setPreMonDays(new Date(curYear, curMonth, 1).getDay() + 1);
