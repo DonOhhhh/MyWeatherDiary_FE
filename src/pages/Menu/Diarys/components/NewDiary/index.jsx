@@ -9,10 +9,10 @@ const Container = styled(Link)`
     align-items: center;
     gap: 10px;
     --size: 50px;
-    --color: #7f7f7f;
+    --color: #aaa;
     position: fixed;
-    right: 220px;
-    top: 15px;
+    bottom: 40px;
+    right: 30px;
     width: fit-content;
     height: fit-content;
     padding: 5px;
@@ -20,7 +20,7 @@ const Container = styled(Link)`
     background-color: #ebf5ff;
     color: var(--color);
     text-decoration: none;
-    font-size: 30px;
+    font-size: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     & svg {
         stroke: var(--color);

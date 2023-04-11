@@ -1,107 +1,191 @@
 import styled from "@emotion/styled";
+import { Tooltip } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { makeFakeData } from "../../reducer/activitySlice";
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 300px;
+    /* position: relative; */
+`;
 
 const Container = styled.div`
-    width: fit-content;
-    height: 200px;
+    --table-gap: 5px;
+    --cell-size: 15px;
+    --font-size: calc(var(--cell-size) * 0.7);
     padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    justify-content: flex-start;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "blank months"
+        "days table";
+    gap: 10px;
+
+    width: 100%;
+    overflow-x: scroll;
+    padding: 20px;
+    scrollbar-width: thin;
 
     border: 1px solid #848383;
     border-radius: 6px;
     border-collapse: collapse;
+    position: absolute;
+    left: 0;
 `;
 
-const Table = styled.div`
-    --size: 15px;
+const MonthTable = styled.div`
+    grid-area: months;
     display: grid;
-    grid-template-rows: repeat(7, 1fr);
     grid-template-columns: repeat(53, 1fr);
-    gap: 5px;
+    gap: var(--table-gap);
+    width: fit-content;
 `;
 
-const DisableCell = styled.td`
-    --size: 15px;
-    width: var(--size);
-    height: var(--size);
-`;
-
-const DayShowCell = styled.div`
-    display: inline-block;
-    width: 40px;
-    font-size: 15px;
+const MonthCell = styled.div`
+    width: var(--cell-size);
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--font-size);
     text-align: start;
+    color: #727272;
+    padding: 0;
 `;
 
-const Cell = styled.div`
-    display: inline-block;
-    --size: 10px;
+const DayTable = styled.div`
+    grid-area: days;
+    height: 100%;
+    /* background-color: red; */
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(--cell-size, auto));
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+
+    gap: var(--table-gap);
+    text-align: end;
+`;
+
+const DayCell = styled.div`
+    display: inline-flex;
+    align-items: center;
+    height: var(--cell-size);
+    font-size: var(--font-size);
+    line-height: var(--font-size);
+    text-align: end;
+    color: #727272;
+    padding: 0;
+`;
+
+const ContributionTable = styled.div`
+    grid-area: table;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, var(--cell-size));
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+    gap: var(--table-gap);
+    left: 0;
+    width: fit-content;
+    & div:first-of-type {
+        grid-row-start: ${({ startRow }) => startRow};
+    }
+`;
+
+const ContributionTableCell = styled.div`
     border: 0;
     border-radius: 2px;
-    background-color: #9d9c9c;
-    outline: 1px solid rgb(27 31 35 / 6%);
-    width: var(--size);
-    height: var(--size);
+    background-color: ${({ cont }) => {
+        switch (true) {
+            case cont < 1:
+                return color[0];
+            case cont < 3:
+                return color[1];
+            case cont < 5:
+                return color[2];
+            case cont < 7:
+                return color[3];
+            default:
+                return color[4];
+        }
+    }};
+    /* outline: 1px solid rgb(27 31 35 / 6%); */
+    width: var(--cell-size);
+    height: var(--cell-size);
+    /* grid-row-start: 2; */
 `;
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
+
 const color = ["#d1e5ff", "#afd2ff", "#89bcff", "#60a5ff", "#3a8fff"];
+const color2 = ["#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
 
-const Grid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(53, 1fr);
-    padding: 10px;
-    gap: 1px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 12px;
-`;
+export default function Yearly({ startDate }) {
+    const dispatch = useDispatch();
+    const calendar = useSelector((state) => state.activity);
+    const [startRow, setStartRow] = useState(1);
+    useEffect(() => {
+        if (!calendar.length) {
+            dispatch(makeFakeData(startDate));
+        }
+    }, []);
 
-const getContributionColor = (count) => {
-    if (count === 0) {
-        return "#ebedf0";
-    } else if (count <= 5) {
-        return "#c6e48b";
-    } else if (count <= 10) {
-        return "#7bc96f";
-    } else if (count <= 20) {
-        return "#239a3b";
-    } else {
-        return "#196127";
-    }
-};
+    useEffect(() => {
+        if (calendar.length) {
+            const date = new Date(calendar[0].date_format).toLocaleDateString(
+                "en-US",
+                {
+                    weekday: "short",
+                }
+            );
+            setStartRow(days.indexOf(date) + 1);
+        }
+    }, [calendar]);
 
-const ContributionTable = ({ contributions }) => {
-    // render contribution table
     return (
-        <div>
-            <Grid>
-                {contributions.map((contribution) => (
-                    <div
-                        key={contribution.date}
-                        style={{
-                            backgroundColor: getContributionColor(
-                                contribution.count
-                            ),
-                        }}
-                    />
-                ))}
-            </Grid>
-        </div>
-    );
-};
-
-export default function Yearly() {
-    return (
-        <Container>
-            <Table>
-                {new Array(365).fill().map(() => (
-                    <Cell />
-                ))}
-            </Table>
-        </Container>
+        <Wrapper>
+            <Container>
+                <MonthTable>
+                    {months.map((e, i) => (
+                        <MonthCell key={i}>{e}</MonthCell>
+                    ))}
+                </MonthTable>
+                <DayTable>
+                    {days.map((e, i) => (
+                        <DayCell key={i}>{e}</DayCell>
+                    ))}
+                </DayTable>
+                <ContributionTable startRow={startRow}>
+                    {calendar.map(({ date_format, contentsNum }, i) => (
+                        <Tooltip
+                            placement="top"
+                            title={`날짜 : ${date_format}, 일기 갯수 : ${contentsNum}`}
+                            key={i}
+                        >
+                            <ContributionTableCell cont={contentsNum} />
+                        </Tooltip>
+                    ))}
+                </ContributionTable>
+            </Container>
+        </Wrapper>
     );
 }

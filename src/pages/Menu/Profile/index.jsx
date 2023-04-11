@@ -14,8 +14,10 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    min-height: 100vh;
+    height: fit-content;
     width: 100%;
+    position: relative;
 `;
 
 const Center = styled.div`

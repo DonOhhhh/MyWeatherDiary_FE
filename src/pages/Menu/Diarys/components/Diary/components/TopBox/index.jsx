@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import { ReactComponent as Sunny } from "../../icons/sunny.svg";
-import { ReactComponent as Cloudy } from "../../icons/cloudy.svg";
-import { ReactComponent as Rainy } from "../../icons/rainy.svg";
-import { ReactComponent as Thunder } from "../../icons/thunder.svg";
+import { ReactComponent as Sunny } from "../../../../../../../common/icons/sunny.svg";
+import { ReactComponent as Cloudy } from "../../../../../../../common/icons/cloudy.svg";
+import { ReactComponent as Rainy } from "../../../../../../../common/icons/rainy.svg";
+import { ReactComponent as Thunder } from "../../../../../../../common/icons/thunder.svg";
 
 const Container = styled.div`
     display: flex;

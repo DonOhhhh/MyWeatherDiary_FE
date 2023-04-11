@@ -6,8 +6,11 @@ import NewDiary from "./components/NewDiary";
 
 const Wrapper = styled.div`
     display: flex;
+    min-height: 100vh;
+    height: fit-content;
     /* min-width: 600px; */
     justify-content: center;
+    position: relative;
 `;
 
 const Container = styled.div`

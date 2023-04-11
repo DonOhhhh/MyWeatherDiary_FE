@@ -16,18 +16,19 @@ const Center = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-top: 40px;
-    width: 60%;
+    justify-content: flex-start;
+    margin-top: 3%;
+    width: 80%;
     min-width: 400px;
     height: 100%;
+    gap: 20px;
 `;
 
 const SelectContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 100%;
+    width: 80%;
     height: fit-content;
 `;
 
@@ -55,10 +56,10 @@ const SelectType = styled.select`
 const ActivityContainer = styled.div`
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 10px 0;
+    align-items: flex-start;
     width: 100%;
     height: 100%;
+    position: relative;
 `;
 
 export default function Activity() {
@@ -71,6 +72,7 @@ export default function Activity() {
             <Center>
                 <SelectContainer>
                     <SelectType name="type" onChange={handleChange}>
+                        <option hidden>선택하세요</option>
                         <option name="type" value="yearly">
                             Yearly
                         </option>
@@ -80,7 +82,11 @@ export default function Activity() {
                     </SelectType>
                 </SelectContainer>
                 <ActivityContainer>
-                    {type === "yearly" ? <Yearly /> : <Monthly />}
+                    {type === "yearly" ? (
+                        <Yearly startDate={"2023-04-11"} />
+                    ) : (
+                        <Monthly />
+                    )}
                 </ActivityContainer>
             </Center>
         </Container>

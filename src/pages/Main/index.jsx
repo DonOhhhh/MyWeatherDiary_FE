@@ -6,7 +6,7 @@ import UserInfo from "./components/UserInfo";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const Container = styled.div`
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -16,19 +16,23 @@ const Container = styled.div`
 `;
 
 const Left = styled.div`
-    width: fit-content;
     word-break: keep-all;
     /* background: linear-gradient(to top, #daedff, white); */
     background-color: #ebf5ff;
     display: grid;
     grid-template-rows: 78px 1fr;
     justify-content: center;
+    position: fixed;
+    width: fit-content;
+    min-height: 100vh;
+    height: fit-content;
+    z-index: 2;
 `;
 
 const Content = styled.div`
     width: 100%;
-    height: 100%;
-    overflow: scroll;
+    height: fit-content;
+    margin-left: 170px;
 `;
 
 const LogoLink = styled(Link)`
