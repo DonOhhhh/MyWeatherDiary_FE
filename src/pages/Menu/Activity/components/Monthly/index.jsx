@@ -4,7 +4,7 @@ import { ReactComponent as Sunny } from "../../../../../common/icons/sunny.svg";
 import { ReactComponent as Cloudy } from "../../../../../common/icons/cloudy.svg";
 import { ReactComponent as Rainy } from "../../../../../common/icons/rainy.svg";
 import { ReactComponent as Thunder } from "../../../../../common/icons/thunder.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { make_2digit } from "../../reducer/activitySlice";
 
 const Wrapper = styled.div`
@@ -72,6 +72,7 @@ const CalendarCell = styled.div`
     font-family: Jua;
     position: relative;
     background-color: white;
+    padding: 5px;
 `;
 
 const OutsideCell = styled.div`
@@ -109,35 +110,65 @@ const getEmoji = (emotion) => {
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+const getCalendarDays = (year, month) => {
+    // 현재 달의 1일의 date object를 가져온다.
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+    startDate.setDate(startDate.getDate() - startDate.getDay());
+    endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
+    const calendar = [];
+    for (
+        let date = startDate;
+        date <= endDate;
+        date.setDate(date.getDate() + 1)
+    ) {
+        calendar.push(new Date(date));
+    }
+    return calendar;
+};
+
+const initialState = {
+    today: new Date(),
+    curYear() {
+        return this.today.getFullYear();
+    },
+    curMonth() {
+        return this.today.getMonth();
+    },
+    calendar() {
+        return {
+            previous: getCalendarDays(this.curYear(), this.curMonth() - 1),
+            current: getCalendarDays(this.curYear(), this.curMonth()),
+            next: getCalendarDays(this.curYear(), this.curMonth() + 1),
+        };
+    },
+};
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "next":
+            return {
+                ...state,
+                today: state.today.setMonth(state.today.getMonth() + 1),
+            };
+        case "prev":
+            return {
+                ...state,
+                today: state.today.setMonth(state.today.getMonth() - 1),
+            };
+        default:
+            return new Error("알 수 없는 action입니다.");
+    }
+};
+
 export default function Monthly({ calendar }) {
-    // calendar.sort((a, b) => new Date(a.date_format) - new Date(b.date_format));
-    const [preMonDays, setPreMonDays] = useState(0);
-    const [postMonDays, setPostMonDays] = useState(0);
-    const [curYear, setCurYear] = useState(new Date().getFullYear());
-    const [curMonth, setCurMonth] = useState(new Date().getMonth() + 1);
-    const [curMonthEmotions, setCurMonthEmotions] = useState([]);
-    useEffect(() => {
-        setPreMonDays(new Date(curYear, curMonth, 1).getDay() + 1);
-    }, []);
-
-    useEffect(() => {
-        console.log(calendar);
-        const res = calendar.filter(
-            ({ date_format }) =>
-                new Date(date_format).getMonth() === curMonth &&
-                new Date(date_format).getFullYear() === curYear
-        );
-        // .map(({ emotion }) => emotion);
-        // 0번째 데이터의 day를 구해서 day만큼 앞 달의 날짜를 가져온다.
-        // 마지막 데이터의 day를 구해서 (6-day === 0 ? 7 : 6-day)만큼 뒷 달의 날짜를 가져온다.
-        console.log(res);
-        setCurMonthEmotions(res);
-    }, [curMonth, curYear]);
-
+    const [state, dispatch] = useReducer(reducer, initialState);
     return (
         <Wrapper>
-            <TopBox>{`${curYear}/${
-                curMonth < 10 ? "0" + curMonth : curMonth
+            <TopBox>{`${state.curYear()}/${
+                state.curMonth() + 1 < 10
+                    ? "0" + (state.curMonth() + 1)
+                    : state.curMonth() + 1
             }`}</TopBox>
             <CalendarBox>
                 <DateBox>
@@ -150,9 +181,9 @@ export default function Monthly({ calendar }) {
                     <DateCell color="blue">Sat</DateCell>
                 </DateBox>
                 <CalendarTable>
-                    {new Array(42).fill().map((_, i) => (
+                    {state.calendar().current.map((e, i) => (
                         <CalendarCell key={i}>
-                            {/* {i + 1} */}
+                            {e.getDate()}
                             {/* <EmotionBox>{getEmoji(Number(emotion))}</EmotionBox> */}
                         </CalendarCell>
                     ))}
