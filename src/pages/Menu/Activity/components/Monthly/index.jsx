@@ -137,9 +137,9 @@ const initialState = {
     },
     calendar() {
         return {
-            previous: getCalendarDays(this.curYear(), this.curMonth() - 1),
+            // previous: getCalendarDays(this.curYear(), this.curMonth() - 1),
             current: getCalendarDays(this.curYear(), this.curMonth()),
-            next: getCalendarDays(this.curYear(), this.curMonth() + 1),
+            // next: getCalendarDays(this.curYear(), this.curMonth() + 1),
         };
     },
 };
