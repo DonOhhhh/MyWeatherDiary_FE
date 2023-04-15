@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import { Tooltip } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { makeFakeData } from "../../reducer/activitySlice";
+import { useEffect, useRef, useState } from "react";
+import { ButtonBox, ExportButton, takeScreenshot } from "../..";
 
 const Wrapper = styled.div`
     display: flex;
@@ -142,12 +141,17 @@ const color = ["#ebedf0", "#fff765", "#3d3d3d", "#296dff", "#e8080f"];
 const color2 = ["#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
 const emotions = ["없음", "좋음", "흐림", "우울함", "화남"];
 
-export default function Yearly({ calendar, onCheckboxClick }) {
+export default function Yearly({ calendar, onChecked, onCheckboxClick }) {
     const [startRow, setStartRow] = useState(1);
+    const [monthPosition, setMonthPosition] = useState([]);
+    let curMonth = new Date(calendar[0].date_format).toLocaleString("en-US", {
+        month: "short",
+    });
+    const ContributionTableRef = useRef(null);
     useEffect(() => {
+        setMonthPosition([[curMonth, 1]]);
         setStartRow(new Date(calendar[0].date_format).getDay() + 1);
     }, [calendar]);
-
     return (
         <Wrapper>
             <div
@@ -161,15 +165,21 @@ export default function Yearly({ calendar, onCheckboxClick }) {
                 <input
                     type="checkbox"
                     id="fromJan1st"
+                    checked={onChecked}
                     onChange={onCheckboxClick}
                 />
                 <label htmlFor="fromJan1st">1월 1일부터</label>
             </div>
-            <Container>
+            <Container ref={ContributionTableRef}>
                 <MonthTable>
-                    {months.map((e, i) => (
-                        <MonthCell key={i}>{e}</MonthCell>
-                    ))}
+                    {monthPosition.map(([mon, pos], i) => {
+                        // console.log(mon, pos);
+                        return (
+                            <MonthCell key={i} style={{ gridColumnStart: pos }}>
+                                {mon}
+                            </MonthCell>
+                        );
+                    })}
                 </MonthTable>
                 <DayTable>
                     {days.map((e, i) => (
@@ -177,8 +187,21 @@ export default function Yearly({ calendar, onCheckboxClick }) {
                     ))}
                 </DayTable>
                 <ContributionTable startRow={startRow}>
-                    {calendar.map(
-                        ({ date_format, contentsNum, emotion }, i) => (
+                    {calendar.map(({ date_format, emotion }, i) => {
+                        const dateObj = new Date(date_format);
+                        if (dateObj.getDay() === 0) {
+                            const month = dateObj.toLocaleString("en-US", {
+                                month: "short",
+                            });
+                            if (curMonth !== month) {
+                                curMonth = month;
+                                monthPosition.push([
+                                    month,
+                                    Math.floor((startRow + i) / 7) + 1,
+                                ]);
+                            }
+                        }
+                        return (
                             <Tooltip
                                 placement="top"
                                 title={`날짜 : ${date_format}, 감정 : ${emotions[emotion]}`}
@@ -186,10 +209,17 @@ export default function Yearly({ calendar, onCheckboxClick }) {
                             >
                                 <ContributionTableCell emotion={emotion} />
                             </Tooltip>
-                        )
-                    )}
+                        );
+                    })}
                 </ContributionTable>
             </Container>
+            <ButtonBox style={{ marginTop: "20px" }}>
+                <ExportButton
+                    onClick={() => takeScreenshot(ContributionTableRef)}
+                >
+                    Export to png
+                </ExportButton>
+            </ButtonBox>
         </Wrapper>
     );
 }

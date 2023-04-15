@@ -16,20 +16,24 @@ const activitySlice = createSlice({
     reducers: {
         makeFakeData: (_, { payload: startDate }) => {
             const result = [];
-            let s_date_obj = new Date(Date.parse(startDate));
+            let s_date_obj = new Date(startDate);
             s_date_obj.setDate(s_date_obj.getDate() - 1);
             for (let i = 0; i < 366; i++) {
                 s_date_obj.setDate(s_date_obj.getDate() + 1);
-                const year = s_date_obj.getFullYear();
-                const month = make_2digit(Number(s_date_obj.getMonth() + 1));
-                const date = make_2digit(Number(s_date_obj.getDate()));
                 result.push({
-                    date_format: `${year}-${month}-${date}`,
-                    contentsNum: getRandomIntInclusive(0, 10),
+                    date_format: `${
+                        new Date(s_date_obj).toISOString().split("T", 1)[0]
+                    }`,
                     emotion: getRandomIntInclusive(0, 4) + "",
+                    selected: false,
                 });
             }
             return result;
+        },
+        check: (state, { payload: date }) => {
+            return state.map((e) =>
+                e.date_format === date ? { ...e, selected: true } : e
+            );
         },
     },
 });
