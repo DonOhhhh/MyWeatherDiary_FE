@@ -19,7 +19,7 @@ const Center = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 3%;
+    margin-top: 5%;
     width: 80%;
     min-width: 400px;
     height: 100%;
@@ -89,11 +89,11 @@ export default function Activity() {
                         onChange={handleChange}
                         defaultValue={type}
                     >
-                        <option name="type" value="yearly">
-                            Yearly
-                        </option>
                         <option name="type" value="monthly">
                             Monthly
+                        </option>
+                        <option name="type" value="yearly">
+                            Yearly
                         </option>
                     </SelectType>
                 </SelectContainer>

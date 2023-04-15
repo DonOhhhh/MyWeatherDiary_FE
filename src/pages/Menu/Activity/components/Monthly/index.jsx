@@ -4,6 +4,8 @@ import { ReactComponent as Sunny } from "../../../../../common/icons/sunny.svg";
 import { ReactComponent as Cloudy } from "../../../../../common/icons/cloudy.svg";
 import { ReactComponent as Rainy } from "../../../../../common/icons/rainy.svg";
 import { ReactComponent as Thunder } from "../../../../../common/icons/thunder.svg";
+import { ReactComponent as ArrowLeft } from "../../icons/arrow_left.svg";
+import { ReactComponent as ArrowRight } from "../../icons/arrow_right.svg";
 import { useEffect, useReducer, useState } from "react";
 import { make_2digit } from "../../reducer/activitySlice";
 
@@ -22,6 +24,10 @@ const TopBox = styled.div`
     font-size: 40px;
     font-style: italic;
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     height: fit-content;
 `;
 
@@ -60,7 +66,7 @@ const CalendarTable = styled.div`
     /* & div:first-of-type {
         grid-column-start: ${({ startCol }) => startCol};
     } */
-    height: calc(104px * 6);
+    height: calc(104px * ${({ rows }) => rows});
     border: 1px solid black;
     grid-gap: 1px;
     background-color: black;
@@ -73,15 +79,23 @@ const CalendarCell = styled.div`
     position: relative;
     background-color: white;
     padding: 5px;
+    color: ${({ day }) => (day === 6 ? "blue" : day === 0 ? "red" : "black")};
+    &:hover {
+        cursor: pointer;
+        border: 1px solid black;
+        z-index: 2;
+        /* transform: scale(1.05); */
+        /* transition: transform 0.3s ease-in-out; */
+    }
 `;
 
-const OutsideCell = styled.div`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(255, 255, 255, 0.5);
+const DisabledCell = styled(CalendarCell)`
+    /* opacity: 0.6; */
+    color: #bbb;
+    &:hover {
+        cursor: auto;
+        border: 0;
+    }
 `;
 
 const EmotionBox = styled.div`
@@ -163,13 +177,31 @@ const reducer = (state, action) => {
 
 export default function Monthly({ calendar }) {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [emotions, setEmotions] = useState([]);
+    useEffect(() => {
+        const temp = calendar.filter(
+            ({ date_format, emotion }) =>
+                new Date(date_format).getFullYear() === state.curYear() &&
+                new Date(date_format).getMonth() === state.curMonth()
+        );
+        console.log(temp);
+    }, [state.today]);
+    // console.log(emotions);
     return (
         <Wrapper>
-            <TopBox>{`${state.curYear()}/${
-                state.curMonth() + 1 < 10
-                    ? "0" + (state.curMonth() + 1)
-                    : state.curMonth() + 1
-            }`}</TopBox>
+            <TopBox>
+                <ArrowLeft
+                    width={50}
+                    height={50}
+                    style={{ "&:hover": { cursor: "pointer" } }}
+                />
+                {`${state.curYear()}/${
+                    state.curMonth() + 1 < 10
+                        ? "0" + (state.curMonth() + 1)
+                        : state.curMonth() + 1
+                }`}
+                <ArrowRight width={50} height={50} />
+            </TopBox>
             <CalendarBox>
                 <DateBox>
                     <DateCell color="red">Sun</DateCell>
@@ -180,13 +212,16 @@ export default function Monthly({ calendar }) {
                     <DateCell color="black">Fri</DateCell>
                     <DateCell color="blue">Sat</DateCell>
                 </DateBox>
-                <CalendarTable>
-                    {state.calendar().current.map((e, i) => (
-                        <CalendarCell key={i}>
-                            {e.getDate()}
-                            {/* <EmotionBox>{getEmoji(Number(emotion))}</EmotionBox> */}
-                        </CalendarCell>
-                    ))}
+                <CalendarTable rows={state.calendar().current.length / 7}>
+                    {state.calendar().current.map((e, i) => {
+                        return e.getMonth() !== state.curMonth() ? (
+                            <DisabledCell key={i}>{e.getDate()}</DisabledCell>
+                        ) : (
+                            <CalendarCell key={i} day={e.getDay()}>
+                                {e.getDate()}
+                            </CalendarCell>
+                        );
+                    })}
                 </CalendarTable>
             </CalendarBox>
         </Wrapper>

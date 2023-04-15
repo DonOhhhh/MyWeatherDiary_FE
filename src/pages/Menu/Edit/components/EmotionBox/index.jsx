@@ -28,39 +28,47 @@ const StyledField = styled(Field)`
     padding: 0;
 `;
 
+const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
+const icons = (emotion, i) => {
+    let IconComponent;
+    switch (i) {
+        case 0:
+            IconComponent = Sunny;
+            break;
+        case 1:
+            IconComponent = Cloudy;
+            break;
+        case 2:
+            IconComponent = Rainy;
+            break;
+        case 3:
+            IconComponent = Thunder;
+            break;
+        default:
+            IconComponent = Sunny;
+    }
+    return (
+        <IconComponent fill={emotion === `${i + 1}` ? colors[i] : "#cacaca"} />
+    );
+};
+
 export default function EmotionBox({ emotion }) {
     return (
         <Container role="group" aria-labelledby="Emotion-box">
             <EditItemBox>기분을 선택해주세요</EditItemBox>
             <EditItemBox>
-                <label>
-                    <IconBox>
-                        <StyledField type="radio" name="emotion" value="0" />
-                        <Sunny fill={emotion === "0" ? "#ffc350" : "#cacaca"} />
-                    </IconBox>
-                </label>
-                <label>
-                    <IconBox>
-                        <StyledField type="radio" name="emotion" value="1" />
-                        <Cloudy
-                            fill={emotion === "1" ? "#3d3d3d" : "#cacaca"}
-                        />
-                    </IconBox>
-                </label>
-                <label>
-                    <IconBox>
-                        <StyledField type="radio" name="emotion" value="2" />
-                        <Rainy fill={emotion === "2" ? "#2784DA" : "#cacaca"} />
-                    </IconBox>
-                </label>
-                <label>
-                    <IconBox>
-                        <StyledField type="radio" name="emotion" value="3" />
-                        <Thunder
-                            fill={emotion === "3" ? "#FFE227" : "#cacaca"}
-                        />
-                    </IconBox>
-                </label>
+                {new Array(4).fill().map((_, i) => (
+                    <label key={i}>
+                        <IconBox>
+                            <StyledField
+                                type="radio"
+                                name="emotion"
+                                value={`${i + 1}`}
+                            />
+                            {icons(emotion, i)}
+                        </IconBox>
+                    </label>
+                ))}
                 <ErrorMessage name="emotion" component={FormError} />
             </EditItemBox>
         </Container>

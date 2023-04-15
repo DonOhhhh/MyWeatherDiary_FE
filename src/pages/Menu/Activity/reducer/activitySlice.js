@@ -26,7 +26,7 @@ const activitySlice = createSlice({
                 result.push({
                     date_format: `${year}-${month}-${date}`,
                     contentsNum: getRandomIntInclusive(0, 10),
-                    emotion: getRandomIntInclusive(1, 4),
+                    emotion: getRandomIntInclusive(0, 4) + "",
                 });
             }
             return result;

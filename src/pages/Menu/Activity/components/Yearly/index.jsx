@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: fit-content;
-    height: 300px;
+    height: calc(100vh - 200px);
     /* position: relative; */
 `;
 
@@ -102,18 +102,18 @@ const ContributionTable = styled.div`
 const ContributionTableCell = styled.div`
     border: 0;
     border-radius: 2px;
-    background-color: ${({ cont }) => {
-        switch (true) {
-            case cont < 1:
-                return color[0];
-            case cont < 3:
+    background-color: ${({ emotion }) => {
+        switch (emotion) {
+            case "1":
                 return color[1];
-            case cont < 5:
+            case "2":
                 return color[2];
-            case cont < 7:
+            case "3":
                 return color[3];
-            default:
+            case "4":
                 return color[4];
+            default:
+                return color[0];
         }
     }};
     /* outline: 1px solid rgb(27 31 35 / 6%); */
@@ -138,8 +138,9 @@ const months = [
     "Dec",
 ];
 
-const color = ["#d1e5ff", "#afd2ff", "#89bcff", "#60a5ff", "#3a8fff"];
+const color = ["#ebedf0", "#fff765", "#3d3d3d", "#296dff", "#e8080f"];
 const color2 = ["#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
+const emotions = ["없음", "좋음", "흐림", "우울함", "화남"];
 
 export default function Yearly({ calendar, onCheckboxClick }) {
     const [startRow, setStartRow] = useState(1);
@@ -176,15 +177,17 @@ export default function Yearly({ calendar, onCheckboxClick }) {
                     ))}
                 </DayTable>
                 <ContributionTable startRow={startRow}>
-                    {calendar.map(({ date_format, contentsNum }, i) => (
-                        <Tooltip
-                            placement="top"
-                            title={`날짜 : ${date_format}, 일기 갯수 : ${contentsNum}`}
-                            key={i}
-                        >
-                            <ContributionTableCell cont={contentsNum} />
-                        </Tooltip>
-                    ))}
+                    {calendar.map(
+                        ({ date_format, contentsNum, emotion }, i) => (
+                            <Tooltip
+                                placement="top"
+                                title={`날짜 : ${date_format}, 감정 : ${emotions[emotion]}`}
+                                key={i}
+                            >
+                                <ContributionTableCell emotion={emotion} />
+                            </Tooltip>
+                        )
+                    )}
                 </ContributionTable>
             </Container>
         </Wrapper>

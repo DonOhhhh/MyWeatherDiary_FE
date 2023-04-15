@@ -11,6 +11,8 @@ import DeleteBtn from "./components/DeleteBtn";
 import styled from "@emotion/styled";
 import Container from "./components/EditContainer";
 import ImageBox from "./components/ImageBox";
+import { useEffect } from "react";
+import { clear } from "./reducer/editSlice";
 
 const Wrapper = styled.div`
     display: flex;
@@ -99,6 +101,11 @@ function EditPage() {
         comment: "",
     });
     let pushFunction;
+
+    useEffect(() => {
+        dispatch(clear());
+    }, []);
+
     return (
         <Formik
             initialValues={initialValues}

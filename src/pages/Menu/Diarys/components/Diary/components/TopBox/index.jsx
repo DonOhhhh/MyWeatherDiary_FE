@@ -32,10 +32,6 @@ const DateBox = styled.div`
 
 const EmotionBox = styled.div`
     display: inline-block;
-    width: 40px;
-    height: 40px;
-    background-image: url(${({ src }) => src});
-    background-size: cover;
 `;
 
 const DayBox = styled.span`
@@ -54,17 +50,29 @@ const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 //     3: clickedThunder,
 // };
 
+const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
+
 const emotionEmoji = (emotion, size = 40) => {
+    emotion = Number(emotion) - 1;
+    console.log(emotion);
+    let IconComponent;
     switch (emotion) {
-        case "0":
-            return <Sunny width={size} height={size} />;
-        case "1":
-            return <Cloudy width={size} height={size} />;
-        case "2":
-            return <Rainy width={size} height={size} />;
-        case "3":
-            return <Thunder width={size} height={size} />;
+        case 0:
+            IconComponent = Sunny;
+            break;
+        case 1:
+            IconComponent = Cloudy;
+            break;
+        case 2:
+            IconComponent = Rainy;
+            break;
+        case 3:
+            IconComponent = Thunder;
+            break;
+        default:
+            IconComponent = Sunny;
     }
+    return <IconComponent fill={colors[emotion]} />;
 };
 
 export default function TopBox({ emotion, date }) {
