@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Tooltip } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ButtonBox, ExportButton, takeScreenshot } from "../..";
 
 const Wrapper = styled.div`
@@ -57,6 +57,7 @@ const MonthCell = styled.div`
     text-align: start;
     color: #727272;
     padding: 0;
+    grid-column-start: ${({ col }) => col};
 `;
 
 const DayTable = styled.div`
@@ -141,17 +142,35 @@ const color = ["#ebedf0", "#fff765", "#3d3d3d", "#296dff", "#e8080f"];
 const color2 = ["#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
 const emotions = ["없음", "좋음", "흐림", "우울함", "화남"];
 
-export default function Yearly({ calendar, onChecked, onCheckboxClick }) {
+function Yearly({ calendar, onChecked, onCheckboxClick }) {
     const [startRow, setStartRow] = useState(1);
     const [monthPosition, setMonthPosition] = useState([]);
-    let curMonth = new Date(calendar[0].date_format).toLocaleString("en-US", {
-        month: "short",
-    });
     const ContributionTableRef = useRef(null);
     useEffect(() => {
-        setMonthPosition([[curMonth, 1]]);
+        const tempMonPos = [
+            [
+                new Date(calendar[0].date_format).toLocaleString("en-US", {
+                    month: "short",
+                }),
+                1,
+            ],
+        ];
+        let curMonth = new Date(calendar[0].date_format).getMonth();
+        calendar.forEach(({ date_format }, i) => {
+            const dateObj = new Date(date_format);
+            if (dateObj.getDay() === 0 && curMonth !== dateObj.getMonth()) {
+                curMonth = dateObj.getMonth();
+                tempMonPos.push([
+                    dateObj.toLocaleString("en-US", {
+                        month: "short",
+                    }),
+                    Math.floor((startRow + i) / 7) + 1,
+                ]);
+            }
+        });
+        setMonthPosition(tempMonPos);
         setStartRow(new Date(calendar[0].date_format).getDay() + 1);
-    }, [calendar]);
+    }, [calendar, onChecked]);
     return (
         <Wrapper>
             <div
@@ -175,7 +194,7 @@ export default function Yearly({ calendar, onChecked, onCheckboxClick }) {
                     {monthPosition.map(([mon, pos], i) => {
                         // console.log(mon, pos);
                         return (
-                            <MonthCell key={i} style={{ gridColumnStart: pos }}>
+                            <MonthCell key={i} col={pos}>
                                 {mon}
                             </MonthCell>
                         );
@@ -188,19 +207,6 @@ export default function Yearly({ calendar, onChecked, onCheckboxClick }) {
                 </DayTable>
                 <ContributionTable startRow={startRow}>
                     {calendar.map(({ date_format, emotion }, i) => {
-                        const dateObj = new Date(date_format);
-                        if (dateObj.getDay() === 0) {
-                            const month = dateObj.toLocaleString("en-US", {
-                                month: "short",
-                            });
-                            if (curMonth !== month) {
-                                curMonth = month;
-                                monthPosition.push([
-                                    month,
-                                    Math.floor((startRow + i) / 7) + 1,
-                                ]);
-                            }
-                        }
                         return (
                             <Tooltip
                                 placement="top"
@@ -223,3 +229,5 @@ export default function Yearly({ calendar, onChecked, onCheckboxClick }) {
         </Wrapper>
     );
 }
+
+export default React.memo(Yearly);

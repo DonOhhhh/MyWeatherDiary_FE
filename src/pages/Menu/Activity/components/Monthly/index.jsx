@@ -6,10 +6,11 @@ import { ReactComponent as Thunder } from "../../../../../common/icons/thunder.s
 import { ReactComponent as ArrowLeft } from "../../icons/arrow_left.svg";
 import { ReactComponent as ArrowRight } from "../../icons/arrow_right.svg";
 import { ReactComponent as Checkmark } from "../../icons/checked.svg";
-import { useEffect, useReducer, useRef, useState } from "react";
-import { make_2digit } from "../../reducer/activitySlice";
+import React, { useEffect, useReducer, useRef, useState } from "react";
+import { check, clearSelected, make_2digit } from "../../reducer/activitySlice";
 import produce from "immer";
 import { ButtonBox, ExportButton, takeScreenshot } from "../..";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
     display: flex;
@@ -189,13 +190,13 @@ const reducer = (state, action) => {
     }
 };
 
-export default function Monthly({ calendar }) {
+function Monthly({ calendar }) {
     const initialState = makeState(new Date());
     const [state, dispatch] = useReducer(reducer, initialState);
     const [diarys, setDiarys] = useState({});
     const CalendarRef = useRef(null);
-
-    const getEmotions = () => {
+    const actionDispatch = useDispatch();
+    useEffect(() => {
         if (calendar.length) {
             let diaryHashMap = {};
             calendar
@@ -214,8 +215,7 @@ export default function Monthly({ calendar }) {
                 });
             setDiarys(diaryHashMap);
         }
-    };
-    useEffect(getEmotions, [calendar, state.today]);
+    }, [calendar, state.today]);
     return (
         <Wrapper>
             <CalendarBox ref={CalendarRef}>
@@ -266,6 +266,7 @@ export default function Monthly({ calendar }) {
                             e.getDate(),
                             e.getDay(),
                         ];
+
                         return month !== state.curMonth ? (
                             <DisabledCell key={i}>{date}</DisabledCell>
                         ) : diarys[`${date}`]?.emotion ? (
@@ -273,14 +274,25 @@ export default function Monthly({ calendar }) {
                                 key={i}
                                 day={day}
                                 onClick={() => {
-                                    const nextState = produce(
-                                        diarys,
-                                        (draft) => {
-                                            draft[`${date}`].selected =
-                                                !draft[`${date}`].selected;
-                                        }
+                                    let offset = e.getTimezoneOffset() * 60000; //ms단위라 60000곱해줌
+                                    let dateOffset = new Date(
+                                        e.getTime() - offset
                                     );
-                                    setDiarys(nextState);
+                                    actionDispatch(
+                                        check(
+                                            dateOffset
+                                                .toISOString()
+                                                .slice(0, 10)
+                                        )
+                                    );
+                                    // const nextState = produce(
+                                    //     diarys,
+                                    //     (draft) => {
+                                    //         draft[`${date}`].selected =
+                                    //             !draft[`${date}`].selected;
+                                    //     }
+                                    // );
+                                    // setDiarys(nextState);
                                 }}
                             >
                                 {date}
@@ -326,13 +338,7 @@ export default function Monthly({ calendar }) {
                 </ExportButton>
                 <ExportButton
                     onClick={() => {
-                        setDiarys(
-                            produce(diarys, (draft) => {
-                                for (const key of Object.keys(draft)) {
-                                    draft[key].selected = false;
-                                }
-                            })
-                        );
+                        actionDispatch(clearSelected());
                     }}
                 >
                     Clear
@@ -341,3 +347,5 @@ export default function Monthly({ calendar }) {
         </Wrapper>
     );
 }
+
+export default React.memo(Monthly);

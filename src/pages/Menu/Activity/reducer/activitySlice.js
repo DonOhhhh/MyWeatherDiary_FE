@@ -32,11 +32,14 @@ const activitySlice = createSlice({
         },
         check: (state, { payload: date }) => {
             return state.map((e) =>
-                e.date_format === date ? { ...e, selected: true } : e
+                e.date_format === date ? { ...e, selected: !e.selected } : e
             );
+        },
+        clearSelected: (state) => {
+            return state.map((e) => ({ ...e, selected: false }));
         },
     },
 });
 
 export default activitySlice.reducer;
-export const { makeFakeData } = activitySlice.actions;
+export const { makeFakeData, check, clearSelected } = activitySlice.actions;
