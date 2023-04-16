@@ -319,14 +319,9 @@ function Monthly({ calendar }) {
                 </ExportButton>
                 <ExportButton
                     onClick={() => {
-                        const selectedDate = Object.entries(diarys)
-                            .filter(([key, value]) => value.selected)
-                            .map(
-                                ([key, value]) =>
-                                    `${state.curYear}-${make_2digit(
-                                        state.curMonth
-                                    )}-${key}`
-                            );
+                        const selectedDate = calendar
+                            .filter(({ selected }) => selected)
+                            .map(({ date_format }) => date_format);
                         if (!selectedDate.length) {
                             alert("날짜를 선택해주세요");
                             return;
