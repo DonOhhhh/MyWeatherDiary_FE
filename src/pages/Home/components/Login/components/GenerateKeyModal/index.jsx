@@ -1,9 +1,18 @@
 import styled from "@emotion/styled";
-import { Box, Dialog, Fade, Modal } from "@mui/material";
+import {
+    Box,
+    Dialog,
+    Fade,
+    Modal,
+    Popover,
+    Snackbar,
+    Typography,
+} from "@mui/material";
 import { Formik } from "formik";
 import { useState } from "react";
 import { Copy, Send } from "react-feather";
 import { StyledButton, StyledField, StyledForm } from "../../../StyledFormik";
+import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
 
 const style = {
     boxSizing: "border-box",
@@ -84,6 +93,7 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                             <Copy size={iconSize} />
                                         </IconContainer>
                                     </InputContainer>
+
                                     <InputContainer>
                                         <StyledField
                                             name="email"
@@ -93,6 +103,15 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                             <Send size={iconSize} />
                                         </IconContainer>
                                     </InputContainer>
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            color: "red",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        key 분실 시 일기장을 찾을 수 없습니다.
+                                    </div>
                                 </StyledForm>
                             ) : (
                                 <StyledForm
