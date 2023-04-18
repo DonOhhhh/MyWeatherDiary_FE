@@ -86,7 +86,7 @@ function EditPage() {
         navigate("/main/diarys");
     };
     const validationSchema = Yup.object({
-        date: Yup.date().required("Date Required"),
+        date: Yup.date().required("날짜를 입력해주세요"),
         emotion: Yup.string().required("Emotion Required"),
         contents: Yup.array().min(1, "최소 1개 이상의 일기가 필요합니다."),
     });
@@ -102,7 +102,11 @@ function EditPage() {
     }, []);
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            // validationSchema={validationSchema}
+        >
             {({ values }) => (
                 <Wrapper>
                     <StyledForm>
