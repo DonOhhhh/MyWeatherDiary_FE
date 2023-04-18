@@ -63,7 +63,7 @@ export default function Profile() {
             <Center>
                 <TopBox username={username} />
                 <MiddleBox middleBoxInfo={{ diaryTitle, email, job }} />
-                <BottomBox sns={sns} />
+                {/* <BottomBox sns={sns} /> */}
                 <UpdateBox onUpdate={handleUpdate} onDelete={handleDelete} />
             </Center>
         </Container>
