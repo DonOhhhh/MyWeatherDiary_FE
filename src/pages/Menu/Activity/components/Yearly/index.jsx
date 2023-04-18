@@ -29,9 +29,7 @@ const Container = styled.div`
     gap: 10px;
 
     width: fit-content;
-    overflow-x: scroll;
     padding: 20px;
-    scrollbar-width: thin;
 
     border: 1px solid #848383;
     border-radius: 6px;

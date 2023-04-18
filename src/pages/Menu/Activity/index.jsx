@@ -25,6 +25,7 @@ const Center = styled.div`
     min-width: 400px;
     height: 100%;
     gap: 20px;
+    overflow-x: scroll;
 `;
 
 const SelectContainer = styled.div`
@@ -58,7 +59,7 @@ const SelectType = styled.select`
 
 const ActivityContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
     height: 100%;

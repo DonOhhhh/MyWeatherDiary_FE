@@ -53,34 +53,34 @@ const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
 
 const emotionEmoji = (emotion, size = 40) => {
-    emotion = Number(emotion) - 1;
-    console.log(emotion);
     let IconComponent;
     switch (emotion) {
-        case 0:
+        case "1":
             IconComponent = Sunny;
             break;
-        case 1:
+        case "2":
             IconComponent = Cloudy;
             break;
-        case 2:
+        case "3":
             IconComponent = Rainy;
             break;
-        case 3:
+        case "4":
             IconComponent = Thunder;
             break;
         default:
             IconComponent = Sunny;
     }
-    return <IconComponent fill={colors[emotion]} />;
+    return <IconComponent fill={colors[Number(emotion) - 1]} />;
 };
 
 export default function TopBox({ emotion, date }) {
+    const offset = date.getTimezoneOffset() * 60000;
+    const today = new Date(date - offset);
     const dayStr = weekday[new Date(date).getDay()];
     return (
         <Container>
             <EmotionBox>{emotionEmoji(emotion)}</EmotionBox>
-            <DateBox>{date}</DateBox>
+            <DateBox>{today.toISOString().slice(0, 10)}</DateBox>
             <DayBox>{dayStr}</DayBox>
         </Container>
     );

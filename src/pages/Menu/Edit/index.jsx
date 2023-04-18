@@ -87,13 +87,8 @@ function EditPage() {
     };
     const validationSchema = Yup.object({
         date: Yup.date().required("Date Required"),
-        emotion: Yup.number()
-            .min(0, "Can't drop under 0")
-            .max(3, "Can't rise over 3")
-            .required("Emotion Required"),
-        contents: Yup.array()
-            .min(1, "최소 1개 이상의 일기가 필요합니다.")
-            .required("Contents Required!"),
+        emotion: Yup.string().required("Emotion Required"),
+        contents: Yup.array().min(1, "최소 1개 이상의 일기가 필요합니다."),
     });
     const defaultContent = (id) => ({
         id,
@@ -107,11 +102,7 @@ function EditPage() {
     }, []);
 
     return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            // validationSchema={validationSchema}
-        >
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {({ values }) => (
                 <Wrapper>
                     <StyledForm>

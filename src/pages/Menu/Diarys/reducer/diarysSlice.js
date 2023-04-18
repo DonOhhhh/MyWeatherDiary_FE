@@ -8,7 +8,10 @@ const diarysSlice = createSlice({
     initialState,
     reducers: {
         diaryAdd: (state, action) => {
-            state.push({ ...action.payload, id: v4() });
+            state.push({
+                ...action.payload,
+                id: v4(),
+            });
         },
         diaryUpdate: (state, action) => {
             return state.map((diary) =>

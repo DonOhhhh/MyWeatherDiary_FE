@@ -12,7 +12,6 @@ import Edit from "./pages/Menu/Edit";
 import { Provider } from "react-redux";
 import Login from "./pages/Home/components/Login";
 import SignUp from "./pages/Home/components/Signup";
-import Key from "./pages/Home/components/Key";
 import ProfileEdit from "./pages/Menu/ProfileEdit";
 import Activity from "./pages/Menu/Activity";
 
@@ -33,10 +32,6 @@ const router = createBrowserRouter([
             {
                 path: "/home/signup",
                 element: <SignUp />,
-            },
-            {
-                path: "/home/key",
-                element: <Key />,
             },
         ],
     },
