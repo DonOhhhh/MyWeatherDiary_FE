@@ -12,7 +12,6 @@ import { Formik } from "formik";
 import { useState } from "react";
 import { Copy, Send } from "react-feather";
 import { StyledButton, StyledField, StyledForm } from "../../../StyledFormik";
-import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
 
 const style = {
     boxSizing: "border-box",
@@ -57,6 +56,8 @@ const IconContainer = styled.div`
 
 export default function GenerateKeyModal({ open, setOpen }) {
     const [submitted, setSubmitted] = useState(false);
+    const [copyOpen, setCopyOpen] = useState(false);
+    const [emailOpen, setEmailOpen] = useState(false);
     const initialState = {
         diaryTitle: "",
         enterKey: "enterKey",
@@ -89,19 +90,52 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                                 color: "#aaa",
                                             }}
                                         />
-                                        <IconContainer>
+                                        <IconContainer
+                                            onClick={() => {
+                                                window.navigator.clipboard.writeText(
+                                                    values.enterKey
+                                                );
+                                                emailOpen &&
+                                                    setEmailOpen(false);
+                                                setCopyOpen(true);
+                                            }}
+                                        >
                                             <Copy size={iconSize} />
                                         </IconContainer>
+                                        <Snackbar
+                                            open={copyOpen}
+                                            onClose={() => setCopyOpen(false)}
+                                            autoHideDuration={1500}
+                                            message="복사되었습니다."
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "center",
+                                            }}
+                                        />
                                     </InputContainer>
-
                                     <InputContainer>
                                         <StyledField
                                             name="email"
                                             placeholder="johndoe@email.com"
                                         />
-                                        <IconContainer>
+                                        <IconContainer
+                                            onClick={() => {
+                                                copyOpen && setCopyOpen(false);
+                                                setEmailOpen(true);
+                                            }}
+                                        >
                                             <Send size={iconSize} />
                                         </IconContainer>
+                                        <Snackbar
+                                            open={emailOpen}
+                                            onClose={() => setEmailOpen(false)}
+                                            autoHideDuration={1500}
+                                            message="이메일로 전송되었습니다."
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "center",
+                                            }}
+                                        />
                                     </InputContainer>
                                     <div
                                         style={{
