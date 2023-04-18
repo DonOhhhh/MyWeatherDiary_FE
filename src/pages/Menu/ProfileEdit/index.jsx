@@ -19,7 +19,8 @@ const StyledForm = styled(Form)`
     justify-content: center;
     width: 35%;
     min-width: 400px;
-    height: fit-content;
+    min-height: 100vh;
+    height: 100%;
     gap: 10px;
 `;
 
@@ -119,7 +120,7 @@ export default function ProfileEdit() {
                         {(errMsg) => <FormError errorMessage={errMsg} />}
                     </ErrorMessage>
 
-                    <StyledLabel htmlFor="email">Email</StyledLabel>
+                    {/* <StyledLabel htmlFor="email">Email</StyledLabel>
                     <StyledField name="email" placeholder="email" />
                     <ErrorMessage name="email">
                         {(errMsg) => <FormError errorMessage={errMsg} />}
@@ -154,7 +155,7 @@ export default function ProfileEdit() {
                         id="github"
                         name="sns.github"
                         placeholder="github"
-                    />
+                    /> */}
                     <ButtonGroup>
                         <StyledButton type="submit">저장</StyledButton>
                         <StyledButton
