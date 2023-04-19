@@ -59,7 +59,7 @@ const SelectType = styled.select`
 
 const ActivityContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
     height: 100%;

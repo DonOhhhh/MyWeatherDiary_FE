@@ -11,7 +11,6 @@ import Profile from "./pages/Menu/Profile";
 import Edit from "./pages/Menu/Edit";
 import { Provider } from "react-redux";
 import Login from "./pages/Home/components/Login";
-import SignUp from "./pages/Home/components/Signup";
 import ProfileEdit from "./pages/Menu/ProfileEdit";
 import Activity from "./pages/Menu/Activity";
 
@@ -28,10 +27,6 @@ const router = createBrowserRouter([
             {
                 path: "/home/login",
                 element: <Login />,
-            },
-            {
-                path: "/home/signup",
-                element: <SignUp />,
             },
         ],
     },
