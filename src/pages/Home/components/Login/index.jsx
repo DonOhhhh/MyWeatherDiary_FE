@@ -6,10 +6,12 @@ import ButtonBox from "./components/ButtonBox";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { StyledForm } from "../StyledFormik";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { Box, Dialog, DialogTitle, Fade, Modal } from "@mui/material";
 import GenerateKeyModal from "./components/GenerateKeyModal";
+import { loginReq, setEnterKey } from "../../reducer/loginSlice";
+import Spinner from "../../../../common/components/Spinner";
 
 const LogoBox = styled.div`
     margin: 0;
@@ -29,35 +31,45 @@ const LoginLogo = styled(Logo)`
 export default function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const initialState = {
-        email: "",
-        password: "",
-    };
-    const onSubmit = (values) => {
-        console.log(values);
-        navigate("/main/diarys");
+    const initialState = useSelector((state) => state.login);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const onSubmit = async (values) => {
+        setIsSubmitted(true);
+        dispatch(loginReq(values.enterKey));
     };
     const validationSchema = Yup.object({
         enterKey: Yup.string().required("Password required"),
     });
-
     const [open, setOpen] = useState(false);
+    useEffect(() => {
+        if (isSubmitted && !initialState.loading) {
+            if (initialState.token) {
+                navigate("/main/diarys");
+            } else {
+                alert("인증키가 존재하지 않습니다.");
+            }
+            setIsSubmitted(false);
+        }
+    }, [isSubmitted, initialState]);
     return (
         <Formik
             initialValues={initialState}
             onSubmit={onSubmit}
             validationSchema={validationSchema}
         >
-            {({ values }) => (
-                <StyledForm>
-                    <LogoBox>
-                        <LoginLogo />
-                    </LogoBox>
-                    <InputBox />
-                    <ButtonBox onGenerateKeyClick={setOpen} />
-                    <GenerateKeyModal open={open} setOpen={setOpen} />
-                </StyledForm>
-            )}
+            <StyledForm>
+                <LogoBox>
+                    <LoginLogo />
+                </LogoBox>
+                <InputBox />
+                {initialState.loading && (
+                    <div style={{ width: "100%", textAlign: "center" }}>
+                        <Spinner />
+                    </div>
+                )}
+                <ButtonBox onGenerateKeyClick={setOpen} />
+                <GenerateKeyModal open={open} setOpen={setOpen} />
+            </StyledForm>
         </Formik>
     );
 }

@@ -12,8 +12,8 @@ export const fetchKey = createAsyncThunk(
     async (dispatch, getState) => {
         const { signup } = getState.getState();
         const { diaryTitle } = signup;
-        return await axios
-            .post(`${import.meta.env.VITE_BASE_URL}/user`, {
+        return axios
+            .post(`/user`, {
                 role: 1,
                 diaryTitle,
             })

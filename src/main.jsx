@@ -13,6 +13,9 @@ import { Provider } from "react-redux";
 import Login from "./pages/Home/components/Login";
 import ProfileEdit from "./pages/Menu/ProfileEdit";
 import Activity from "./pages/Menu/Activity";
+import axios from "axios";
+
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
 
 const router = createBrowserRouter([
     {

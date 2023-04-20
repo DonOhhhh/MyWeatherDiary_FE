@@ -14,6 +14,7 @@ import { Copy, Send } from "react-feather";
 import { StyledButton, StyledField, StyledForm } from "../../../StyledFormik";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchKey, setDiaryTitle } from "../../../../reducer/signupSlice";
+import Spinner from "../../../../../../common/components/Spinner";
 
 const style = {
     boxSizing: "border-box",
@@ -74,6 +75,11 @@ export default function GenerateKeyModal({ open, setOpen }) {
         <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
             <Fade in={open}>
                 <Box sx={style}>
+                    {state.loading && (
+                        <div style={{ width: "100%", textAlign: "center" }}>
+                            <Spinner />
+                        </div>
+                    )}
                     <Formik initialValues={state} onSubmit={handleSubmit}>
                         {submitted ? (
                             <StyledForm style={{ width: "100%", gap: "20px" }}>
