@@ -37,6 +37,7 @@ const signupSlice = createSlice({
         builder.addCase(fetchKey.fulfilled, (state, action) => {
             state.loading = false;
             state.enterKey = action.payload.data.enterKey;
+            state.diaryTitle = "";
             state.error = "";
         });
         builder.addCase(fetchKey.rejected, (state, action) => {

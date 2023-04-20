@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
 import * as Yup from "yup";
 import FormError from "../../../common/components/FormError";
-import { diaryAdd, diaryUpdate } from "../Diarys/reducer/diarysSlice";
+import {
+    diaryAdd,
+    diaryUpdate,
+    fetchDiaryAdd,
+} from "../Diarys/reducer/diarysSlice";
 import DateBox from "./components/DateBox";
 import EmotionBox from "./components/EmotionBox";
 import DeleteBtn from "./components/DeleteBtn";
@@ -80,7 +84,7 @@ function EditPage() {
     const onSubmit = (values) => {
         dispatch(
             location.pathname === "/main/newdiary"
-                ? diaryAdd(values)
+                ? dispatch(fetchDiaryAdd(values))
                 : diaryUpdate(values)
         );
         navigate("/main/diarys");

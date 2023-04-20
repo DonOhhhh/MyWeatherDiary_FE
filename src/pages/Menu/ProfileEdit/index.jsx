@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import FormError from "../../../common/components/FormError";
-import { updateProfile } from "../Profile/reducer/profileSlice";
+import { updateProfile, updateUser } from "../Profile/reducer/profileSlice";
 
 const Wrapper = styled.div`
     display: flex;
@@ -89,11 +89,11 @@ export default function ProfileEdit() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const onSubmit = (values) => {
-        dispatch(updateProfile(values));
+        dispatch(updateUser(values));
         navigate("/main/profile");
     };
     const validationSchema = Yup.object({
-        username: Yup.string().required("Username is required"),
+        nickName: Yup.string().required("Nickname is required"),
         diaryTitle: Yup.string().required("Diary Title is required"),
     });
     return (
@@ -104,11 +104,11 @@ export default function ProfileEdit() {
                 validationSchema={validationSchema}
             >
                 <StyledForm>
-                    <StyledLabel htmlFor="username">
-                        <RedStar>*</RedStar>Username
+                    <StyledLabel htmlFor="nickName">
+                        <RedStar>*</RedStar>Nickname
                     </StyledLabel>
-                    <StyledField name="username" placeholder="username" />
-                    <ErrorMessage name="username">
+                    <StyledField name="nickName" placeholder="nickName" />
+                    <ErrorMessage name="nickName">
                         {(errMsg) => <FormError errorMessage={errMsg} />}
                     </ErrorMessage>
 

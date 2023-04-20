@@ -1,8 +1,11 @@
 import { avataaars } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 import styled from "@emotion/styled";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Buffer } from "buffer";
+import { useEffect } from "react";
+import { getUser } from "../../../Menu/Profile/reducer/profileSlice";
+import Spinner from "../../../../common/components/Spinner";
 
 const Container = styled.div`
     display: flex;
@@ -30,24 +33,39 @@ const Avatar = styled.div`
 `;
 
 export default function UserInfo() {
-    const { username } = useSelector((state) => state.profile);
+    const dispatch = useDispatch();
+    const state = useSelector((state) => state.profile);
+    const { nickName } = useSelector((state) => state.profile);
     const avatar = createAvatar(avataaars, {
-        seed: username,
+        seed: nickName,
         style: ["circle"],
         size: 60,
         backgroundType: ["gradientLinear"],
         backgroundColor: ["D5D0E5", "F3E6E8"],
         backgroundRotation: [90],
     }).toString();
+
+    useEffect(() => {
+        dispatch(getUser());
+    }, []);
+
     return (
         <Container>
-            <Avatar
-                src={
-                    "data:image/svg+xml;base64," +
-                    Buffer.from(avatar).toString("base64")
-                }
-            />
-            <Username>{username} 님</Username>
+            {state.loading ? (
+                <div style={{ width: "100%", textAlign: "center" }}>
+                    <Spinner />
+                </div>
+            ) : (
+                <>
+                    <Avatar
+                        src={
+                            "data:image/svg+xml;base64," +
+                            Buffer.from(avatar).toString("base64")
+                        }
+                    />
+                    <Username>{nickName} 님</Username>
+                </>
+            )}
         </Container>
     );
 }

@@ -3,9 +3,9 @@ import axios from "axios";
 
 import TopBox from "./components/TopBox";
 import MiddleBox from "./components/MiddleBox";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProfile } from "./reducer/profileSlice";
+import { deleteUser, updateProfile } from "./reducer/profileSlice";
 import UpdateBox from "./components/UpdateBox";
 import BottomBox from "./components/BottomBox";
 import { useNavigate } from "react-router-dom";
@@ -45,24 +45,23 @@ export default function Profile() {
     // }, []);
 
     const profile = useSelector((state) => state.profile);
-
-    const { username } = profile;
-    const { diaryTitle, email, job } = profile;
-    const { sns } = profile;
+    const { nickName, diaryTitle } = profile;
 
     const handleUpdate = () => {
         navigate("/main/profileedit");
     };
 
     const handleDelete = () => {
-        console.log("delete");
+        if (confirm("일기장을 삭제하시겠습니까?")) {
+            dispatch(deleteUser());
+        }
     };
 
     return (
         <Container>
             <Center>
-                <TopBox username={username} />
-                <MiddleBox middleBoxInfo={{ diaryTitle, email, job }} />
+                <TopBox username={nickName} />
+                <MiddleBox middleBoxInfo={{ diaryTitle }} />
                 {/* <BottomBox sns={sns} /> */}
                 <UpdateBox onUpdate={handleUpdate} onDelete={handleDelete} />
             </Center>

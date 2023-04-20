@@ -1,8 +1,12 @@
 import styled from "@emotion/styled";
 import { Divider } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Diary from "./components/Diary";
 import NewDiary from "./components/NewDiary";
+import { useEffect, useState } from "react";
+import { getTimeline } from "./reducer/diarysSlice";
+import axios from "axios";
+import { useApi } from "../../../common/hooks/useApi";
 
 const Wrapper = styled.div`
     display: flex;
@@ -26,7 +30,13 @@ const Container = styled.div`
 `;
 
 export default function Diarys() {
-    const diarys = useSelector((state) => state.diarys).slice();
+    const [page, setPage] = useState(0);
+    const state = useSelector((state) => state.diarys);
+    const dispatch = useDispatch();
+    const diarys = state.diarys.slice();
+    useEffect(() => {
+        dispatch(getTimeline());
+    }, []);
     return (
         <Wrapper>
             <NewDiary />
@@ -34,11 +44,11 @@ export default function Diarys() {
                 {diarys.length ? (
                     diarys
                         .sort((a, b) => new Date(b.date) - new Date(a.date))
-                        .map(({ id, date, emotion, contents }, i) => (
+                        .map(({ id, postDate, emotion, contents }, i) => (
                             <div key={i}>
                                 <Diary
                                     postId={id}
-                                    date={date}
+                                    date={postDate}
                                     emotion={emotion}
                                     contents={contents}
                                 />

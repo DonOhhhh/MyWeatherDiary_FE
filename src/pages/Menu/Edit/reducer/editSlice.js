@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 
 const initialState = {
     id: "",
-    date: "",
+    postDate: "",
     emotion: "1",
     contents: [
         {

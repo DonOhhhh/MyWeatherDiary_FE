@@ -8,9 +8,8 @@ import * as Yup from "yup";
 import { StyledForm } from "../StyledFormik";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Box, Dialog, DialogTitle, Fade, Modal } from "@mui/material";
 import GenerateKeyModal from "./components/GenerateKeyModal";
-import { loginReq, setEnterKey } from "../../reducer/loginSlice";
+import { loginReq } from "../../reducer/loginSlice";
 import Spinner from "../../../../common/components/Spinner";
 
 const LogoBox = styled.div`
@@ -44,6 +43,7 @@ export default function Login() {
     useEffect(() => {
         if (isSubmitted && !initialState.loading) {
             if (initialState.token) {
+                sessionStorage.setItem("token", initialState.token);
                 navigate("/main/diarys");
             } else {
                 alert("인증키가 존재하지 않습니다.");

@@ -13,14 +13,16 @@ export default function DateBox() {
         <Container role="group" aria-labelledby="Date-box">
             <EditItemBox>날짜를 선택해주세요</EditItemBox>
             <EditItemBox>
-                <Field name="date">
+                <Field name="postDate">
                     {({ form, field }) => {
                         const { setFieldValue } = form;
                         const { value } = field;
                         return (
                             <ReactDatePicker
                                 selected={value}
-                                onChange={(val) => setFieldValue("date", val)}
+                                onChange={(val) =>
+                                    setFieldValue("postDate", val)
+                                }
                                 dateFormat="yyyy-MM-dd"
                                 customInput={<CustomInput />}
                             />

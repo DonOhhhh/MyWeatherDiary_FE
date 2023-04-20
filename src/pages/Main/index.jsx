@@ -1,9 +1,9 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { ReactComponent as SmallLogo } from "./icons/logo.svg";
 import Sidebar from "./components/Sidebar";
 import UserInfo from "./components/UserInfo";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Container = styled.div`
     position: relative;
@@ -51,17 +51,35 @@ const UserInfoContainer = styled.div`
     right: 50px;
 `;
 
+export const loader = () => {};
+
 export default function Main() {
     const sidebarRef = useRef();
+    const navigate = useNavigate();
     const [width, setWidth] = useState(0);
     const [isExpand, setIsExpand] = useState(true);
+    const [token, setToken] = useState(sessionStorage.getItem("token"));
+
     useEffect(() => {
         setWidth(sidebarRef.current.offsetWidth);
     }, [sidebarRef, isExpand]);
 
+    useEffect(() => {
+        if (token) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        } else {
+            if (sessionStorage.getItem("token")) {
+                setToken(sessionStorage.getItem("token"));
+            } else {
+                navigate("/home/login");
+            }
+        }
+    }, [token]);
+
     const onChevronClick = () => {
         setIsExpand(!isExpand);
     };
+
     return (
         <Container>
             <Left ref={sidebarRef}>

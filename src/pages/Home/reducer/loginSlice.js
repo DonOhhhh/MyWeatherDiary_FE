@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    nickname: "",
     token: "",
     enterKey: "",
 };
@@ -25,7 +24,8 @@ const loginSlice = createSlice({
         });
         builder.addCase(loginReq.fulfilled, (state, action) => {
             state.loading = false;
-            (state.token = action.payload.data.token), (state.error = "");
+            state.token = action.payload.data.token;
+            state.error = "";
         });
         builder.addCase(loginReq.rejected, (state, action) => {
             state.loading = false;
