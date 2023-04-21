@@ -4,32 +4,24 @@ import axios from "axios";
 const initialState = {
     email: "",
     diaryTitle: "",
-    enterKey: "",
+    enterKey: "testtest",
 };
 
 export const fetchKey = createAsyncThunk(
     "signup/generate",
-    async (dispatch, getState) => {
-        const { signup } = getState.getState();
-        const { diaryTitle } = signup;
-        return axios
-            .post(`/user`, {
-                role: 1,
-                diaryTitle,
-            })
-            .then((res) => res.data);
+    async (diaryTitle) => {
+        const res = await axios.post(`/user`, {
+            role: 1,
+            diaryTitle,
+        });
+        return res.data;
     }
 );
 
 const signupSlice = createSlice({
     name: "signup",
     initialState,
-    reducers: {
-        setDiaryTitle: (state, action) => {
-            state.diaryTitle = action.payload;
-            return state;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchKey.pending, (state) => {
             state.loading = true;
@@ -49,4 +41,4 @@ const signupSlice = createSlice({
 });
 
 export default signupSlice.reducer;
-export const { setDiaryTitle } = signupSlice.actions;
+export const {} = signupSlice.actions;

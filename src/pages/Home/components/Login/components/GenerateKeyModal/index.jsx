@@ -13,8 +13,9 @@ import { useEffect, useState } from "react";
 import { Copy, Send } from "react-feather";
 import { StyledButton, StyledField, StyledForm } from "../../../StyledFormik";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchKey, setDiaryTitle } from "../../../../reducer/signupSlice";
+import { fetchKey } from "../../../../reducer/signupSlice";
 import Spinner from "../../../../../../common/components/Spinner";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const style = {
     boxSizing: "border-box",
@@ -66,9 +67,8 @@ export default function GenerateKeyModal({ open, setOpen }) {
     const handleSubmit = (values) => {
         if (!submitted && values.diaryTitle) setSubmitted(true);
         // state에 diaryTitle을 저장함..
-        dispatch(setDiaryTitle(values.diaryTitle));
         // 서버에서 key를 받아옴.
-        dispatch(fetchKey());
+        dispatch(fetchKey(values.diaryTitle));
     };
     const iconSize = 30;
     return (
@@ -93,17 +93,17 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                         }}
                                         value={state.enterKey}
                                     />
-                                    <IconContainer
-                                        onClick={() => {
-                                            window.navigator.clipboard.writeText(
-                                                state.enterKey
-                                            );
-                                            emailOpen && setEmailOpen(false);
-                                            setCopyOpen(true);
-                                        }}
-                                    >
-                                        <Copy size={iconSize} />
-                                    </IconContainer>
+                                    <CopyToClipboard text={state.enterKey}>
+                                        <IconContainer
+                                            onClick={() => {
+                                                emailOpen &&
+                                                    setEmailOpen(false);
+                                                setCopyOpen(true);
+                                            }}
+                                        >
+                                            <Copy size={iconSize} />
+                                        </IconContainer>
+                                    </CopyToClipboard>
                                     <Snackbar
                                         open={copyOpen}
                                         onClose={() => setCopyOpen(false)}
