@@ -34,9 +34,9 @@ export default function Diarys() {
     const state = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
     const diarys = state.diarys.slice();
-    useEffect(() => {
-        dispatch(getTimeline());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(getTimeline());
+    // }, []);
     return (
         <Wrapper>
             <NewDiary />

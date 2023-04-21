@@ -76,11 +76,12 @@ const emotionEmoji = (emotion, size = 40) => {
 export default function TopBox({ emotion, date }) {
     const offset = date.getTimezoneOffset() * 60000;
     const today = new Date(date - offset);
-    const dayStr = weekday[new Date(date).getDay()];
+    const postDate = today.toISOString().slice(0, 10);
+    const dayStr = weekday[new Date(postDate).getDay()];
     return (
         <Container>
             <EmotionBox>{emotionEmoji(emotion)}</EmotionBox>
-            <DateBox>{today.toISOString().slice(0, 10)}</DateBox>
+            <DateBox>{postDate}</DateBox>
             <DayBox>{dayStr}</DayBox>
         </Container>
     );

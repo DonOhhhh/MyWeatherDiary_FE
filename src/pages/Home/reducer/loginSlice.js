@@ -17,7 +17,13 @@ export const loginReq = createAsyncThunk("login/loginReq", async (enterKey) => {
 const loginSlice = createSlice({
     name: "login",
     initialState,
-    reducers: {},
+    reducers: {
+        setToken: (state, action) => {
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${state.token}`;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(loginReq.pending, (state) => {
             state.loading = true;
@@ -36,4 +42,4 @@ const loginSlice = createSlice({
 });
 
 export default loginSlice.reducer;
-export const { setEnterKey } = loginSlice.actions;
+export const { setToken } = loginSlice.actions;

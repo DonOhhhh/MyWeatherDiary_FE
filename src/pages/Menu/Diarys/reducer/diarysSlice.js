@@ -25,8 +25,9 @@ const diarysSlice = createSlice({
     initialState,
     reducers: {
         diaryAdd: (state, action) => {
+            const diary = action.payload;
             state.diarys.push({
-                ...action.payload,
+                ...diary,
                 id: v4(),
             });
         },
@@ -36,9 +37,10 @@ const diarysSlice = createSlice({
             );
         },
         diaryDelete: (state, action) => {
-            return state.diarys.filter(
+            state.diarys = state.diarys.filter(
                 (diary) => diary.id !== action.payload.id
             );
+            return state;
         },
     },
     extraReducers: (builder) => {

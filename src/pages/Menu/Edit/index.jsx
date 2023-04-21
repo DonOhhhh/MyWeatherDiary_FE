@@ -13,10 +13,10 @@ import DateBox from "./components/DateBox";
 import EmotionBox from "./components/EmotionBox";
 import DeleteBtn from "./components/DeleteBtn";
 import styled from "@emotion/styled";
-import Container from "./components/EditContainer";
 import ImageBox from "./components/ImageBox";
 import { useEffect } from "react";
 import { clear } from "./reducer/editSlice";
+import { Container, ContentArea, StyledTextArea } from "./components/Styled";
 
 const Wrapper = styled.div`
     display: flex;
@@ -29,14 +29,17 @@ const Wrapper = styled.div`
 const StyledForm = styled(Form)`
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
+    margin-top: 6%;
     gap: 30px;
-    width: 40%;
+    width: 95%;
     min-width: 400px;
-    height: fit-content;
-    padding: 30px 30px;
+    height: calc(100vh - 80px);
+    padding: 10px 30px;
     background-color: #d3eaff;
+    position: relative;
     /* overflow: scroll;
     scrollbar-width: none; */
 `;
@@ -77,6 +80,13 @@ const StyledBtn = styled.button`
     }
 `;
 
+const RowBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+`;
+
 function EditPage() {
     const initialValues = useSelector((state) => state.edit);
     const dispatch = useDispatch();
@@ -84,7 +94,7 @@ function EditPage() {
     const onSubmit = (values) => {
         dispatch(
             location.pathname === "/main/newdiary"
-                ? dispatch(fetchDiaryAdd(values))
+                ? diaryAdd(values)
                 : diaryUpdate(values)
         );
         navigate("/main/diarys");
@@ -114,62 +124,61 @@ function EditPage() {
             {({ values }) => (
                 <Wrapper>
                     <StyledForm>
-                        <DateBox />
-                        <EmotionBox emotion={values.emotion} />
-                        <Container role="group" aria-labelledby="Content-box">
-                            <FieldArray name="contents">
-                                {(fieldArrayProps) => {
-                                    const { remove, push, form } =
-                                        fieldArrayProps;
-                                    pushFunction = push;
-                                    const { contents } = form.values;
-                                    return (
-                                        <>
-                                            {contents.map((_, index) => (
-                                                <StyledContent key={index}>
-                                                    <DeleteBtn
-                                                        onClick={() =>
-                                                            remove(index)
-                                                        }
-                                                    />
-                                                    <Field
-                                                        name={`contents[${index}].imgSrc`}
-                                                        component={ImageBox}
-                                                    />
-                                                    <Field
-                                                        as="textarea"
-                                                        placeholder="some comments..."
-                                                        name={`contents[${index}].comment`}
-                                                        style={{
-                                                            padding: "15px",
-                                                            border: "1px solid #ddd",
-                                                            borderRadius:
-                                                                "15px",
-                                                            fontFamily: "Jua",
-                                                            fontSize: "20px",
-                                                            fontWeight: "400",
-                                                            overflow: "scroll",
-                                                            height: "200px",
-                                                            width: "100%",
-                                                        }}
-                                                    />
-                                                </StyledContent>
-                                            ))}
-                                        </>
-                                    );
-                                }}
-                            </FieldArray>
-                            <ErrorMessage
-                                name="contents"
-                                component={FormError}
-                            />
-                        </Container>
+                        <RowBox>
+                            <DateBox />
+                            <EmotionBox emotion={values.emotion} />
+                        </RowBox>
+                        <ContentArea>
+                            <Container
+                                role="group"
+                                aria-labelledby="Content-box"
+                            >
+                                <FieldArray name="contents">
+                                    {(fieldArrayProps) => {
+                                        const { remove, push, form } =
+                                            fieldArrayProps;
+                                        pushFunction = push;
+                                        const { contents } = form.values;
+                                        return (
+                                            <>
+                                                {contents.map((_, index) => (
+                                                    <StyledContent key={index}>
+                                                        <DeleteBtn
+                                                            onClick={() =>
+                                                                remove(index)
+                                                            }
+                                                        />
+                                                        <RowBox>
+                                                            <Field
+                                                                name={`contents[${index}].imgSrc`}
+                                                                component={
+                                                                    ImageBox
+                                                                }
+                                                            />
+                                                            <StyledTextArea
+                                                                as="textarea"
+                                                                placeholder="some comments..."
+                                                                name={`contents[${index}].comment`}
+                                                            />
+                                                        </RowBox>
+                                                    </StyledContent>
+                                                ))}
+                                            </>
+                                        );
+                                    }}
+                                </FieldArray>
+
+                                <ErrorMessage
+                                    name="contents"
+                                    component={FormError}
+                                />
+                            </Container>
+                        </ContentArea>
                         <Container
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                padding: "16px 10px",
                                 gap: "20px",
                             }}
                             role="group"

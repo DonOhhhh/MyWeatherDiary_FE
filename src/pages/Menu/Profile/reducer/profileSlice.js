@@ -18,13 +18,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk("profile/deleteUser", async () => {
-    return await axios
-        .delete("/user/uath", {
-            headers: {
-                Authorization: sessionStorage.getItem("token"),
-            },
-        })
-        .then((res) => res.data);
+    return await axios.delete("/user/uath").then((res) => res.data);
 });
 
 const profileSlice = createSlice({

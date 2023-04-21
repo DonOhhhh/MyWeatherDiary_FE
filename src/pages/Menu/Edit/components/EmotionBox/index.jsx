@@ -5,16 +5,13 @@ import { ReactComponent as Sunny } from "../../icons/sunny.svg";
 import { ReactComponent as Cloudy } from "../../icons/cloudy.svg";
 import { ReactComponent as Rainy } from "../../icons/rainy.svg";
 import { ReactComponent as Thunder } from "../../icons/thunder.svg";
-import EditItemBox from "../EditItemBox";
-import Container from "../EditContainer";
+import { Container, EditItemBox } from "../Styled";
 
 const IconBox = styled.div`
     appearance: none;
     display: inline-block;
     margin: 0;
     padding: 0;
-    width: 50px;
-    height: 50px;
     border-radius: 15px;
     &:hover {
         cursor: pointer;
@@ -31,6 +28,7 @@ const StyledField = styled(Field)`
 const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
 const icons = (emotion, i) => {
     let IconComponent;
+    const iconSize = 30;
     switch (i) {
         case 0:
             IconComponent = Sunny;
@@ -48,14 +46,17 @@ const icons = (emotion, i) => {
             IconComponent = Sunny;
     }
     return (
-        <IconComponent fill={emotion === `${i + 1}` ? colors[i] : "#cacaca"} />
+        <IconComponent
+            width={iconSize}
+            height={iconSize}
+            fill={emotion === `${i + 1}` ? colors[i] : "#cacaca"}
+        />
     );
 };
 
 export default function EmotionBox({ emotion }) {
     return (
         <Container role="group" aria-labelledby="Emotion-box">
-            <EditItemBox>기분을 선택해주세요</EditItemBox>
             <EditItemBox>
                 {new Array(4).fill().map((_, i) => (
                     <label key={i}>

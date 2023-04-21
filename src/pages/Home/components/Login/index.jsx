@@ -33,8 +33,9 @@ export default function Login() {
     const initialState = useSelector((state) => state.login);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const onSubmit = async (values) => {
-        setIsSubmitted(true);
-        dispatch(loginReq(values.enterKey));
+        navigate("/main/diarys");
+        // setIsSubmitted(true);
+        // dispatch(loginReq(values.enterKey));
     };
     const validationSchema = Yup.object({
         enterKey: Yup.string().required("Password required"),

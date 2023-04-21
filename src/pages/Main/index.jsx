@@ -4,6 +4,8 @@ import { ReactComponent as SmallLogo } from "./icons/logo.svg";
 import Sidebar from "./components/Sidebar";
 import UserInfo from "./components/UserInfo";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../Home/reducer/loginSlice";
 
 const Container = styled.div`
     position: relative;
@@ -58,23 +60,20 @@ export default function Main() {
     const navigate = useNavigate();
     const [width, setWidth] = useState(0);
     const [isExpand, setIsExpand] = useState(true);
-    const [token, setToken] = useState(sessionStorage.getItem("token"));
+    const state = useSelector((state) => state.login);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setWidth(sidebarRef.current.offsetWidth);
     }, [sidebarRef, isExpand]);
 
-    useEffect(() => {
-        if (token) {
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        } else {
-            if (sessionStorage.getItem("token")) {
-                setToken(sessionStorage.getItem("token"));
-            } else {
-                navigate("/home/login");
-            }
-        }
-    }, [token]);
+    // useEffect(() => {
+    //     if (state.token) {
+    //         dispatch(setToken());
+    //     } else {
+    //         alert("토큰이 존재하지 않습니다.");
+    //     }
+    // }, [state.token]);
 
     const onChevronClick = () => {
         setIsExpand(!isExpand);
