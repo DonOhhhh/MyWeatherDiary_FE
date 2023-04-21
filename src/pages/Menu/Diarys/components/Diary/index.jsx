@@ -43,7 +43,12 @@ export default function Diary({ postId, date, emotion, contents }) {
             <ButtonGroup
                 onUpdate={() => {
                     dispatch(
-                        diaryImport({ id: postId, date, emotion, contents })
+                        diaryImport({
+                            id: postId,
+                            postDate: date,
+                            emotion,
+                            contents,
+                        })
                     );
                     navigate("/main/edit");
                 }}

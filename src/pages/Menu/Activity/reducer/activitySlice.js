@@ -8,13 +8,15 @@ function getRandomIntInclusive(min, max) {
 
 export const make_2digit = (n) => (n < 10 ? "0" + n : n);
 
-const initialState = [];
+const initialState = {
+    calendar: [],
+};
 
 const activitySlice = createSlice({
     name: "activity",
     initialState,
     reducers: {
-        makeFakeData: (_, { payload: startDate }) => {
+        makeFakeData: (state, { payload: startDate }) => {
             const result = [];
             let s_date_obj = new Date(startDate);
             s_date_obj.setDate(s_date_obj.getDate() - 1);
@@ -28,15 +30,21 @@ const activitySlice = createSlice({
                     selected: false,
                 });
             }
-            return result;
+            state.calendar = result;
+            return state;
         },
         check: (state, { payload: date }) => {
-            return state.map((e) =>
+            state.calendar = state.calendar.map((e) =>
                 e.date_format === date ? { ...e, selected: !e.selected } : e
             );
+            return state;
         },
         clearSelected: (state) => {
-            return state.map((e) => ({ ...e, selected: false }));
+            state.calendar = state.calendar.map((e) => ({
+                ...e,
+                selected: false,
+            }));
+            return state;
         },
     },
 });

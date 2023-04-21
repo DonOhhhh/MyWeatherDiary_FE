@@ -67,13 +67,13 @@ export default function Main() {
         setWidth(sidebarRef.current.offsetWidth);
     }, [sidebarRef, isExpand]);
 
-    // useEffect(() => {
-    //     if (state.token) {
-    //         dispatch(setToken());
-    //     } else {
-    //         alert("토큰이 존재하지 않습니다.");
-    //     }
-    // }, [state.token]);
+    useEffect(() => {
+        if (!state.loading) {
+            if (state.token) {
+                dispatch(setToken());
+            }
+        }
+    }, []);
 
     const onChevronClick = () => {
         setIsExpand(!isExpand);

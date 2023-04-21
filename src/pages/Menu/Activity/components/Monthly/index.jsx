@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
     height: fit-content;
     position: relative;
 `;
@@ -70,7 +70,7 @@ const CalendarTable = styled.div`
     /* & div:first-of-type {
         grid-column-start: ${({ startCol }) => startCol};
     } */
-    height: calc(104px * ${({ rows }) => rows});
+    height: calc(56px * ${({ rows }) => rows});
     border: 1px solid black;
     grid-gap: 1px;
     background-color: black;
@@ -139,16 +139,35 @@ const IconBox = styled.div`
     }
 `;
 
+const BottomBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+`;
+
+const SelectedShowBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Jua;
+`;
+
 const getEmoji = (emotion) => {
+    const iconSize = 50;
     switch (emotion) {
         case "1":
-            return <Sunny width={100} height={100} fill="#fff765" />;
+            return <Sunny width={iconSize} height={iconSize} fill="#fff765" />;
         case "2":
-            return <Cloudy width={100} height={100} fill="#3d3d3d" />;
+            return <Cloudy width={iconSize} height={iconSize} fill="#3d3d3d" />;
         case "3":
-            return <Rainy width={100} height={100} fill="#296dff" />;
+            return <Rainy width={iconSize} height={iconSize} fill="#296dff" />;
         case "4":
-            return <Thunder width={100} height={100} fill="#e8080f" />;
+            return (
+                <Thunder width={iconSize} height={iconSize} fill="#e8080f" />
+            );
         default:
             return <div></div>;
     }
@@ -301,7 +320,7 @@ function Monthly({ calendar }) {
                                 </EmotionBox>
                                 {diarys[`${date}`]?.selected && (
                                     <CheckmarkBox>
-                                        <Checkmark width={30} height={30} />
+                                        <Checkmark width={20} height={20} />
                                     </CheckmarkBox>
                                 )}
                             </ActivatedCalendarCell>
@@ -313,32 +332,38 @@ function Monthly({ calendar }) {
                     })}
                 </CalendarTable>
             </CalendarBox>
-            <ButtonBox>
-                <ExportButton onClick={() => takeScreenshot(CalendarRef)}>
-                    Export to PNG
-                </ExportButton>
-                <ExportButton
-                    onClick={() => {
-                        const selectedDate = calendar
-                            .filter(({ selected }) => selected)
-                            .map(({ date_format }) => date_format);
-                        if (!selectedDate.length) {
-                            alert("날짜를 선택해주세요");
-                            return;
-                        }
-                        console.log(selectedDate);
-                    }}
-                >
-                    Export to PDF
-                </ExportButton>
-                <ExportButton
-                    onClick={() => {
-                        actionDispatch(clearSelected());
-                    }}
-                >
-                    Clear
-                </ExportButton>
-            </ButtonBox>
+            <BottomBox>
+                <SelectedShowBox>
+                    선택된 일기 개수 :{" "}
+                    {calendar.filter(({ selected }) => selected).length}
+                </SelectedShowBox>
+                <ButtonBox>
+                    <ExportButton onClick={() => takeScreenshot(CalendarRef)}>
+                        Export to PNG
+                    </ExportButton>
+                    <ExportButton
+                        onClick={() => {
+                            const selectedDate = calendar
+                                .filter(({ selected }) => selected)
+                                .map(({ date_format }) => date_format);
+                            if (!selectedDate.length) {
+                                alert("날짜를 선택해주세요");
+                                return;
+                            }
+                            console.log(selectedDate);
+                        }}
+                    >
+                        Export to PDF
+                    </ExportButton>
+                    <ExportButton
+                        onClick={() => {
+                            actionDispatch(clearSelected());
+                        }}
+                    >
+                        Clear
+                    </ExportButton>
+                </ButtonBox>
+            </BottomBox>
         </Wrapper>
     );
 }

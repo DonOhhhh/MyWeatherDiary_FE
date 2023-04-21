@@ -18,7 +18,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk("profile/deleteUser", async () => {
-    return await axios.delete("/user/uath").then((res) => res.data);
+    return await axios.delete("/user/auth").then((res) => res.data);
 });
 
 const profileSlice = createSlice({
@@ -68,6 +68,9 @@ const profileSlice = createSlice({
         builder.addCase(deleteUser.fulfilled, (state, action) => {
             state.loading = false;
             sessionStorage.removeItem("token");
+            console.log("토큰이 지워졌습니다.");
+            state.diaryTitle = "";
+            state.nickName = "";
             state.error = "";
         });
         builder.addCase(deleteUser.rejected, (state, action) => {

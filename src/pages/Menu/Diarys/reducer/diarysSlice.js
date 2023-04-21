@@ -9,7 +9,8 @@ const initialState = {
 export const getTimeline = createAsyncThunk(
     "diarys/getTimeline",
     async (page = 0) => {
-        return axios.get(`/diary?page=${page}`).then((res) => res.data);
+        const res = await axios.get(`/diary`);
+        return res.data;
     }
 );
 
@@ -32,9 +33,10 @@ const diarysSlice = createSlice({
             });
         },
         diaryUpdate: (state, action) => {
-            return state.diarys.map((diary) =>
+            state.diarys = state.diarys.map((diary) =>
                 diary.id === action.payload.id ? action.payload : diary
             );
+            return state;
         },
         diaryDelete: (state, action) => {
             state.diarys = state.diarys.filter(

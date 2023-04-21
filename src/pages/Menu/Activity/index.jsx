@@ -59,7 +59,7 @@ const SelectType = styled.select`
 
 const ActivityContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     width: 100%;
     height: 100%;
@@ -70,33 +70,32 @@ export const takeScreenshot = (ref) => {
     html2canvas(ref.current).then((canvas) => {
         const image = canvas.toDataURL("image/png");
         const link = document.createElement("a");
-        link.download = new Date().toISOString();
+        link.download = `${new Date().toISOString()}.png`;
         link.href = image;
         link.click();
     });
 };
 
 export const ButtonBox = styled.div`
-    width: 100%;
+    width: fit-content;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
 `;
 
 export const ExportButton = styled.div`
     border: 1px solid #aaa;
     border-radius: 15px;
     font-family: Jua;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 400;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 5px;
-    min-width: 200px;
+    min-width: 100px;
     height: fit-content;
     box-shadow: 0 2px 5px 1px gray;
     &:hover {
@@ -114,20 +113,18 @@ export const ExportButton = styled.div`
 `;
 
 export default function Activity() {
-    const calendar = useSelector((state) => state.activity);
+    const calendar = useSelector((state) => state.activity).calendar.slice();
     const dispatch = useDispatch();
 
     const KST = new Date(Date.now() + 9 * 60 * 60 * 1000);
-    const [startDate, setStartDate] = useState(
-        KST.toISOString().split("T", 1)[0]
-    );
+    const [startDate, setStartDate] = useState(`${KST.getFullYear()}-01-01`);
 
     const [onChecked, setOnChecked] = useState(false);
     const handleOnChecked = (e) => {
         if (e.target.checked) {
-            setStartDate(`${KST.getFullYear()}-01-01`);
-        } else {
             setStartDate(KST.toISOString().split("T", 1)[0]);
+        } else {
+            setStartDate(`${KST.getFullYear()}-01-01`);
         }
         setOnChecked(!onChecked);
     };

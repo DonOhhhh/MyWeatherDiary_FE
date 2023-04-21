@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getTimeline } from "./reducer/diarysSlice";
 import axios from "axios";
 import { useApi } from "../../../common/hooks/useApi";
+import { setToken } from "../../Home/reducer/loginSlice";
 
 const Wrapper = styled.div`
     display: flex;
@@ -31,12 +32,15 @@ const Container = styled.div`
 
 export default function Diarys() {
     const [page, setPage] = useState(0);
-    const state = useSelector((state) => state.diarys);
+    const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
-    const diarys = state.diarys.slice();
-    // useEffect(() => {
-    //     dispatch(getTimeline());
-    // }, []);
+    const diarys = diaryState.diarys.slice();
+    const loginState = useSelector((state) => state.login);
+    useEffect(() => {
+        if (loginState.token) {
+            dispatch(getTimeline());
+        }
+    }, [loginState.token]);
     return (
         <Wrapper>
             <NewDiary />

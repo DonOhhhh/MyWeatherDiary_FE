@@ -57,6 +57,14 @@ export default function Profile() {
         }
     };
 
+    useEffect(() => {
+        if (!profile.loading) {
+            if (!sessionStorage.getItem("token")) {
+                alert("토큰이 존재하지 않습니다.");
+            }
+        }
+    }, [profile]);
+
     return (
         <Container>
             <Center>

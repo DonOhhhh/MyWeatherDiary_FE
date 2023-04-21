@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
     --table-gap: 5px;
-    --cell-size: 15px;
+    --cell-size: 10px;
     --font-size: calc(var(--cell-size) * 0.7);
     padding: 10px;
     display: grid;
@@ -185,7 +185,7 @@ function Yearly({ calendar, onChecked, onCheckboxClick }) {
                     checked={onChecked}
                     onChange={onCheckboxClick}
                 />
-                <label htmlFor="fromJan1st">1월 1일부터</label>
+                <label htmlFor="fromJan1st">오늘부터</label>
             </div>
             <Container ref={ContributionTableRef}>
                 <MonthTable>
