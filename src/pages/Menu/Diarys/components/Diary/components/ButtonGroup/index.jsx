@@ -11,7 +11,7 @@ const Container = styled.div`
     height: fit-content;
     margin: 0;
     padding: 0;
-    transform: translate(320px, 15px);
+    transform: translate(250px, 15px);
     margin-bottom: -100px;
 `;
 

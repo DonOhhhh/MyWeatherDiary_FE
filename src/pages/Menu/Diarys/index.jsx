@@ -13,10 +13,8 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 20px;
-    min-height: calc(100vh-20px);
+    min-height: calc(100vh);
     height: fit-content;
-    /* min-width: 600px; */
     position: relative;
 `;
 
@@ -25,7 +23,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 580px;
+    min-width: 400px;
     width: 40%;
     padding: 0;
 `;
@@ -47,7 +45,10 @@ export default function Diarys() {
             <Container>
                 {diarys.length ? (
                     diarys
-                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .sort(
+                            (a, b) =>
+                                new Date(b.postDate) - new Date(a.postDate)
+                        )
                         .map(({ id, postDate, emotion, contents }, i) => (
                             <div key={i}>
                                 <Diary

@@ -59,12 +59,14 @@ const ArrowCover = styled.div`
 `;
 
 export default function Pagination({ page, onClick, length, ...props }) {
+    const iconSize = 16;
+    const dotSize = 8;
     return (
         <Container style={{ ...props.style }}>
             <ArrowCover>
                 <ArrowLeft
-                    width={20}
-                    height={20}
+                    width={iconSize}
+                    height={iconSize}
                     onClick={() => {
                         if (page === 0) {
                             onClick(length - 1);
@@ -77,16 +79,16 @@ export default function Pagination({ page, onClick, length, ...props }) {
             <Pages>
                 {new Array(length).fill().map((_, i) => {
                     return page === i ? (
-                        <CurrentDot size={10} key={i} />
+                        <CurrentDot size={dotSize} key={i} />
                     ) : (
-                        <Dot size={10} key={i} />
+                        <Dot size={dotSize} key={i} />
                     );
                 })}
             </Pages>
             <ArrowCover>
                 <ArrowRight
-                    width={20}
-                    height={20}
+                    width={iconSize}
+                    height={iconSize}
                     onClick={() => {
                         if (page === length - 1) {
                             onClick(0);

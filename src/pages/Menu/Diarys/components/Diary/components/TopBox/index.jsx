@@ -16,7 +16,8 @@ const Container = styled.div`
     );
     height: fit-content;
     width: auto;
-    padding: 10px;
+    padding: 0 10px;
+    --font-size: 18px;
 `;
 
 const DateBox = styled.div`
@@ -25,8 +26,8 @@ const DateBox = styled.div`
     font-family: "Inter";
     font-style: normal;
     font-weight: 700;
-    font-size: 32px;
-    line-height: 39px;
+    font-size: var(--font-size);
+    /* line-height: 39px; */
     text-align: center;
 `;
 
@@ -38,8 +39,8 @@ const DayBox = styled.span`
     font-family: "Inter";
     font-style: normal;
     font-weight: 700;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: var(--font-size);
+    /* line-height: 29px; */
 `;
 
 const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -52,7 +53,7 @@ const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
 
-const emotionEmoji = (emotion, size = 40) => {
+const emotionEmoji = (emotion, iconSize = 30) => {
     let IconComponent;
     switch (emotion) {
         case "1":
@@ -70,7 +71,13 @@ const emotionEmoji = (emotion, size = 40) => {
         default:
             IconComponent = Sunny;
     }
-    return <IconComponent fill={colors[Number(emotion) - 1]} />;
+    return (
+        <IconComponent
+            width={iconSize}
+            height={iconSize}
+            fill={colors[Number(emotion) - 1]}
+        />
+    );
 };
 
 export default function TopBox({ emotion, date }) {
