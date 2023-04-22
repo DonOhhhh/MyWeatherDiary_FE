@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar";
 import UserInfo from "./components/UserInfo";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setToken } from "../Home/reducer/loginSlice";
+import { setAuthorization, setToken } from "../Home/reducer/loginSlice";
 
 const Container = styled.div`
     position: relative;
@@ -53,8 +53,6 @@ const UserInfoContainer = styled.div`
     right: 50px;
 `;
 
-export const loader = () => {};
-
 export default function Main() {
     const sidebarRef = useRef();
     const navigate = useNavigate();
@@ -69,11 +67,10 @@ export default function Main() {
 
     useEffect(() => {
         if (!state.loading) {
-            if (state.token) {
-                dispatch(setToken());
-            }
+            if (!state.token) dispatch(setToken());
+            else dispatch(setAuthorization());
         }
-    }, []);
+    }, [state.token]);
 
     const onChevronClick = () => {
         setIsExpand(!isExpand);

@@ -9,7 +9,7 @@ const initialState = {
 export const getTimeline = createAsyncThunk(
     "diarys/getTimeline",
     async (page = 0) => {
-        const res = await axios.get(`/diary`);
+        const res = await axios.get(`/diary?page=${page}`);
         return res.data;
     }
 );
@@ -17,7 +17,19 @@ export const getTimeline = createAsyncThunk(
 export const fetchDiaryAdd = createAsyncThunk(
     "diarys/fetchDiaryAdd",
     async (body) => {
+        // const offset = date.getTimezoneOffset() * 60000;
+        // const today = new Date(date - offset);
+        // const postDate = today.toISOString();
+        // body.postDate = postDate;
         return axios.post("/diary", body).then((res) => res.data);
+    }
+);
+
+export const fetchDiaryDelete = createAsyncThunk(
+    "diarys/fetchDiaryDelete",
+    async (postId) => {
+        const res = await axios.delete(`/diary/${postId}`);
+        return res.data;
     }
 );
 
@@ -51,8 +63,8 @@ const diarysSlice = createSlice({
         });
         builder.addCase(getTimeline.fulfilled, (state, action) => {
             state.loading = false;
-            console.log(action.payload.data);
-            // state = [...state, ...action.payload.data];
+            state.diarys = action.payload.data;
+            console.log(state.diarys);
             state.error = "";
         });
         builder.addCase(getTimeline.rejected, (state, action) => {
@@ -65,14 +77,25 @@ const diarysSlice = createSlice({
         });
         builder.addCase(fetchDiaryAdd.fulfilled, (state, action) => {
             state.loading = false;
-            console.log(action.payload.data);
-            // state = [...state, ...action.payload.data];
+            state.diarys = action.payload.data;
             state.error = "";
         });
         builder.addCase(fetchDiaryAdd.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
             console.log(state.error);
+        });
+        builder.addCase(fetchDiaryDelete.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(fetchDiaryDelete.fulfilled, (state, action) => {
+            state.loading = false;
+            state.status = action.payload.status;
+            state.error = "";
+        });
+        builder.addCase(fetchDiaryDelete.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error;
         });
     },
 });

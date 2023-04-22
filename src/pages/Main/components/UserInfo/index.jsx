@@ -34,7 +34,8 @@ const Avatar = styled.div`
 
 export default function UserInfo() {
     const dispatch = useDispatch();
-    const state = useSelector((state) => state.profile);
+    const profileState = useSelector((state) => state.profile);
+    const loginState = useSelector((state) => state.login);
     const { nickName } = useSelector((state) => state.profile);
     const avatar = createAvatar(avataaars, {
         seed: nickName,
@@ -47,11 +48,11 @@ export default function UserInfo() {
 
     useEffect(() => {
         dispatch(getUser());
-    }, []);
+    }, [loginState]);
 
     return (
         <Container>
-            {state.loading ? (
+            {profileState.loading ? (
                 <div style={{ width: "100%", textAlign: "center" }}>
                     <Spinner />
                 </div>

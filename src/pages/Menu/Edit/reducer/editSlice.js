@@ -8,7 +8,7 @@ const initialState = {
     contents: [
         {
             id: v4(),
-            imgSrc: "",
+            img: "",
             comment: "",
         },
     ],

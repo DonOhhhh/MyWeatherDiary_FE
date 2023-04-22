@@ -8,6 +8,7 @@ import { getTimeline } from "./reducer/diarysSlice";
 import axios from "axios";
 import { useApi } from "../../../common/hooks/useApi";
 import { setToken } from "../../Home/reducer/loginSlice";
+import Spinner from "../../../common/components/Spinner";
 
 const Wrapper = styled.div`
     display: flex;
@@ -30,20 +31,29 @@ const Container = styled.div`
 
 export default function Diarys() {
     const [page, setPage] = useState(0);
+    const [diarys, setDiarys] = useState([]);
     const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
-    const diarys = diaryState.diarys.slice();
-    const loginState = useSelector((state) => state.login);
+
     useEffect(() => {
-        if (loginState.token) {
-            dispatch(getTimeline());
+        dispatch(getTimeline());
+    }, []);
+
+    useEffect(() => {
+        if (!diaryState.loading && diaryState.diarys.length) {
+            setDiarys(diaryState.diarys.slice());
         }
-    }, [loginState.token]);
+    }, [diaryState]);
+
     return (
         <Wrapper>
             <NewDiary />
             <Container>
-                {diarys.length ? (
+                {diaryState.loading ? (
+                    <div style={{ width: "100%", textAlign: "center" }}>
+                        <Spinner />
+                    </div>
+                ) : diarys.length ? (
                     diarys
                         .sort(
                             (a, b) =>

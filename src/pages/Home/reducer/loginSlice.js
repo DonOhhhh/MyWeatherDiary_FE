@@ -7,11 +7,10 @@ const initialState = {
 };
 
 export const loginReq = createAsyncThunk("login/loginReq", async (enterKey) => {
-    return await axios
-        .post("/user/login", {
-            enterKey,
-        })
-        .then((res) => res.data);
+    const res = await axios.post("/user/login", {
+        enterKey,
+    });
+    return res.data;
 });
 
 const loginSlice = createSlice({
@@ -19,6 +18,10 @@ const loginSlice = createSlice({
     initialState,
     reducers: {
         setToken: (state, action) => {
+            state.token = sessionStorage.getItem("token");
+            return state;
+        },
+        setAuthorization: (state, action) => {
             axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${state.token}`;
@@ -42,4 +45,4 @@ const loginSlice = createSlice({
 });
 
 export default loginSlice.reducer;
-export const { setToken } = loginSlice.actions;
+export const { setToken, setAuthorization } = loginSlice.actions;

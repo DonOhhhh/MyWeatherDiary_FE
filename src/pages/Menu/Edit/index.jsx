@@ -94,7 +94,7 @@ function EditPage() {
     const onSubmit = (values) => {
         dispatch(
             location.pathname === "/main/newdiary"
-                ? diaryAdd(values)
+                ? fetchDiaryAdd(values)
                 : diaryUpdate(values)
         );
         navigate("/main/diarys");
@@ -150,7 +150,7 @@ function EditPage() {
                                                         />
                                                         <RowBox>
                                                             <Field
-                                                                name={`contents[${index}].imgSrc`}
+                                                                name={`contents[${index}].img`}
                                                                 component={
                                                                     ImageBox
                                                                 }

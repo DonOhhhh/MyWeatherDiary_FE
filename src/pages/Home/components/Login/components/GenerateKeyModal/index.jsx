@@ -23,7 +23,7 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "fit-content",
+    width: "50%",
     height: "fit-content",
     bgcolor: "#c5e3ff",
     borderRadius: "20px",
