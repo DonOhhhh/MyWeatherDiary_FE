@@ -90,7 +90,6 @@ export default function TopBox({ emotion, date }) {
     // const offset = date.getTimezoneOffset() * 60000;
     // const today = new Date(date - offset);
     // const postDate = today.toISOString().slice(0, 10);
-    console.log(emotion);
     const postDate = `${date[0]}-${date[1]}-${date[2]}`;
     const dayStr = weekday[new Date(postDate).getDay()];
     return (

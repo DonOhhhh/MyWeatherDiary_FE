@@ -7,6 +7,13 @@ const initialState = {
     loading: true,
 };
 
+const NumToEmotion = {
+    1: "HAPPY",
+    2: "SAD",
+    3: "NEUTRAL",
+    4: "ANGER",
+};
+
 export const fetchDiaryGet = createAsyncThunk(
     "diarys/fetchDiaryGet",
     async (page = 0) => {
@@ -18,10 +25,12 @@ export const fetchDiaryGet = createAsyncThunk(
 export const fetchDiaryAdd = createAsyncThunk(
     "diarys/fetchDiaryAdd",
     async (body, dispatch) => {
-        // const offset = date.getTimezoneOffset() * 60000;
-        // const today = new Date(date - offset);
-        // const postDate = today.toISOString();
-        // body.postDate = postDate;
+        const { postDate, emotion } = body;
+        const offset = postDate.getTimezoneOffset() * 60000;
+        const today = new Date(postDate - offset);
+        body.postDate = today.toISOString();
+        body.emotion = NumToEmotion[emotion];
+        console.log(body);
         const res = await axios.post("/diary", body);
         return res.data;
     }
@@ -29,7 +38,11 @@ export const fetchDiaryAdd = createAsyncThunk(
 export const fetchDiaryUpdate = createAsyncThunk(
     "diarys/fetchDiaryUpdate",
     async (body, dispatch) => {
-        console.log(body);
+        const { postDate, emotion } = body;
+        const offset = postDate.getTimezoneOffset() * 60000;
+        const today = new Date(postDate - offset);
+        body.postDate = today.toISOString();
+        body.emotion = NumToEmotion[emotion];
         const res = await axios.put("/diary", body);
         return res.data;
     }
