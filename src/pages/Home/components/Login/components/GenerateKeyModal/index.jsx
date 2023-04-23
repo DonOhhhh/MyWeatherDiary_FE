@@ -58,30 +58,6 @@ const IconContainer = styled.div`
     }
 `;
 
-// const sendEmail = async (email, enterKey) => {
-//     let transporter = createTransport({
-//         host: "smtp.daum.net",
-//         port: 465,
-//         secure: true, // true for 465, false for other ports
-//         auth: {
-//             user: "ohdoju0905@gmail.com", // generated ethereal user
-//             pass: "tnlqrp7140**", // generated ethereal password
-//         },
-//     });
-
-//     // send mail with defined transport object
-//     let info = await transporter.sendMail({
-//         sender: "MyWeatherDiary",
-//         from: "MyWeatherDiary <no-reply@myweatherdiary.site>",
-//         to: email, // list of receivers
-//         subject: "백업 인증키 안내입니다.", // Subject line
-//         text: `EnterKey : ${enterKey}`, // plain text body
-//     });
-
-//     console.log("Message sent: %s", info.messageId);
-//     return info;
-// };
-
 export default function GenerateKeyModal({ open, setOpen }) {
     const [submitted, setSubmitted] = useState(false);
     const [copyOpen, setCopyOpen] = useState(false);
@@ -156,10 +132,6 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                                     );
                                                     return;
                                                 }
-                                                // const res = await sendEmail(
-                                                //     values.email,
-                                                //     values.enterKey
-                                                // );
                                                 copyOpen && setCopyOpen(false);
                                                 setEmailOpen(true);
                                             }}
