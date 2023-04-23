@@ -58,6 +58,30 @@ const IconContainer = styled.div`
     }
 `;
 
+// const sendEmail = async (email, enterKey) => {
+//     let transporter = createTransport({
+//         host: "smtp.daum.net",
+//         port: 465,
+//         secure: true, // true for 465, false for other ports
+//         auth: {
+//             user: "ohdoju0905@gmail.com", // generated ethereal user
+//             pass: "tnlqrp7140**", // generated ethereal password
+//         },
+//     });
+
+//     // send mail with defined transport object
+//     let info = await transporter.sendMail({
+//         sender: "MyWeatherDiary",
+//         from: "MyWeatherDiary <no-reply@myweatherdiary.site>",
+//         to: email, // list of receivers
+//         subject: "백업 인증키 안내입니다.", // Subject line
+//         text: `EnterKey : ${enterKey}`, // plain text body
+//     });
+
+//     console.log("Message sent: %s", info.messageId);
+//     return info;
+// };
+
 export default function GenerateKeyModal({ open, setOpen }) {
     const [submitted, setSubmitted] = useState(false);
     const [copyOpen, setCopyOpen] = useState(false);
@@ -81,85 +105,102 @@ export default function GenerateKeyModal({ open, setOpen }) {
                         </div>
                     )}
                     <Formik initialValues={state} onSubmit={handleSubmit}>
-                        {submitted ? (
-                            <StyledForm style={{ width: "100%", gap: "20px" }}>
-                                <InputContainer>
-                                    <StyledField
-                                        name="enterKey"
-                                        disabled
-                                        style={{
-                                            textAlign: "center",
-                                            color: "#aaa",
-                                        }}
-                                        value={state.enterKey}
-                                    />
-                                    <CopyToClipboard text={state.enterKey}>
+                        {({ values }) =>
+                            submitted ? (
+                                <StyledForm
+                                    style={{ width: "100%", gap: "20px" }}
+                                >
+                                    <InputContainer>
+                                        <StyledField
+                                            name="enterKey"
+                                            disabled
+                                            style={{
+                                                textAlign: "center",
+                                                color: "#aaa",
+                                            }}
+                                            value={state.enterKey}
+                                        />
+                                        <CopyToClipboard text={state.enterKey}>
+                                            <IconContainer
+                                                onClick={() => {
+                                                    emailOpen &&
+                                                        setEmailOpen(false);
+                                                    setCopyOpen(true);
+                                                }}
+                                            >
+                                                <Copy size={iconSize} />
+                                            </IconContainer>
+                                        </CopyToClipboard>
+                                        <Snackbar
+                                            open={copyOpen}
+                                            onClose={() => setCopyOpen(false)}
+                                            autoHideDuration={1500}
+                                            message="복사되었습니다."
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "center",
+                                            }}
+                                        />
+                                    </InputContainer>
+                                    <InputContainer>
+                                        <StyledField
+                                            name="email"
+                                            placeholder="johndoe@email.com"
+                                        />
                                         <IconContainer
-                                            onClick={() => {
-                                                emailOpen &&
-                                                    setEmailOpen(false);
-                                                setCopyOpen(true);
+                                            onClick={async () => {
+                                                console.log(values.email);
+                                                if (!values.email) {
+                                                    alert(
+                                                        "이메일을 입력해주세요"
+                                                    );
+                                                    return;
+                                                }
+                                                // const res = await sendEmail(
+                                                //     values.email,
+                                                //     values.enterKey
+                                                // );
+                                                copyOpen && setCopyOpen(false);
+                                                setEmailOpen(true);
                                             }}
                                         >
-                                            <Copy size={iconSize} />
+                                            <Send size={iconSize} />
                                         </IconContainer>
-                                    </CopyToClipboard>
-                                    <Snackbar
-                                        open={copyOpen}
-                                        onClose={() => setCopyOpen(false)}
-                                        autoHideDuration={1500}
-                                        message="복사되었습니다."
-                                        anchorOrigin={{
-                                            vertical: "bottom",
-                                            horizontal: "center",
-                                        }}
-                                    />
-                                </InputContainer>
-                                <InputContainer>
-                                    <StyledField
-                                        name="email"
-                                        placeholder="johndoe@email.com"
-                                    />
-                                    <IconContainer
-                                        onClick={() => {
-                                            copyOpen && setCopyOpen(false);
-                                            setEmailOpen(true);
+                                        <Snackbar
+                                            open={emailOpen}
+                                            onClose={() => setEmailOpen(false)}
+                                            autoHideDuration={1500}
+                                            message="이메일로 전송되었습니다."
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "center",
+                                            }}
+                                        />
+                                    </InputContainer>
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            color: "red",
+                                            textAlign: "center",
                                         }}
                                     >
-                                        <Send size={iconSize} />
-                                    </IconContainer>
-                                    <Snackbar
-                                        open={emailOpen}
-                                        onClose={() => setEmailOpen(false)}
-                                        autoHideDuration={1500}
-                                        message="이메일로 전송되었습니다."
-                                        anchorOrigin={{
-                                            vertical: "bottom",
-                                            horizontal: "center",
-                                        }}
-                                    />
-                                </InputContainer>
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        color: "red",
-                                        textAlign: "center",
-                                    }}
+                                        key 분실 시 일기장을 찾을 수 없습니다.
+                                    </div>
+                                </StyledForm>
+                            ) : (
+                                <StyledForm
+                                    style={{ width: "100%", gap: "20px" }}
                                 >
-                                    key 분실 시 일기장을 찾을 수 없습니다.
-                                </div>
-                            </StyledForm>
-                        ) : (
-                            <StyledForm style={{ width: "100%", gap: "20px" }}>
-                                <StyledField
-                                    name="diaryTitle"
-                                    placeholder="일기 주제"
-                                />
-                                <StyledButton type="submit">
-                                    키 생성
-                                </StyledButton>
-                            </StyledForm>
-                        )}
+                                    <StyledField
+                                        name="diaryTitle"
+                                        placeholder="일기 주제"
+                                    />
+                                    <StyledButton type="submit">
+                                        키 생성
+                                    </StyledButton>
+                                </StyledForm>
+                            )
+                        }
                     </Formik>
                 </Box>
             </Fade>
