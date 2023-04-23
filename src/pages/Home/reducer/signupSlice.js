@@ -4,7 +4,7 @@ import axios from "axios";
 const initialState = {
     email: "",
     diaryTitle: "",
-    enterKey: "testtest",
+    enterKey: "",
 };
 
 export const fetchKey = createAsyncThunk(

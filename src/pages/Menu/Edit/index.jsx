@@ -36,7 +36,8 @@ const StyledForm = styled(Form)`
     gap: 30px;
     width: 95%;
     min-width: 400px;
-    height: calc(100vh - 80px);
+    height: 100%;
+    /* height: calc(100vh - 80px); */
     padding: 10px 30px;
     background-color: #d3eaff;
     position: relative;
