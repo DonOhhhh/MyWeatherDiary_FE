@@ -1,14 +1,10 @@
 import styled from "@emotion/styled";
-import { Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Diary from "./components/Diary";
 import NewDiary from "./components/NewDiary";
 import { useEffect, useState } from "react";
-import { getTimeline } from "./reducer/diarysSlice";
-import axios from "axios";
-import { useApi } from "../../../common/hooks/useApi";
-import { setToken } from "../../Home/reducer/loginSlice";
 import Spinner from "../../../common/components/Spinner";
+import { fetchDiaryGet } from "./reducer/diarysSlice";
 
 const Wrapper = styled.div`
     display: flex;
@@ -36,15 +32,14 @@ export default function Diarys() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getTimeline());
+        dispatch(fetchDiaryGet());
     }, []);
 
     useEffect(() => {
         if (!diaryState.loading && diaryState.diarys.length) {
             setDiarys(diaryState.diarys.slice());
         }
-    }, [diaryState]);
-
+    }, [diaryState.loading, diaryState.diarys]);
     return (
         <Wrapper>
             <NewDiary />
@@ -54,29 +49,24 @@ export default function Diarys() {
                         <Spinner />
                     </div>
                 ) : diarys.length ? (
-                    diarys
-                        .sort(
-                            (a, b) =>
-                                new Date(b.postDate) - new Date(a.postDate)
-                        )
-                        .map(({ id, postDate, emotion, contents }, i) => (
-                            <div key={i}>
-                                <Diary
-                                    postId={id}
-                                    date={postDate}
-                                    emotion={emotion}
-                                    contents={contents}
+                    diarys.map(({ id, postDate, emotion, contents }, i) => (
+                        <div key={i}>
+                            <Diary
+                                postId={id}
+                                date={postDate}
+                                emotion={emotion}
+                                contents={contents}
+                            />
+                            {i !== diarys.length - 1 ? (
+                                <hr
+                                    style={{
+                                        border: "0",
+                                        borderTop: "1px dashed lightgray",
+                                    }}
                                 />
-                                {i !== diarys.length - 1 ? (
-                                    <hr
-                                        style={{
-                                            border: "0",
-                                            borderTop: "1px dashed lightgray",
-                                        }}
-                                    />
-                                ) : null}
-                            </div>
-                        ))
+                            ) : null}
+                        </div>
+                    ))
                 ) : (
                     <div>일기가 존재하지 않습니다.</div>
                 )}

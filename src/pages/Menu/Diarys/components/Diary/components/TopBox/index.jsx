@@ -52,6 +52,12 @@ const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 // };
 
 const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
+const EmotionToNum = {
+    HAPPY: "1",
+    SAD: "2",
+    NEUTRAL: "3",
+    ANGER: "4",
+};
 
 const emotionEmoji = (emotion, iconSize = 30) => {
     let IconComponent;
@@ -84,11 +90,12 @@ export default function TopBox({ emotion, date }) {
     // const offset = date.getTimezoneOffset() * 60000;
     // const today = new Date(date - offset);
     // const postDate = today.toISOString().slice(0, 10);
+    console.log(emotion);
     const postDate = `${date[0]}-${date[1]}-${date[2]}`;
     const dayStr = weekday[new Date(postDate).getDay()];
     return (
         <Container>
-            <EmotionBox>{emotionEmoji(emotion)}</EmotionBox>
+            <EmotionBox>{emotionEmoji(EmotionToNum[emotion])}</EmotionBox>
             <DateBox>{postDate}</DateBox>
             <DayBox>{dayStr}</DayBox>
         </Container>

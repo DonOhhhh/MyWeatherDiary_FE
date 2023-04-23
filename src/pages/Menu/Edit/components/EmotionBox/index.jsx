@@ -26,31 +26,14 @@ const StyledField = styled(Field)`
 `;
 
 const colors = ["#fff765", "#3d3d3d", "#296dff", "#e8080f"];
+const emojis = [Sunny, Cloudy, Rainy, Thunder];
+const EmotionToNum = ["HAPPY", "SAD", "NEUTRAL", "ANGER"];
 const icons = (emotion, i) => {
-    let IconComponent;
+    let IconComponent = emojis[i];
+    let fillColor = emotion === `${i + 1}` ? colors[i] : "#cacaca";
     const iconSize = 30;
-    switch (i) {
-        case 0:
-            IconComponent = Sunny;
-            break;
-        case 1:
-            IconComponent = Cloudy;
-            break;
-        case 2:
-            IconComponent = Rainy;
-            break;
-        case 3:
-            IconComponent = Thunder;
-            break;
-        default:
-            IconComponent = Sunny;
-    }
     return (
-        <IconComponent
-            width={iconSize}
-            height={iconSize}
-            fill={emotion === `${i + 1}` ? colors[i] : "#cacaca"}
-        />
+        <IconComponent width={iconSize} height={iconSize} fill={fillColor} />
     );
 };
 

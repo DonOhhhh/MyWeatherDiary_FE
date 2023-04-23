@@ -4,11 +4,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { diaryImport } from "../../../Edit/reducer/editSlice";
-import {
-    diaryDelete,
-    fetchDiaryDelete,
-    getTimeline,
-} from "../../reducer/diarysSlice";
+import { fetchDiaryDelete, fetchDiaryGet } from "../../reducer/diarysSlice";
 import ButtonGroup from "./components/ButtonGroup";
 import CommentBox from "./components/CommentBox";
 import ImageBox from "./components/ImageBox";
@@ -38,6 +34,13 @@ const Container = styled.div`
     border-radius: 15px;
 `;
 
+const EmotionToNum = {
+    HAPPY: "1",
+    SAD: "2",
+    NEUTRAL: "3",
+    ANGER: "4",
+};
+
 export default function Diary({ postId, date, emotion, contents }) {
     const [contentNum, setContentNum] = useState(0);
     const { img, comment } = contents.length && contents[contentNum];
@@ -50,8 +53,8 @@ export default function Diary({ postId, date, emotion, contents }) {
                     dispatch(
                         diaryImport({
                             id: postId,
-                            postDate: date,
-                            emotion,
+                            postDate: new Date(date.slice(0, 3).join("-")),
+                            emotion: EmotionToNum[emotion],
                             contents,
                         })
                     );
@@ -59,7 +62,9 @@ export default function Diary({ postId, date, emotion, contents }) {
                 }}
                 onDelete={() => {
                     if (confirm("삭제하시겠습니까?")) {
-                        dispatch(fetchDiaryDelete(postId));
+                        dispatch(fetchDiaryDelete(postId)).then((data) =>
+                            dispatch(fetchDiaryGet())
+                        );
                     }
                 }}
             />

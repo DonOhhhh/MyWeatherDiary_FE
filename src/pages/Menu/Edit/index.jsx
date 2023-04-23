@@ -8,6 +8,8 @@ import {
     diaryAdd,
     diaryUpdate,
     fetchDiaryAdd,
+    fetchDiaryGet,
+    fetchDiaryUpdate,
 } from "../Diarys/reducer/diarysSlice";
 import DateBox from "./components/DateBox";
 import EmotionBox from "./components/EmotionBox";
@@ -23,7 +25,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: fit-content;
+    height: calc(100vh - 80px);
 `;
 
 const StyledForm = styled(Form)`
@@ -32,7 +34,7 @@ const StyledForm = styled(Form)`
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-    margin-top: 6%;
+    margin-top: 12%;
     gap: 30px;
     width: 95%;
     min-width: 400px;
@@ -96,25 +98,22 @@ function EditPage() {
         dispatch(
             location.pathname === "/main/newdiary"
                 ? fetchDiaryAdd(values)
-                : diaryUpdate(values)
-        );
+                : fetchDiaryUpdate(values)
+        ).then((_) => dispatch(fetchDiaryGet()));
+        dispatch(clear());
         navigate("/main/diarys");
     };
     const validationSchema = Yup.object({
-        date: Yup.date().required("날짜를 입력해주세요"),
+        postDate: Yup.date().required("날짜를 입력해주세요"),
         emotion: Yup.string().required("Emotion Required"),
         contents: Yup.array().min(1, "최소 1개 이상의 일기가 필요합니다."),
     });
     const defaultContent = (id) => ({
         id,
-        imgSrc: "",
+        img: "",
         comment: "",
     });
     let pushFunction;
-
-    useEffect(() => {
-        dispatch(clear());
-    }, []);
 
     return (
         <Formik

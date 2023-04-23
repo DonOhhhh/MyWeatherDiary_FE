@@ -125,7 +125,6 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                         />
                                         <IconContainer
                                             onClick={async () => {
-                                                console.log(values.email);
                                                 if (!values.email) {
                                                     alert(
                                                         "이메일을 입력해주세요"

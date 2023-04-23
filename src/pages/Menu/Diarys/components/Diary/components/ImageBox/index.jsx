@@ -16,5 +16,5 @@ const Image = styled.div`
 `;
 
 export default function ImageBox({ imgSrc }) {
-    return <img src={imgSrc} />;
+    return <Image src={imgSrc} />;
 }

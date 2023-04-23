@@ -18,8 +18,19 @@ const editSlice = createSlice({
     name: "edit",
     initialState,
     reducers: {
-        diaryImport: (_, action) => {
-            return action.payload;
+        diaryImport: (state, action) => {
+            state = action.payload;
+            if (!state.contents.length) {
+                state.contents = [
+                    {
+                        id: v4(),
+                        img: "",
+                        comment: "",
+                    },
+                ];
+            }
+            console.log(state);
+            return state;
         },
         clear: () => {
             return initialState;
