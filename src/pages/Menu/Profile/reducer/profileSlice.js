@@ -6,9 +6,17 @@ const initialState = {
     diaryTitle: "",
 };
 
-export const getUser = createAsyncThunk("profile/getUser", async () => {
-    return await axios.get("/user/auth").then((res) => res.data);
-});
+export const getUser = createAsyncThunk(
+    "profile/getUser",
+    async (_, { rejectWithValue }) => {
+        if (!axios.defaults.headers.common.Authorization)
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
+        const res = await axios.get("/user/auth");
+        return res.data;
+    }
+);
 
 export const updateUser = createAsyncThunk(
     "profile/updateUser",
@@ -41,6 +49,7 @@ const profileSlice = createSlice({
             state.error = "";
         });
         builder.addCase(getUser.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
             state.nickName = "";
             state.diaryTitle = "";

@@ -36,24 +36,29 @@ export default function Diarys() {
     const lastPostRef = useRef();
 
     useEffect(() => {
-        dispatch(fetchDiaryGet(diaryState.page));
-    }, [diaryState.page]);
+        dispatch(fetchDiaryGet());
+    }, []);
 
     useEffect(() => {
         if (observer.current) {
             observer.current.disconnect();
         }
 
-        observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !diaryState.isEnd) {
-                dispatch(pageInc());
+        observer.current = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    dispatch(fetchDiaryGet());
+                }
+            },
+            {
+                threshold: [1],
             }
-        });
+        );
 
         if (lastPostRef.current) {
             observer.current.observe(lastPostRef.current);
         }
-    }, [diaryState.diarys, diaryState.isEnd]);
+    }, [diaryState.diarys]);
 
     return (
         <Wrapper>

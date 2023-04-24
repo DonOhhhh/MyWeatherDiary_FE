@@ -40,8 +40,10 @@ const Content = styled.div`
 const LogoLink = styled(Link)`
     display: flex;
     justify-content: center;
-    margin: 10px 10px;
-    height: ${({ isexpand }) => isexpand};
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+    height: fit-content;
     &:hover {
         cursor: pointer;
     }
@@ -70,7 +72,7 @@ export default function Main() {
             if (!state.token) dispatch(setToken());
             else dispatch(setAuthorization());
         }
-    }, [state.token]);
+    }, [state.token, state.loading]);
 
     const onChevronClick = () => {
         setIsExpand(!isExpand);
@@ -79,11 +81,11 @@ export default function Main() {
     return (
         <Container>
             <Left ref={sidebarRef}>
-                <LogoLink
-                    to="/main/diarys"
-                    isexpand={isExpand ? "78px" : "24px"}
-                >
-                    <SmallLogo />
+                <LogoLink to="/main/diarys">
+                    <SmallLogo
+                        width={isExpand ? 117 : 30}
+                        height={isExpand ? 78 : 24}
+                    />
                 </LogoLink>
                 <Sidebar
                     width={width}

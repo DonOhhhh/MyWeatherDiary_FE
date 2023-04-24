@@ -18,10 +18,14 @@ const NumToEmotion = {
 
 export const fetchDiaryGet = createAsyncThunk(
     "diarys/fetchDiaryGet",
-    async (page = 0, { rejectWithValue }) => {
-        if (!axios.defaults.headers.common.Authorization)
-            return rejectWithValue("Authorization Error");
-        console.log(`page: ${page}`);
+    async (dispatch, getState) => {
+        if (!axios.defaults.headers.common.Authorization) {
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
+        }
+        const { page } = getState.getState().diarys;
+        console.log(page);
         const res = await axios.get(`/diary?page=${page}`);
         return res.data;
     }
@@ -31,30 +35,48 @@ export const fetchDiaryAdd = createAsyncThunk(
     "diarys/fetchDiaryAdd",
     async (body, { rejectWithValue }) => {
         if (!axios.defaults.headers.common.Authorization)
-            return rejectWithValue("Authorization Error");
-        const { postDate, emotion } = body;
-        // console.log(postDate);
-        delete body.id;
-        body.postDate = postDate.slice(0, 19);
-        body.emotion = NumToEmotion[emotion];
-        console.log(body);
-        const res = await axios.post("/diary", body);
-        return res.data;
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
+        const { postDate, emotion, contents } = body;
+        try {
+            const data = {
+                postDate: postDate.toISOString().slice(0, 19),
+                emotion: NumToEmotion[emotion],
+                contents,
+            };
+            console.log(data);
+            const res = await axios.post("/diary", data);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 );
 export const fetchDiaryUpdate = createAsyncThunk(
     "diarys/fetchDiaryUpdate",
     async (body, { rejectWithValue }) => {
         if (!axios.defaults.headers.common.Authorization)
-            return rejectWithValue("Authorization Error");
-        const { id, postDate, emotion } = body;
-        body.postId = id;
-        const today = new Date(postDate.getTime() + 1000 * 60 * 60 * 9);
-        body.postDate = today.toISOString().slice(0, 19);
-        body.emotion = NumToEmotion[emotion];
-        console.log(body);
-        const res = await axios.put("/diary", body);
-        return res.data;
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
+        const { id, postDate, emotion, contents } = body;
+        try {
+            const today = new Date(
+                new Date(postDate).getTime() + 1000 * 60 * 60 * 9
+            );
+            const data = {
+                postId: id,
+                postDate: today.toISOString().slice(0, 19),
+                emotion: NumToEmotion[emotion],
+                contents,
+            };
+            console.log(data);
+            const res = await axios.put("/diary", data);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 );
 
@@ -62,9 +84,15 @@ export const fetchDiaryDelete = createAsyncThunk(
     "diarys/fetchDiaryDelete",
     async (postId, { rejectWithValue }) => {
         if (!axios.defaults.headers.common.Authorization)
-            return rejectWithValue("Authorization Error");
-        const res = await axios.delete(`/diary/${postId}`);
-        return res.data;
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
+        try {
+            const res = await axios.delete(`/diary/${postId}`);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 );
 
@@ -107,6 +135,7 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
             if (action.payload.data.length) {
+                state.page += 1;
                 const newDiaryCollection = action.payload.data
                     .slice()
                     .sort(
@@ -119,7 +148,7 @@ const diarysSlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchDiaryGet.rejected, (state, action) => {
-            if (action.payload !== "Authorization Error") state.loading = false;
+            state.loading = false;
             state.error = action.error;
         });
         builder.addCase(fetchDiaryAdd.pending, (state) => {
@@ -132,21 +161,20 @@ const diarysSlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchDiaryAdd.rejected, (state, action) => {
-            if (action.payload !== "Authorization Error") state.loading = false;
+            state.loading = false;
             state.error = action.error;
         });
         builder.addCase(fetchDiaryUpdate.pending, (state, action) => {
             state.loading = true;
         });
         builder.addCase(fetchDiaryUpdate.fulfilled, (state, action) => {
-            console.log(action);
             state.loading = false;
             state.page = 0;
             state.diarys = [];
             state.error = "";
         });
         builder.addCase(fetchDiaryUpdate.rejected, (state, action) => {
-            if (action.payload !== "Authorization Error") state.loading = false;
+            state.loading = false;
             state.error = action.error;
         });
         builder.addCase(fetchDiaryDelete.pending, (state) => {
@@ -154,12 +182,10 @@ const diarysSlice = createSlice({
         });
         builder.addCase(fetchDiaryDelete.fulfilled, (state, action) => {
             state.loading = false;
-            state.page = 0;
-            state.diarys = [];
             state.error = "";
         });
         builder.addCase(fetchDiaryDelete.rejected, (state, action) => {
-            if (action.payload !== "Authorization Error") state.loading = false;
+            state.loading = false;
             state.error = action.error;
         });
     },

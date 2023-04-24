@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Divider } from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { diaryImport } from "../../../Edit/reducer/editSlice";
 import { fetchDiaryDelete, fetchDiaryGet } from "../../reducer/diarysSlice";
@@ -10,6 +10,8 @@ import CommentBox from "./components/CommentBox";
 import ImageBox from "./components/ImageBox";
 import Pagination from "./components/Pagination";
 import TopBox from "./components/TopBox";
+import Spinner from "../../../../../common/components/Spinner";
+import axios from "axios";
 
 const Wrapper = styled.div`
     display: flex;
@@ -42,10 +44,32 @@ const EmotionToNum = {
 };
 
 export default function Diary({ postId, postDate, emotion, contents }) {
-    const [contentNum, setContentNum] = useState(0);
-    const { img, comment } = contents[contentNum] || {};
+    const [num, setNum] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [postContents, setPostContents] = useState(contents);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    useEffect(() => {
+        const fetchContentsImg = async () => {
+            try {
+                setLoading(true);
+                const results = await Promise.all(
+                    contents.map(({ id }) => axios.get(`/diary/content/${id}`))
+                );
+                const data = results.map((result, i) => ({
+                    id: contents[i].id,
+                    img: result.data.data,
+                    comment: contents[i].comment,
+                }));
+                console.log(data);
+                setPostContents(data);
+                setLoading(false);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchContentsImg();
+    }, []);
     return (
         <Wrapper>
             <ButtonGroup
@@ -55,7 +79,7 @@ export default function Diary({ postId, postDate, emotion, contents }) {
                             id: postId,
                             postDate,
                             emotion: EmotionToNum[emotion],
-                            contents,
+                            contents: postContents,
                         })
                     );
                     navigate("/main/edit");
@@ -70,14 +94,27 @@ export default function Diary({ postId, postDate, emotion, contents }) {
                 <TopBox emotion={emotion} postDate={postDate} />
                 <Divider sx={{ border: "1px solid #e0e0e0" }} />
                 <Pagination
-                    page={contentNum}
-                    onClick={setContentNum}
+                    page={num}
+                    onClick={setNum}
                     length={contents.length}
                 />
-                {img && <Divider sx={{ border: "1px solid #e0e0e0" }} />}
-                {img && <ImageBox imgSrc={img} />}
-                {comment && <Divider sx={{ border: "1px solid #e0e0e0" }} />}
-                {comment && <CommentBox comment={comment} />}
+                {loading && (
+                    <div style={{ width: "100%", textAlign: "center" }}>
+                        <Spinner size={50} />
+                    </div>
+                )}
+                {postContents[num]?.img && (
+                    <Divider sx={{ border: "1px solid #e0e0e0" }} />
+                )}
+                {postContents[num]?.img && (
+                    <ImageBox imgSrc={postContents[num].img} />
+                )}
+                {postContents[num]?.comment && (
+                    <Divider sx={{ border: "1px solid #e0e0e0" }} />
+                )}
+                {postContents[num]?.comment && (
+                    <CommentBox comment={postContents[num].comment} />
+                )}
             </Container>
         </Wrapper>
     );
