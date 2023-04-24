@@ -12,6 +12,19 @@ import GenerateKeyModal from "./components/GenerateKeyModal";
 import { loginReq } from "../../reducer/loginSlice";
 import Spinner from "../../../../common/components/Spinner";
 
+const Wrapper = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #c5e3ff;
+    width: 100%;
+    min-height: 100vh;
+    height: fit-content;
+
+    display: flex;
+    justify-content: center;
+`;
+
 const LogoBox = styled.div`
     margin: 0;
     width: 100%;
@@ -53,24 +66,26 @@ export default function Login() {
         }
     }, [isSubmitted, initialState]);
     return (
-        <Formik
-            initialValues={initialState}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}
-        >
-            <StyledForm>
-                <LogoBox>
-                    <LoginLogo />
-                </LogoBox>
-                <InputBox />
-                {initialState.loading && (
-                    <div style={{ width: "100%", textAlign: "center" }}>
-                        <Spinner />
-                    </div>
-                )}
-                <ButtonBox onGenerateKeyClick={setOpen} />
-                <GenerateKeyModal open={open} setOpen={setOpen} />
-            </StyledForm>
-        </Formik>
+        <Wrapper>
+            <Formik
+                initialValues={initialState}
+                onSubmit={onSubmit}
+                validationSchema={validationSchema}
+            >
+                <StyledForm>
+                    <LogoBox>
+                        <LoginLogo />
+                    </LogoBox>
+                    <InputBox />
+                    {initialState.loading && (
+                        <div style={{ width: "100%", textAlign: "center" }}>
+                            <Spinner />
+                        </div>
+                    )}
+                    <ButtonBox onGenerateKeyClick={setOpen} />
+                    <GenerateKeyModal open={open} setOpen={setOpen} />
+                </StyledForm>
+            </Formik>
+        </Wrapper>
     );
 }

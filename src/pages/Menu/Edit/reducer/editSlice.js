@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 
 const initialState = {
     id: "",
-    postDate: "",
+    postDate: new Date().toISOString(),
     emotion: "1",
     contents: [
         {
@@ -29,7 +29,6 @@ const editSlice = createSlice({
                     },
                 ];
             }
-            console.log(state);
             return state;
         },
         clear: () => {

@@ -86,16 +86,13 @@ const emotionEmoji = (emotion, iconSize = 30) => {
     );
 };
 
-export default function TopBox({ emotion, date }) {
-    // const offset = date.getTimezoneOffset() * 60000;
-    // const today = new Date(date - offset);
-    // const postDate = today.toISOString().slice(0, 10);
-    const postDate = `${date[0]}-${date[1]}-${date[2]}`;
+export default function TopBox({ emotion, postDate }) {
+    const date = postDate.slice(0, 10);
     const dayStr = weekday[new Date(postDate).getDay()];
     return (
         <Container>
             <EmotionBox>{emotionEmoji(EmotionToNum[emotion])}</EmotionBox>
-            <DateBox>{postDate}</DateBox>
+            <DateBox>{date}</DateBox>
             <DayBox>{dayStr}</DayBox>
         </Container>
     );

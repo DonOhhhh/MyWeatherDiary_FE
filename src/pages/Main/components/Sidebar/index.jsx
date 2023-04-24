@@ -45,7 +45,7 @@ const ITEMS = [
     },
     {
         itemText: "Log out",
-        href: "/home/login",
+        href: "/",
         icon: <Unlock />,
     },
 ];

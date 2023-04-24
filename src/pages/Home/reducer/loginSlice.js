@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
     token: sessionStorage.getItem("token"),
+    username: "",
     enterKey: "",
 };
 
@@ -26,6 +27,11 @@ const loginSlice = createSlice({
                 "Authorization"
             ] = `Bearer ${state.token}`;
         },
+        clearToken: (state, action) => {
+            sessionStorage.removeItem("token");
+            state.token = "";
+            return state;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(loginReq.pending, (state) => {
@@ -34,6 +40,7 @@ const loginSlice = createSlice({
         builder.addCase(loginReq.fulfilled, (state, action) => {
             state.loading = false;
             state.token = action.payload.data.token;
+            state.username = action.payload.data.username;
             state.error = "";
         });
         builder.addCase(loginReq.rejected, (state, action) => {

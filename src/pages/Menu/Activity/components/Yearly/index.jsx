@@ -217,7 +217,13 @@ function Yearly({ calendar, onChecked, onCheckboxClick }) {
                     })}
                 </ContributionTable>
             </Container>
-            <ButtonBox style={{ marginTop: "20px" }}>
+            <ButtonBox
+                style={{
+                    marginTop: "20px",
+                    justifyContent: "flex-end",
+                    width: "100%",
+                }}
+            >
                 <ExportButton
                     onClick={() => takeScreenshot(ContributionTableRef)}
                 >

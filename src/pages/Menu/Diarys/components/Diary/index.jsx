@@ -41,9 +41,9 @@ const EmotionToNum = {
     ANGER: "4",
 };
 
-export default function Diary({ postId, date, emotion, contents }) {
+export default function Diary({ postId, postDate, emotion, contents }) {
     const [contentNum, setContentNum] = useState(0);
-    const { img, comment } = contents.length && contents[contentNum];
+    const { img, comment } = contents[contentNum] || {};
     const dispatch = useDispatch();
     const navigate = useNavigate();
     return (
@@ -53,7 +53,7 @@ export default function Diary({ postId, date, emotion, contents }) {
                     dispatch(
                         diaryImport({
                             id: postId,
-                            postDate: new Date(date.slice(0, 3).join("-")),
+                            postDate,
                             emotion: EmotionToNum[emotion],
                             contents,
                         })
@@ -62,14 +62,12 @@ export default function Diary({ postId, date, emotion, contents }) {
                 }}
                 onDelete={() => {
                     if (confirm("삭제하시겠습니까?")) {
-                        dispatch(fetchDiaryDelete(postId)).then((data) =>
-                            dispatch(fetchDiaryGet())
-                        );
+                        dispatch(fetchDiaryDelete(postId));
                     }
                 }}
             />
             <Container id={postId}>
-                <TopBox emotion={emotion} date={date} />
+                <TopBox emotion={emotion} postDate={postDate} />
                 <Divider sx={{ border: "1px solid #e0e0e0" }} />
                 <Pagination
                     page={contentNum}

@@ -5,8 +5,6 @@ import { v4 } from "uuid";
 import * as Yup from "yup";
 import FormError from "../../../common/components/FormError";
 import {
-    diaryAdd,
-    diaryUpdate,
     fetchDiaryAdd,
     fetchDiaryGet,
     fetchDiaryUpdate,
@@ -19,6 +17,21 @@ import ImageBox from "./components/ImageBox";
 import { useEffect } from "react";
 import { clear } from "./reducer/editSlice";
 import { Container, ContentArea, StyledTextArea } from "./components/Styled";
+import Spinner from "../../../common/components/Spinner";
+
+const Loading = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    opacity: 0.7;
+    z-index: 10;
+`;
 
 const Wrapper = styled.div`
     display: flex;
@@ -38,8 +51,7 @@ const StyledForm = styled(Form)`
     gap: 30px;
     width: 95%;
     min-width: 400px;
-    height: 100%;
-    /* height: calc(100vh - 80px); */
+    height: calc(100vh - 200px);
     padding: 10px 30px;
     background-color: #d3eaff;
     position: relative;
@@ -92,16 +104,16 @@ const RowBox = styled.div`
 
 function EditPage() {
     const initialValues = useSelector((state) => state.edit);
+    const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const onSubmit = (values) => {
+    const onSubmit = async (values) => {
+        dispatch(clear());
         dispatch(
             location.pathname === "/main/newdiary"
                 ? fetchDiaryAdd(values)
                 : fetchDiaryUpdate(values)
-        ).then((_) => dispatch(fetchDiaryGet()));
-        dispatch(clear());
-        navigate("/main/diarys");
+        ).then((_) => navigate("/main/diarys"));
     };
     const validationSchema = Yup.object({
         postDate: Yup.date().required("날짜를 입력해주세요"),
@@ -123,9 +135,14 @@ function EditPage() {
         >
             {({ values }) => (
                 <Wrapper>
+                    {diaryState.loading && (
+                        <Loading>
+                            <Spinner size={50} />
+                        </Loading>
+                    )}
                     <StyledForm>
                         <RowBox>
-                            <DateBox />
+                            <DateBox date={values.postDate} />
                             <EmotionBox emotion={values.emotion} />
                         </RowBox>
                         <ContentArea>

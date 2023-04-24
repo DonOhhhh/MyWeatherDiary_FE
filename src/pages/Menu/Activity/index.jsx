@@ -20,7 +20,7 @@ const Center = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 5%;
+    margin-top: 8%;
     width: 80%;
     min-width: 400px;
     height: 100%;
@@ -37,7 +37,7 @@ const SelectContainer = styled.div`
 `;
 
 const SelectType = styled.select`
-    font-size: 24px;
+    font-size: 16px;
     width: fit-content;
     height: fit-content;
     border: none;

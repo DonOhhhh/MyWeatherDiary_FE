@@ -25,16 +25,16 @@ const router = createBrowserRouter([
         element: <App />,
         errorElement: <h1>404 Not Found</h1>,
     },
-    {
-        path: "/home",
-        element: <Home />,
-        children: [
-            {
-                path: "/home/login",
-                element: <Login />,
-            },
-        ],
-    },
+    // {
+    //     path: "/home",
+    //     element: <Home />,
+    //     children: [
+    //         {
+    //             path: "/home/login",
+    //             element: <Login />,
+    //         },
+    //     ],
+    // },
     {
         path: "/main",
         element: <Main />,
@@ -68,9 +68,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <RouterProvider router={router} />
-        </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+        <RouterProvider router={router} />
+    </Provider>
 );

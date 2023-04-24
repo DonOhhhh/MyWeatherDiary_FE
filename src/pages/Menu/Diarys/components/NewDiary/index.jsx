@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import { Edit3, Plus } from "react-feather";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clear } from "../../../Edit/reducer/editSlice";
 
 const Container = styled(Link)`
     display: flex;
@@ -36,8 +38,9 @@ const Container = styled(Link)`
 `;
 
 export default function NewDiary() {
+    const dispatch = useDispatch();
     return (
-        <Container to="/main/newdiary">
+        <Container to="/main/newdiary" onClick={() => dispatch(clear())}>
             <Plus size={30} />
             {"New Diary"}
         </Container>

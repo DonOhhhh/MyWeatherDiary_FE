@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomInput from "./components/CustomInput";
 import { Container, EditItemBox } from "../Styled";
 
-export default function DateBox() {
+export default function DateBox({ date }) {
     return (
         <Container role="group" aria-labelledby="Date-box">
             <EditItemBox>
@@ -16,7 +16,7 @@ export default function DateBox() {
                         const { value } = field;
                         return (
                             <ReactDatePicker
-                                selected={value}
+                                selected={new Date(value)}
                                 onChange={(val) =>
                                     setFieldValue("postDate", val)
                                 }

@@ -29,7 +29,7 @@ const EditItemBox = styled.div`
 const ContentArea = styled.div`
     display: flex;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     overflow-y: scroll;
 `;
 
