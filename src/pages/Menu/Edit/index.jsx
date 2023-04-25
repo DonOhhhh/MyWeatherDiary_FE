@@ -18,20 +18,7 @@ import { useEffect } from "react";
 import { clear } from "./reducer/editSlice";
 import { Container, ContentArea, StyledTextArea } from "./components/Styled";
 import Spinner from "../../../common/components/Spinner";
-
-const Loading = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    opacity: 0.7;
-    z-index: 10;
-`;
+import Loading from "../../../common/components/Loading";
 
 const Wrapper = styled.div`
     display: flex;
@@ -142,7 +129,7 @@ function EditPage() {
                     )}
                     <StyledForm>
                         <RowBox>
-                            <DateBox date={values.postDate} />
+                            <DateBox />
                             <EmotionBox emotion={values.emotion} />
                         </RowBox>
                         <ContentArea>

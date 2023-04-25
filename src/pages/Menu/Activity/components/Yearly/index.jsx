@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
     --table-gap: 5px;
-    --cell-size: 10px;
+    --cell-size: 15px;
     --font-size: calc(var(--cell-size) * 0.7);
     padding: 10px;
     display: grid;
@@ -168,10 +168,10 @@ function Yearly({ calendar, onChecked, onCheckboxClick }) {
         });
         setMonthPosition(tempMonPos);
         setStartRow(new Date(calendar[0].date_format).getDay() + 1);
-    }, [calendar, onChecked]);
+    }, [calendar]);
     return (
         <Wrapper>
-            <div
+            {/* <div
                 style={{
                     width: "100%",
                     display: "flex",
@@ -186,7 +186,7 @@ function Yearly({ calendar, onChecked, onCheckboxClick }) {
                     onChange={onCheckboxClick}
                 />
                 <label htmlFor="fromJan1st">오늘부터</label>
-            </div>
+            </div> */}
             <Container ref={ContributionTableRef}>
                 <MonthTable>
                     {monthPosition.map(([mon, pos], i) => {

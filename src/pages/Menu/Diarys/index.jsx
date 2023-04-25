@@ -28,6 +28,11 @@ const Container = styled.div`
     padding: 0;
 `;
 
+const CenteredBox = styled.div`
+    width: 100%;
+    text-align: center;
+`;
+
 export default function Diarys() {
     const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
@@ -64,40 +69,44 @@ export default function Diarys() {
         <Wrapper>
             <NewDiary />
             <Container>
-                {diaryState.diarys.map(
-                    ({ id, postDate, emotion, contents }, i) => {
-                        return i !== diaryState.diarys.length - 1 ? (
-                            <div key={i}>
-                                <Diary
-                                    postId={id}
-                                    postDate={postDate}
-                                    emotion={emotion}
-                                    contents={contents}
-                                />
-                                <hr
-                                    style={{
-                                        border: "0",
-                                        borderTop: "1px dashed lightgray",
-                                    }}
-                                />
-                            </div>
-                        ) : (
-                            <div key={i} ref={lastPostRef}>
-                                <Diary
-                                    postId={id}
-                                    postDate={postDate}
-                                    emotion={emotion}
-                                    contents={contents}
-                                />
-                            </div>
-                        );
-                    }
+                {diaryState.diarys.length ? (
+                    diaryState.diarys.map(
+                        ({ id, postDate, emotion, contents }, i) => {
+                            return i !== diaryState.diarys.length - 1 ? (
+                                <CenteredBox key={i}>
+                                    <Diary
+                                        postId={id}
+                                        postDate={postDate}
+                                        emotion={emotion}
+                                        contents={contents}
+                                    />
+                                    <hr
+                                        style={{
+                                            border: "0",
+                                            borderTop: "1px dashed lightgray",
+                                        }}
+                                    />
+                                </CenteredBox>
+                            ) : (
+                                <CenteredBox key={i} ref={lastPostRef}>
+                                    <Diary
+                                        postId={id}
+                                        postDate={postDate}
+                                        emotion={emotion}
+                                        contents={contents}
+                                    />
+                                </CenteredBox>
+                            );
+                        }
+                    )
+                ) : (
+                    <CenteredBox>일기가 없습니다</CenteredBox>
                 )}
             </Container>
             {diaryState.loading && (
-                <div style={{ width: "100%", textAlign: "center" }}>
+                <CenteredBox>
                     <Spinner />
-                </div>
+                </CenteredBox>
             )}
         </Wrapper>
     );

@@ -7,7 +7,11 @@ import { ReactComponent as ArrowLeft } from "../../icons/arrow_left.svg";
 import { ReactComponent as ArrowRight } from "../../icons/arrow_right.svg";
 import { ReactComponent as Checkmark } from "../../icons/checked.svg";
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import { check, clearSelected, make_2digit } from "../../reducer/activitySlice";
+import {
+    check,
+    clearSelected,
+    fetchSelectedDiarys,
+} from "../../reducer/activitySlice";
 import produce from "immer";
 import { ButtonBox, ExportButton, takeScreenshot } from "../..";
 import { useDispatch } from "react-redux";
@@ -154,6 +158,8 @@ const SelectedShowBox = styled.div`
     align-items: center;
     font-family: Jua;
 `;
+
+const make_2digit = (n) => (n < 10 ? "0" + n : n);
 
 const getEmoji = (emotion) => {
     const iconSize = 50;
@@ -343,14 +349,16 @@ function Monthly({ calendar }) {
                     </ExportButton>
                     <ExportButton
                         onClick={() => {
-                            const selectedDate = calendar
+                            const selectedDiaryIds = calendar
                                 .filter(({ selected }) => selected)
-                                .map(({ date_format }) => date_format);
-                            if (!selectedDate.length) {
+                                .map(({ id }) => id);
+                            if (!selectedDiaryIds.length) {
                                 alert("날짜를 선택해주세요");
                                 return;
                             }
-                            console.log(selectedDate);
+                            actionDispatch(
+                                fetchSelectedDiarys(selectedDiaryIds)
+                            );
                         }}
                     >
                         Export to PDF

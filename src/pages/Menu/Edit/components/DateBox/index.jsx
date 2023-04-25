@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomInput from "./components/CustomInput";
 import { Container, EditItemBox } from "../Styled";
 
-export default function DateBox({ date }) {
+export default function DateBox() {
     return (
         <Container role="group" aria-labelledby="Date-box">
             <EditItemBox>

@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import Monthly from "./components/Monthly";
 import Yearly from "./components/Yearly";
 import { useDispatch, useSelector } from "react-redux";
-import { makeFakeData } from "./reducer/activitySlice";
+import { fetchCalendar, makeFakeData } from "./reducer/activitySlice";
 import html2canvas from "html2canvas";
+import Spinner from "./../../../common/components/Spinner/index";
+import Loading from "./../../../common/components/Loading/index";
 
 const Container = styled.div`
     display: flex;
@@ -25,7 +27,7 @@ const Center = styled.div`
     min-width: 400px;
     height: 100%;
     gap: 20px;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
 `;
 
 const SelectContainer = styled.div`
@@ -37,7 +39,7 @@ const SelectContainer = styled.div`
 `;
 
 const SelectType = styled.select`
-    font-size: 16px;
+    font-size: 20px;
     width: fit-content;
     height: fit-content;
     border: none;
@@ -113,9 +115,8 @@ export const ExportButton = styled.div`
 `;
 
 export default function Activity() {
-    const calendar = useSelector((state) => state.activity).calendar.slice();
+    const state = useSelector((state) => state.activity);
     const dispatch = useDispatch();
-
     const KST = new Date(Date.now() + 9 * 60 * 60 * 1000);
     const [startDate, setStartDate] = useState(`${KST.getFullYear()}-01-01`);
 
@@ -130,41 +131,44 @@ export default function Activity() {
     };
 
     const [type, setType] = useState("monthly");
-    const handleChange = (e) => {
-        setType(e.target.value);
-    };
-    // useEffect(() => {
-    //     dispatch(makeFakeData(startDate));
-    // }, []);
     useEffect(() => {
         dispatch(makeFakeData(startDate));
+        dispatch(fetchCalendar(KST.getFullYear()));
     }, [startDate]);
+
     return (
         <Container>
+            {state.loading && (
+                <Loading>
+                    <Spinner size={50} />
+                </Loading>
+            )}
             <Center>
                 <SelectContainer>
                     <SelectType
                         name="type"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            setType(e.target.value);
+                        }}
                         defaultValue={type}
                     >
-                        <option name="type" value="monthly">
-                            Monthly
-                        </option>
                         <option name="type" value="yearly">
                             Yearly
+                        </option>
+                        <option name="type" value="monthly">
+                            Monthly
                         </option>
                     </SelectType>
                 </SelectContainer>
                 <ActivityContainer>
                     {type === "yearly" ? (
                         <Yearly
-                            calendar={calendar}
+                            calendar={state.calendar}
                             onChecked={onChecked}
                             onCheckboxClick={handleOnChecked}
                         />
                     ) : (
-                        <Monthly calendar={calendar} />
+                        <Monthly calendar={state.calendar} />
                     )}
                 </ActivityContainer>
             </Center>

@@ -38,10 +38,13 @@ export const fetchDiaryAdd = createAsyncThunk(
             axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${sessionStorage.getItem("token")}`;
-        const { postDate, emotion, contents } = body;
+        let { postDate, emotion, contents } = body;
         try {
             const data = {
-                postDate: postDate.toISOString().slice(0, 19),
+                postDate:
+                    typeof postDate === "string"
+                        ? postDate.slice(0, 19)
+                        : postDate.toISOString().slice(0, 19),
                 emotion: NumToEmotion[emotion],
                 contents,
             };

@@ -63,18 +63,16 @@ export default function Pagination({ page, onClick, length, ...props }) {
     const dotSize = 8;
     return (
         <Container style={{ ...props.style }}>
-            <ArrowCover>
-                <ArrowLeft
-                    width={iconSize}
-                    height={iconSize}
-                    onClick={() => {
-                        if (page === 0) {
-                            onClick(length - 1);
-                        } else {
-                            onClick(page - 1);
-                        }
-                    }}
-                />
+            <ArrowCover
+                onClick={() => {
+                    if (page === 0) {
+                        onClick(length - 1);
+                    } else {
+                        onClick(page - 1);
+                    }
+                }}
+            >
+                <ArrowLeft width={iconSize} height={iconSize} />
             </ArrowCover>
             <Pages>
                 {new Array(length).fill().map((_, i) => {
@@ -85,18 +83,16 @@ export default function Pagination({ page, onClick, length, ...props }) {
                     );
                 })}
             </Pages>
-            <ArrowCover>
-                <ArrowRight
-                    width={iconSize}
-                    height={iconSize}
-                    onClick={() => {
-                        if (page === length - 1) {
-                            onClick(0);
-                        } else {
-                            onClick(page + 1);
-                        }
-                    }}
-                />
+            <ArrowCover
+                onClick={() => {
+                    if (page === length - 1) {
+                        onClick(0);
+                    } else {
+                        onClick(page + 1);
+                    }
+                }}
+            >
+                <ArrowRight width={iconSize} height={iconSize} />
             </ArrowCover>
         </Container>
     );

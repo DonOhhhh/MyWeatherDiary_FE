@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { diaryImport } from "../../../Edit/reducer/editSlice";
-import { fetchDiaryDelete, fetchDiaryGet } from "../../reducer/diarysSlice";
+import {
+    diaryClear,
+    fetchDiaryDelete,
+    fetchDiaryGet,
+} from "../../reducer/diarysSlice";
 import ButtonGroup from "./components/ButtonGroup";
 import CommentBox from "./components/CommentBox";
 import ImageBox from "./components/ImageBox";
@@ -28,7 +32,7 @@ const Container = styled.div`
     margin: 10px 0;
 
     width: 100%;
-    min-width: 400px;
+    max-width: 400px;
     height: auto;
 
     background: #ffffff;
@@ -86,7 +90,10 @@ export default function Diary({ postId, postDate, emotion, contents }) {
                 }}
                 onDelete={() => {
                     if (confirm("삭제하시겠습니까?")) {
-                        dispatch(fetchDiaryDelete(postId));
+                        dispatch(fetchDiaryDelete(postId)).then((_) => {
+                            dispatch(diaryClear());
+                            dispatch(fetchDiaryGet());
+                        });
                     }
                 }}
             />
