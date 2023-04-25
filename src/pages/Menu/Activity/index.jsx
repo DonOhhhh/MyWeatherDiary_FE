@@ -3,10 +3,17 @@ import { useEffect, useState } from "react";
 import Monthly from "./components/Monthly";
 import Yearly from "./components/Yearly";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCalendar, makeFakeData } from "./reducer/activitySlice";
+import {
+    clearExportData,
+    fetchCalendar,
+    makeFakeData,
+    setLoaded,
+    setLoading,
+} from "./reducer/activitySlice";
 import html2canvas from "html2canvas";
 import Spinner from "./../../../common/components/Spinner/index";
 import Loading from "./../../../common/components/Loading/index";
+import axios from "axios";
 
 const Container = styled.div`
     display: flex;
@@ -130,11 +137,59 @@ export default function Activity() {
         setOnChecked(!onChecked);
     };
 
-    const [type, setType] = useState("monthly");
+    const [type, setType] = useState("yearly");
     useEffect(() => {
         dispatch(makeFakeData(startDate));
         dispatch(fetchCalendar(KST.getFullYear()));
     }, [startDate]);
+
+    useEffect(() => {
+        if (!state.exportData?.length) return;
+
+        dispatch(setLoading());
+        const EmotionToNum = {
+            HAPPY: "1",
+            SAD: "2",
+            NEUTRAL: "3",
+            ANGER: "4",
+        };
+
+        const fetchContentsImg = async (contents) => {
+            try {
+                const results = await Promise.all(
+                    contents.map(({ id }) => axios.get(`/diary/content/${id}`))
+                );
+                let data = results.map((result, i) => ({
+                    id: contents[i].id,
+                    img: result.data.data,
+                    comment: contents[i].comment,
+                }));
+                return data;
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        const processData = async () => {
+            const result = state.exportData.slice();
+            const data = await Promise.all(
+                result.map(async ({ emotion, postDate, contents }) => {
+                    return {
+                        postDate: postDate.slice(0, 10),
+                        emotion: EmotionToNum[emotion],
+                        contents: await fetchContentsImg(contents),
+                    };
+                })
+            );
+            return data;
+        };
+
+        processData().then((res) => {
+            dispatch(setLoaded());
+            console.log(res);
+            dispatch(clearExportData());
+        });
+    }, [state.exportData]);
 
     return (
         <Container>

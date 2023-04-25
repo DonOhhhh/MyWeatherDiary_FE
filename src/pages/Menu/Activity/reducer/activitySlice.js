@@ -7,22 +7,6 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //최댓값도 포함, 최솟값도 포함
 }
 
-const fetchContentsImg = async (contents) => {
-    try {
-        const results = await Promise.all(
-            contents.map(({ id }) => axios.get(`/diary/content/${id}`))
-        );
-        let data = results.map((result, i) => ({
-            id: contents[i].id,
-            img: result.data.data,
-            comment: contents[i].comment,
-        }));
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 const makeInitialCalendar = (startDate = "2023-01-01") => {
     const result = [];
     let s_date_obj = new Date(startDate);
@@ -105,6 +89,18 @@ const activitySlice = createSlice({
             }));
             return state;
         },
+        clearExportData: (state) => {
+            state.exportData = [];
+            return state;
+        },
+        setLoading: (state) => {
+            state.loading = true;
+            return state;
+        },
+        setLoaded: (state) => {
+            state.loading = false;
+            return state;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCalendar.pending, (state, action) => {
@@ -149,16 +145,7 @@ const activitySlice = createSlice({
             state.loading = true;
         });
         builder.addCase(fetchSelectedDiarys.fulfilled, (state, action) => {
-            let data = action.payload.data;
-            data = data.map(({ emotion, postDate, contents }) => {
-                return {
-                    postDate: postDate.slice(0, 10),
-                    emotion: EmotionToNum[emotion],
-                    contents: fetchContentsImg(contents),
-                };
-            });
-            console.log(data);
-            state.exportData = data;
+            state.exportData = action.payload.data;
             state.loading = false;
             state.error = "";
         });
@@ -170,4 +157,11 @@ const activitySlice = createSlice({
 });
 
 export default activitySlice.reducer;
-export const { makeFakeData, check, clearSelected } = activitySlice.actions;
+export const {
+    makeFakeData,
+    check,
+    clearSelected,
+    clearExportData,
+    setLoading,
+    setLoaded,
+} = activitySlice.actions;

@@ -38,14 +38,16 @@ export default function ImageBox({
                 accept="image/*"
                 multiple
                 onChange={(e) => {
-                    const file = e.target.files[0];
-                    reader.readAsDataURL(file);
+                    const files = e.target.files;
+                    if (files.length === 0) {
+                        return;
+                    }
+                    reader.readAsDataURL(files[0]);
                     reader.onload = () => {
                         setFieldValue(name, reader.result);
                     };
                 }}
             />
-
             {!value && <AddCircle />}
             {!value && (
                 <p style={{ margin: "0", padding: "0" }}>
