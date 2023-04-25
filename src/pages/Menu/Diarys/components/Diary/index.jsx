@@ -65,7 +65,6 @@ export default function Diary({ postId, postDate, emotion, contents }) {
                     img: result.data.data,
                     comment: contents[i].comment,
                 }));
-                console.log(data);
                 setPostContents(data);
                 setLoading(false);
             } catch (error) {

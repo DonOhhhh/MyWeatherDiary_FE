@@ -150,14 +150,14 @@ const activitySlice = createSlice({
         });
         builder.addCase(fetchSelectedDiarys.fulfilled, (state, action) => {
             let data = action.payload.data;
-            data = data.map(({ id, emotion, postDate, contents }) => {
+            data = data.map(({ emotion, postDate, contents }) => {
                 return {
                     postDate: postDate.slice(0, 10),
                     emotion: EmotionToNum[emotion],
                     contents: fetchContentsImg(contents),
                 };
             });
-            // console.log(data);
+            console.log(data);
             state.exportData = data;
             state.loading = false;
             state.error = "";

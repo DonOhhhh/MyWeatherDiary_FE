@@ -48,7 +48,11 @@ export const fetchDiaryAdd = createAsyncThunk(
                 emotion: NumToEmotion[emotion],
                 contents,
             };
-            console.log(data);
+            console.log(
+                `FetchDiaryAdd : ${data.contents
+                    .map(({ comment }) => comment)
+                    .join(", ")}`
+            );
             const res = await axios.post("/diary", data);
             return res.data;
         } catch (error) {

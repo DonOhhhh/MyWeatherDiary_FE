@@ -162,7 +162,7 @@ const SelectedShowBox = styled.div`
 const make_2digit = (n) => (n < 10 ? "0" + n : n);
 
 const getEmoji = (emotion) => {
-    const iconSize = 50;
+    const iconSize = 40;
     switch (emotion) {
         case "1":
             return <Sunny width={iconSize} height={iconSize} fill="#fff765" />;
