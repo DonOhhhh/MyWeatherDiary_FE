@@ -15,6 +15,9 @@ import {
 import produce from "immer";
 import { ButtonBox, ExportButton, takeScreenshot } from "../..";
 import { useDispatch } from "react-redux";
+import jsPDF from "jspdf";
+import { DUMMY_DATA, EmojiDataURI } from "../../data";
+import { generatePDF } from "./generatePDF";
 
 const Wrapper = styled.div`
     display: flex;
@@ -369,6 +372,9 @@ function Monthly({ calendar }) {
                         }}
                     >
                         Clear
+                    </ExportButton>
+                    <ExportButton onClick={() => generatePDF(DUMMY_DATA)}>
+                        연습
                     </ExportButton>
                 </ButtonBox>
             </BottomBox>

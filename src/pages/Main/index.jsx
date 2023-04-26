@@ -6,6 +6,7 @@ import UserInfo from "./components/UserInfo";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthorization, setToken } from "../Home/reducer/loginSlice";
+import axios from "axios";
 
 const Container = styled.div`
     position: relative;
@@ -69,10 +70,15 @@ export default function Main() {
 
     useEffect(() => {
         if (!state.loading) {
-            if (!state.token) dispatch(setToken());
-            else dispatch(setAuthorization());
+            if (sessionStorage.getItem("token")) {
+                dispatch(setAuthorization());
+                // console.log(axios.defaults.headers.common.Authorization);
+            } else {
+                alert("token이 존재하지 않습니다.");
+                navigate("/");
+            }
         }
-    }, [state.token, state.loading]);
+    }, [state.loading]);
 
     const onChevronClick = () => {
         setIsExpand(!isExpand);

@@ -34,10 +34,6 @@ export const fetchDiaryGet = createAsyncThunk(
 export const fetchDiaryAdd = createAsyncThunk(
     "diarys/fetchDiaryAdd",
     async (body, { rejectWithValue }) => {
-        if (!axios.defaults.headers.common.Authorization)
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${sessionStorage.getItem("token")}`;
         let { postDate, emotion, contents } = body;
         try {
             const data = {
@@ -48,15 +44,13 @@ export const fetchDiaryAdd = createAsyncThunk(
                 emotion: NumToEmotion[emotion],
                 contents,
             };
-            console.log(
-                `FetchDiaryAdd : ${data.contents
-                    .map(({ comment }) => comment)
-                    .join(", ")}`
-            );
+            console.log(data);
             const res = await axios.post("/diary", data);
+            console.log(res.status);
             return res.data;
         } catch (error) {
             console.log(error);
+            return rejectWithValue(error.message);
         }
     }
 );
@@ -83,6 +77,7 @@ export const fetchDiaryUpdate = createAsyncThunk(
             return res.data;
         } catch (error) {
             console.log(error);
+            return rejectWithValue(error.message);
         }
     }
 );
@@ -99,6 +94,7 @@ export const fetchDiaryDelete = createAsyncThunk(
             return res.data;
         } catch (error) {
             console.log(error);
+            return rejectWithValue(error.message);
         }
     }
 );

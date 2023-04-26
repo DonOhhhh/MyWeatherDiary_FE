@@ -55,16 +55,11 @@ export default function Login() {
     });
     const [open, setOpen] = useState(false);
     useEffect(() => {
-        if (isSubmitted && !initialState.loading) {
-            if (initialState.token) {
-                sessionStorage.setItem("token", initialState.token);
-                navigate("/main/diarys");
-            } else {
-                alert("인증키가 존재하지 않습니다.");
-            }
-            setIsSubmitted(false);
+        if (!initialState.loading && initialState.token) {
+            sessionStorage.setItem("token", initialState.token);
+            navigate("/main/diarys");
         }
-    }, [isSubmitted, initialState]);
+    }, [initialState]);
     return (
         <Wrapper>
             <Formik

@@ -47,8 +47,8 @@ export default function UserInfo() {
     }).toString();
 
     useEffect(() => {
-        dispatch(getUser());
-    }, [loginState]);
+        if (!loginState.loading) dispatch(getUser());
+    }, [loginState.loading]);
 
     return (
         <Container>

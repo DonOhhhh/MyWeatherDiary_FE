@@ -53,17 +53,9 @@ export default function Profile() {
 
     const handleDelete = () => {
         if (confirm("일기장을 삭제하시겠습니까?")) {
-            dispatch(deleteUser());
+            dispatch(deleteUser()).then((state) => navigate("/"));
         }
     };
-
-    useEffect(() => {
-        if (!profile.loading) {
-            if (!sessionStorage.getItem("token")) {
-                alert("토큰이 존재하지 않습니다.");
-            }
-        }
-    }, [profile]);
 
     return (
         <Container>

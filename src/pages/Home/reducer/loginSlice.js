@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    token: sessionStorage.getItem("token"),
+    token: "",
     username: "",
     enterKey: "",
 };
@@ -20,17 +20,15 @@ const loginSlice = createSlice({
     reducers: {
         setToken: (state, action) => {
             state.token = sessionStorage.getItem("token");
-            return state;
         },
         setAuthorization: (state, action) => {
             axios.defaults.headers.common[
                 "Authorization"
-            ] = `Bearer ${state.token}`;
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
         },
         clearToken: (state, action) => {
             sessionStorage.removeItem("token");
             state.token = "";
-            return state;
         },
     },
     extraReducers: (builder) => {
@@ -52,4 +50,4 @@ const loginSlice = createSlice({
 });
 
 export default loginSlice.reducer;
-export const { setToken, setAuthorization } = loginSlice.actions;
+export const { setToken, clearToken, setAuthorization } = loginSlice.actions;

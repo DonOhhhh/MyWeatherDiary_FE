@@ -9,6 +9,9 @@ import {
     ChevronRight,
 } from "react-feather";
 import MenuItem from "../MenuItem";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearToken } from "../../../Home/reducer/loginSlice";
 
 const Container = styled.div`
     width: 100%;
@@ -43,11 +46,6 @@ const ITEMS = [
         icon: <User />,
         pathname: "profile",
     },
-    {
-        itemText: "Log out",
-        href: "/",
-        icon: <Unlock />,
-    },
 ];
 
 const WidthControllerContainer = styled.div`
@@ -79,6 +77,8 @@ const WidthControllerContainer = styled.div`
 `;
 
 export default function Sidebar({ width, isExpand, onChevronClick }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     return (
         <Container>
             <WidthControllerContainer
@@ -91,14 +91,24 @@ export default function Sidebar({ width, isExpand, onChevronClick }) {
                 {ITEMS.map(({ itemText, href, icon, pathname }, index) => (
                     <MenuItem
                         key={index}
-                        href={href}
                         itemText={itemText}
                         path={pathname}
                         isExpand={isExpand}
+                        onClick={() => navigate(href)}
                     >
                         {icon}
                     </MenuItem>
                 ))}
+                <MenuItem
+                    itemText={"Log out"}
+                    isExpand={isExpand}
+                    onClick={() => {
+                        dispatch(clearToken());
+                        navigate("/");
+                    }}
+                >
+                    <Unlock />
+                </MenuItem>
             </List>
         </Container>
     );

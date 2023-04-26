@@ -43,11 +43,17 @@ const ListText = styled.div`
     width: fit-content;
 `;
 
-export default function MenuItem({ children, href, itemText, path, isExpand }) {
+export default function MenuItem({
+    children,
+    itemText,
+    path,
+    isExpand,
+    onClick,
+}) {
     const navigate = useNavigate();
     const [, , lastPath] = location.pathname.split("/");
     return lastPath === path ? (
-        <SelectedListItem onClick={() => navigate(`${href}`)}>
+        <SelectedListItem onClick={onClick}>
             {isExpand ? (
                 <>
                     <ListItemIcon>{children}</ListItemIcon>
@@ -58,7 +64,7 @@ export default function MenuItem({ children, href, itemText, path, isExpand }) {
             )}
         </SelectedListItem>
     ) : (
-        <ListItem onClick={() => navigate(`${href}`)}>
+        <ListItem onClick={onClick}>
             {isExpand ? (
                 <>
                     <ListItemIcon>{children}</ListItemIcon>

@@ -9,12 +9,13 @@ const initialState = {
 export const getUser = createAsyncThunk(
     "profile/getUser",
     async (_, { rejectWithValue }) => {
-        if (!axios.defaults.headers.common.Authorization)
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${sessionStorage.getItem("token")}`;
-        const res = await axios.get("/user/auth");
-        return res.data;
+        try {
+            const res = await axios.get("/user/auth");
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error.message);
+        }
     }
 );
 
@@ -26,7 +27,16 @@ export const updateUser = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk("profile/deleteUser", async () => {
-    return await axios.delete("/user/auth").then((res) => res.data);
+    try {
+        const res = await axios.delete("/user/auth");
+        if (res.status === 200) {
+            sessionStorage.removeItem("token");
+            console.log("토큰이 지워졌습니다.");
+        }
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 const profileSlice = createSlice({
@@ -76,8 +86,6 @@ const profileSlice = createSlice({
         });
         builder.addCase(deleteUser.fulfilled, (state, action) => {
             state.loading = false;
-            sessionStorage.removeItem("token");
-            console.log("토큰이 지워졌습니다.");
             state.diaryTitle = "";
             state.nickName = "";
             state.error = "";
