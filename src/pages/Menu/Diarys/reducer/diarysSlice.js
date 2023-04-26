@@ -26,7 +26,7 @@ export const fetchDiaryGet = createAsyncThunk(
         }
         const { page } = getState.getState().diarys;
         console.log(page);
-        const res = await axios.get(`/diary?page=${page}`);
+        const res = await axios.get(`/proxy/diary?page=${page}`);
         return res.data;
     }
 );
@@ -34,8 +34,13 @@ export const fetchDiaryGet = createAsyncThunk(
 export const fetchDiaryAdd = createAsyncThunk(
     "diarys/fetchDiaryAdd",
     async (body, { rejectWithValue }) => {
-        let { postDate, emotion, contents } = body;
         try {
+            if (!axios.defaults.headers.common.Authorization) {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${sessionStorage.getItem("token")}`;
+            }
+            let { postDate, emotion, contents } = body;
             const data = {
                 postDate:
                     typeof postDate === "string"
@@ -45,7 +50,7 @@ export const fetchDiaryAdd = createAsyncThunk(
                 contents,
             };
             console.log(data);
-            const res = await axios.post("/diary", data);
+            const res = await axios.post(`/proxy/diary`, data);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -56,12 +61,13 @@ export const fetchDiaryAdd = createAsyncThunk(
 export const fetchDiaryUpdate = createAsyncThunk(
     "diarys/fetchDiaryUpdate",
     async (body, { rejectWithValue }) => {
-        if (!axios.defaults.headers.common.Authorization)
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${sessionStorage.getItem("token")}`;
-        const { id, postDate, emotion, contents } = body;
         try {
+            if (!axios.defaults.headers.common.Authorization) {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${sessionStorage.getItem("token")}`;
+            }
+            const { id, postDate, emotion, contents } = body;
             const today = new Date(
                 new Date(postDate).getTime() + 1000 * 60 * 60 * 9
             );
@@ -72,7 +78,7 @@ export const fetchDiaryUpdate = createAsyncThunk(
                 contents,
             };
             console.log(data);
-            const res = await axios.put("/diary", data);
+            const res = await axios.put(`/proxy/diary`, data);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -84,12 +90,13 @@ export const fetchDiaryUpdate = createAsyncThunk(
 export const fetchDiaryDelete = createAsyncThunk(
     "diarys/fetchDiaryDelete",
     async (postId, { rejectWithValue }) => {
-        if (!axios.defaults.headers.common.Authorization)
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${sessionStorage.getItem("token")}`;
         try {
-            const res = await axios.delete(`/diary/${postId}`);
+            if (!axios.defaults.headers.common.Authorization) {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${sessionStorage.getItem("token")}`;
+            }
+            const res = await axios.delete(`/proxy/diary/${postId}`);
             return res.data;
         } catch (error) {
             console.log(error);

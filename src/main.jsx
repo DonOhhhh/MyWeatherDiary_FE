@@ -14,7 +14,7 @@ import Activity from "./pages/Menu/Activity";
 import axios from "axios";
 
 axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 // axios.defaults.headers["Access-Control-Allow-Credentials"] = "*";
 //axios.defaults.headers["Origin"] = "http://192.168.0.47:8080";
 const router = createBrowserRouter([

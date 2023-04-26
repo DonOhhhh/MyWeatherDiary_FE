@@ -157,7 +157,9 @@ export default function Activity() {
         const fetchContentsImg = async (contents) => {
             try {
                 const results = await Promise.all(
-                    contents.map(({ id }) => axios.get(`/diary/content/${id}`))
+                    contents.map(({ id }) =>
+                        axios.get(`/proxy/diary/content/${id}`)
+                    )
                 );
                 let data = results.map((result, i) => ({
                     id: contents[i].id,

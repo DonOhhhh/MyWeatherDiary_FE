@@ -58,7 +58,9 @@ export default function Diary({ postId, postDate, emotion, contents }) {
             try {
                 setLoading(true);
                 const results = await Promise.all(
-                    contents.map(({ id }) => axios.get(`/diary/content/${id}`))
+                    contents.map(({ id }) =>
+                        axios.get(`/proxy/diary/content/${id}`)
+                    )
                 );
                 const data = results.map((result, i) => ({
                     id: contents[i].id,

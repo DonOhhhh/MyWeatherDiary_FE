@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const loginReq = createAsyncThunk("login/loginReq", async (enterKey) => {
-    const res = await axios.post("/user/login", {
+    const res = await axios.post(`/proxy/user/login`, {
         enterKey,
     });
     return res.data;
@@ -38,7 +38,9 @@ const loginSlice = createSlice({
         builder.addCase(loginReq.fulfilled, (state, action) => {
             state.loading = false;
             state.token = action.payload.data.token;
+            sessionStorage.setItem("token", state.token);
             state.username = action.payload.data.username;
+            sessionStorage.setItem("username", state.username);
             state.error = "";
         });
         builder.addCase(loginReq.rejected, (state, action) => {
