@@ -65,6 +65,18 @@ const router = createBrowserRouter([
     },
 ]);
 
+// var httpProxy = require('http-proxy');
+// // Error example
+// //
+// // Http Proxy Server with bad target
+// //
+// var proxy = httpProxy.createServer({
+//   target:'http://localhost:9005'
+// });
+// proxy.on('proxyRes', function (proxyRes, req, res) {
+//     console.log('RAW Response from the target', JSON.stringify(proxyRes.headers, true, 2));
+//   });
+
 ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
         <RouterProvider router={router} />

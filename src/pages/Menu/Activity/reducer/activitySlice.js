@@ -41,7 +41,7 @@ export const fetchCalendar = createAsyncThunk(
                     "Authorization"
                 ] = `Bearer ${sessionStorage.getItem("token")}`;
             }
-            const result = await axios.get(`/proxy/diary/activity/${year}`);
+            const result = await axios.get("" + `/diary/activity/${year}`);
             return result.data;
         } catch (error) {
             console.log(error);
@@ -58,7 +58,7 @@ export const fetchSelectedDiarys = createAsyncThunk(
                     "Authorization"
                 ] = `Bearer ${sessionStorage.getItem("token")}`;
             }
-            const res = await axios.post(`/proxy/diary/activity`, data);
+            const res = await axios.post("" + `/diary/activity`, data);
             return res.data;
         } catch (error) {
             console.log(error);

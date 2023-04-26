@@ -15,7 +15,7 @@ export const getUser = createAsyncThunk(
                     "Authorization"
                 ] = `Bearer ${sessionStorage.getItem("token")}`;
             }
-            const res = await axios.get(`/proxy/user/auth`);
+            const res = await axios.get("" + `/user/auth`);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -32,9 +32,7 @@ export const updateUser = createAsyncThunk(
                 "Authorization"
             ] = `Bearer ${sessionStorage.getItem("token")}`;
         }
-        return await axios
-            .put(`/proxy/user/auth`, body)
-            .then((res) => res.data);
+        return await axios.put("" + `/user/auth`, body).then((res) => res.data);
     }
 );
 
@@ -45,7 +43,7 @@ export const deleteUser = createAsyncThunk("profile/deleteUser", async () => {
                 "Authorization"
             ] = `Bearer ${sessionStorage.getItem("token")}`;
         }
-        const res = await axios.delete(`/proxy/user/auth`);
+        const res = await axios.delete("" + `/user/auth`);
         if (res.status === 200) {
             sessionStorage.removeItem("token");
             console.log("토큰이 지워졌습니다.");

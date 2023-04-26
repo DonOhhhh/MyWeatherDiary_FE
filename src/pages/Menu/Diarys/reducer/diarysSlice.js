@@ -26,7 +26,7 @@ export const fetchDiaryGet = createAsyncThunk(
         }
         const { page } = getState.getState().diarys;
         console.log(page);
-        const res = await axios.get(`/proxy/diary?page=${page}`);
+        const res = await axios.get("" + `/diary?page=${page}`);
         return res.data;
     }
 );
@@ -50,7 +50,7 @@ export const fetchDiaryAdd = createAsyncThunk(
                 contents,
             };
             console.log(data);
-            const res = await axios.post(`/proxy/diary`, data);
+            const res = await axios.post("" + `/diary`, data);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -78,7 +78,7 @@ export const fetchDiaryUpdate = createAsyncThunk(
                 contents,
             };
             console.log(data);
-            const res = await axios.put(`/proxy/diary`, data);
+            const res = await axios.put("" + `/diary`, data);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -96,7 +96,7 @@ export const fetchDiaryDelete = createAsyncThunk(
                     "Authorization"
                 ] = `Bearer ${sessionStorage.getItem("token")}`;
             }
-            const res = await axios.delete(`/proxy/diary/${postId}`);
+            const res = await axios.delete("" + `/diary/${postId}`);
             return res.data;
         } catch (error) {
             console.log(error);

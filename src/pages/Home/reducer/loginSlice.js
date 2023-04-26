@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const loginReq = createAsyncThunk("login/loginReq", async (enterKey) => {
-    const res = await axios.post(`/proxy/user/login`, {
+    const res = await axios.post("" + `/user/login`, {
         enterKey,
     });
     return res.data;

@@ -158,7 +158,7 @@ export default function Activity() {
             try {
                 const results = await Promise.all(
                     contents.map(({ id }) =>
-                        axios.get(`/proxy/diary/content/${id}`)
+                        axios.get("" + `/diary/content/${id}`)
                     )
                 );
                 let data = results.map((result, i) => ({
