@@ -46,7 +46,6 @@ export const fetchDiaryAdd = createAsyncThunk(
             };
             console.log(data);
             const res = await axios.post("/diary", data);
-            console.log(res.status);
             return res.data;
         } catch (error) {
             console.log(error);
