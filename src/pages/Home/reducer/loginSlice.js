@@ -4,7 +4,6 @@ import axios from "axios";
 const initialState = {
     token: "",
     username: "",
-    enterKey: "",
     loading: false,
     error: "",
 };
@@ -38,6 +37,7 @@ const loginSlice = createSlice({
         clearToken: (state, action) => {
             sessionStorage.removeItem("token");
             sessionStorage.removeItem("username");
+            delete axios.defaults.headers.common.Authorization;
             state.token = "";
             state.username = "";
         },
@@ -56,10 +56,9 @@ const loginSlice = createSlice({
             state.error = "";
         });
         builder.addCase(loginReq.rejected, (state, action) => {
-            console.log(action);
             state.loading = false;
             state.token = "";
-            state.error = action.error.message;
+            state.error = action.error;
         });
     },
 });

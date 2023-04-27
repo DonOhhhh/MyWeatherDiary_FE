@@ -18,7 +18,6 @@ export const getUser = createAsyncThunk(
             const res = await axios.get("" + `/user/auth`);
             return res.data;
         } catch (error) {
-            console.log(error);
             return rejectWithValue(error.message);
         }
     }
@@ -48,7 +47,6 @@ export const deleteUser = createAsyncThunk(
             const res = await axios.delete("" + `/user/auth`);
             return res.data;
         } catch (error) {
-            console.log(error);
             return rejectWithValue(`${error.message}`);
         }
     }
@@ -74,7 +72,6 @@ const profileSlice = createSlice({
             state.error = "";
         });
         builder.addCase(getUser.rejected, (state, action) => {
-            console.log(action);
             state.loading = false;
             state.nickName = "";
             state.diaryTitle = "";
@@ -106,7 +103,7 @@ const profileSlice = createSlice({
             state.error = "";
         });
         builder.addCase(deleteUser.rejected, (state, action) => {
-            console.log(action.error);
+            console.log(action);
             state.loading = false;
             state.error = action.error.message;
         });

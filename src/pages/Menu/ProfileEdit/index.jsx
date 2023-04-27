@@ -113,9 +113,9 @@ export default function ProfileEdit() {
                     </ErrorMessage>
 
                     <StyledLabel htmlFor="diaryTitle">
-                        <RedStar>*</RedStar>Diary Title
+                        <RedStar>*</RedStar>Diary Topic
                     </StyledLabel>
-                    <StyledField name="diaryTitle" placeholder="diaryTitle" />
+                    <StyledField name="diaryTitle" placeholder="Diary Topic" />
                     <ErrorMessage name="diaryTitle">
                         {(errMsg) => <FormError errorMessage={errMsg} />}
                     </ErrorMessage>

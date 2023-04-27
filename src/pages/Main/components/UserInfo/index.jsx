@@ -47,8 +47,12 @@ export default function UserInfo() {
     }).toString();
 
     useEffect(() => {
-        if (!loginState.loading) dispatch(getUser());
-    }, [loginState.loading]);
+        if (!loginState.loading) {
+            if (sessionStorage.getItem("token")) {
+                dispatch(getUser());
+            }
+        }
+    }, [loginState.token]);
 
     return (
         <Container>

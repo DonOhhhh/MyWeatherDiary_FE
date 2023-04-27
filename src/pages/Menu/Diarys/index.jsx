@@ -43,7 +43,7 @@ export default function Diarys() {
 
     useEffect(() => {
         if (loginState.token) {
-            console.log(sessionStorage.getItem("username"));
+            // console.log(sessionStorage.getItem("username"));
             dispatch(fetchDiaryGet());
         }
     }, [loginState.token]);

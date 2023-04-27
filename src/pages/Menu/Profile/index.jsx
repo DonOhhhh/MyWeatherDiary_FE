@@ -9,6 +9,8 @@ import { deleteUser, updateProfile } from "./reducer/profileSlice";
 import UpdateBox from "./components/UpdateBox";
 import BottomBox from "./components/BottomBox";
 import { useNavigate } from "react-router-dom";
+import { clearToken } from "../../Home/reducer/loginSlice";
+import { diaryClear } from "../Diarys/reducer/diarysSlice";
 
 const Container = styled.div`
     display: flex;
@@ -34,15 +36,6 @@ const Center = styled.div`
 export default function Profile() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     dispatch(
-    //         updateProfile({
-    //             username: "aaaa",
-    //             diaryTitle: "음식일기",
-    //             email: "johndoe@gmail.com",
-    //         })
-    //     );
-    // }, []);
 
     const profile = useSelector((state) => state.profile);
     const { nickName, diaryTitle } = profile;
@@ -54,7 +47,8 @@ export default function Profile() {
     const handleDelete = () => {
         if (confirm("일기장을 삭제하시겠습니까?")) {
             dispatch(deleteUser()).then((state) => {
-                console.log(state);
+                dispatch(clearToken());
+                dispatch(diaryClear());
                 navigate("/");
             });
         }

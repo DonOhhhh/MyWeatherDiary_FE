@@ -60,7 +60,8 @@ export default function Login() {
             if (!error && token) {
                 navigate("/main/diarys");
             } else if (error) {
-                alert(error);
+                alert("키가 존재하지 않습니다.");
+                navigate("/");
             }
         }
     }, [initialState.loading]);

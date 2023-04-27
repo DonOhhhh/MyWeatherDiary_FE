@@ -75,10 +75,10 @@ export default function Main() {
                 // console.log(axios.defaults.headers.common.Authorization);
             } else {
                 // alert("token이 존재하지 않습니다.");
-                navigate("/");
+                // navigate("/");
             }
         }
-    }, [state.loading]);
+    }, [state.token]);
 
     const onChevronClick = () => {
         setIsExpand(!isExpand);
