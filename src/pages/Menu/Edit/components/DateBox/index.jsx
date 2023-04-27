@@ -27,7 +27,7 @@ export default function DateBox() {
                         const { value } = field;
                         return (
                             <ReactDatePicker
-                                selected={value}
+                                selected={value ? new Date(value) : value}
                                 onChange={(val) =>
                                     setFieldValue("postDate", val)
                                 }

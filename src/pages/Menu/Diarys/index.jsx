@@ -84,6 +84,7 @@ export default function Diarys() {
                                         style={{
                                             border: "0",
                                             borderTop: "1px dashed lightgray",
+                                            width: "400px",
                                         }}
                                     />
                                 </CenteredBox>
