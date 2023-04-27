@@ -29,5 +29,5 @@ const Container = styled.textarea`
 `;
 
 export default function CommentBox({ comment }) {
-    return <Container disabled>{comment}</Container>;
+    return <Container disabled value={comment}></Container>;
 }

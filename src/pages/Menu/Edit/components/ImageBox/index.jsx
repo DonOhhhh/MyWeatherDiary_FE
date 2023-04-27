@@ -7,7 +7,6 @@ const ShowBox = styled.label`
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: 400px;
     height: 100%;
 
     background: #ffffff;

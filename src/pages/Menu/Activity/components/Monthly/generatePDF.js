@@ -57,6 +57,7 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
             img.src = newImg;
             img.onload = function () {
                 const { width, height } = this;
+                console.log(width, height);
                 resolve({
                     width,
                     height,
@@ -64,16 +65,28 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
             };
         });
     };
-    const { imgWidth, imgHeight } = await getImageSize(diaryImg);
-    const x = (pageWidth - imgWidth) / 2;
-    const y = pageHeight * 0.1;
-    doc.addImage(diaryImg, "JPEG", x, y, imgWidth, imgHeight);
+    const { width: imgWidth, height: imgHeight } = await getImageSize(diaryImg);
+
+    const maxWidth = pageWidth * 0.9;
+    const maxHeight = pageHeight * 0.6;
+
+    const widthRatio = maxWidth / imgWidth;
+    const heightRatio = maxHeight / imgHeight;
+
+    const ratio = Math.min(widthRatio, heightRatio);
+
+    const newWidth = imgWidth * ratio;
+    const newHeight = imgHeight * ratio;
+
+    const x = (pageWidth - newWidth) / 2;
+    const y = pageHeight * 0.1 + (maxHeight - newHeight) / 2;
+    doc.addImage(diaryImg, "JPEG", x, y, newWidth, newHeight);
 
     // 코멘트를 삽입함.
     text = comment;
     fontSize = 15;
     X = pageWidth * 0.05;
-    Y = y + imgHeight > pageHeight * 0.7 ? y + imgHeight : pageHeight * 0.7;
+    Y = pageHeight * 0.75;
     doc.setFontSize(fontSize);
     const lines = doc.splitTextToSize(text, lineLength);
     for (const line of lines) {

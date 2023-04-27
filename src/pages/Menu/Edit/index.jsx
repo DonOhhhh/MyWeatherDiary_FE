@@ -26,7 +26,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 80px);
+    height: 100%;
 `;
 
 const StyledForm = styled(Form)`
@@ -35,11 +35,12 @@ const StyledForm = styled(Form)`
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-    margin-top: 12%;
-    gap: 30px;
+    margin-top: 8%;
+    gap: 15px;
     width: 95%;
     min-width: 400px;
-    height: calc(100vh - 200px);
+    height: fit-content;
+    max-height: calc(100vh - 200px);
     padding: 10px 30px;
     background-color: #d3eaff;
     position: relative;
@@ -87,6 +88,7 @@ const RowBox = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 200px;
     gap: 10px;
 `;
 
@@ -132,11 +134,11 @@ function EditPage() {
                         </Loading>
                     )}
                     <StyledForm>
-                        <RowBox>
+                        <RowBox style={{ height: "fit-content" }}>
                             <DateBox />
                             <EmotionBox emotion={values.emotion} />
                         </RowBox>
-                        <ContentArea>
+                        <ContentArea style={{ maxHeight: "670px" }}>
                             <Container
                                 role="group"
                                 aria-labelledby="Content-box"
@@ -156,7 +158,11 @@ function EditPage() {
                                                                 remove(index)
                                                             }
                                                         />
-                                                        <RowBox>
+                                                        <RowBox
+                                                            style={{
+                                                                height: "300px",
+                                                            }}
+                                                        >
                                                             <Field
                                                                 name={`contents[${index}].img`}
                                                                 component={

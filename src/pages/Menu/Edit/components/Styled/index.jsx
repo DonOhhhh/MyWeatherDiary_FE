@@ -41,9 +41,10 @@ const StyledTextArea = styled(Field)`
     font-size: 20px;
     font-weight: 400;
     overflow-y: scroll;
-    min-height: 400px;
+    scrollbar-width: thin;
     height: 100%;
     width: 100%;
+    resize: none;
 `;
 
 export { Container, EditItemBox, StyledTextArea, ContentArea };

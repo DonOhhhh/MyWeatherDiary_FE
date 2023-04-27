@@ -25,7 +25,7 @@ export const fetchDiaryGet = createAsyncThunk(
             ] = `Bearer ${sessionStorage.getItem("token")}`;
         }
         const { page } = getState.getState().diarys;
-        console.log(page);
+        // console.log(page);
         const res = await axios.get("" + `/diary?page=${page}`);
         return res.data;
     }
