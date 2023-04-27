@@ -5,14 +5,23 @@ const initialState = {
     token: "",
     username: "",
     enterKey: "",
+    loading: false,
+    error: "",
 };
 
-export const loginReq = createAsyncThunk("login/loginReq", async (enterKey) => {
-    const res = await axios.post("" + `/user/login`, {
-        enterKey,
-    });
-    return res.data;
-});
+export const loginReq = createAsyncThunk(
+    "login/loginReq",
+    async (enterKey, { rejectWithValue }) => {
+        try {
+            const res = await axios.post("" + `/user/login`, {
+                enterKey,
+            });
+            return res.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 const loginSlice = createSlice({
     name: "login",
@@ -41,11 +50,13 @@ const loginSlice = createSlice({
             state.loading = false;
             state.token = action.payload.data.token;
             sessionStorage.setItem("token", state.token);
+            axios.defaults.headers.common.Authorization = `Bearer ${state.token}`;
             state.username = action.payload.data.username;
             sessionStorage.setItem("username", state.username);
             state.error = "";
         });
         builder.addCase(loginReq.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
             state.token = "";
             state.error = action.error.message;

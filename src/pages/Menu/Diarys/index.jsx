@@ -35,14 +35,18 @@ const CenteredBox = styled.div`
 
 export default function Diarys() {
     const diaryState = useSelector((state) => state.diarys);
+    const loginState = useSelector((state) => state.login);
     const dispatch = useDispatch();
 
     const observer = useRef();
     const lastPostRef = useRef();
 
     useEffect(() => {
-        dispatch(fetchDiaryGet());
-    }, []);
+        if (loginState.token) {
+            console.log(sessionStorage.getItem("username"));
+            dispatch(fetchDiaryGet());
+        }
+    }, [loginState.token]);
 
     useEffect(() => {
         if (observer.current) {

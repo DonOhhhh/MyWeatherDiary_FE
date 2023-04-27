@@ -55,11 +55,15 @@ export default function Login() {
     });
     const [open, setOpen] = useState(false);
     useEffect(() => {
-        if (!initialState.loading && initialState.token) {
-            sessionStorage.setItem("token", initialState.token);
-            navigate("/main/diarys");
+        const { loading, error, token } = initialState;
+        if (!loading) {
+            if (!error && token) {
+                navigate("/main/diarys");
+            } else if (error) {
+                alert(error);
+            }
         }
-    }, [initialState]);
+    }, [initialState.loading]);
     return (
         <Wrapper>
             <Formik

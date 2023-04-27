@@ -53,7 +53,10 @@ export default function Profile() {
 
     const handleDelete = () => {
         if (confirm("일기장을 삭제하시겠습니까?")) {
-            dispatch(deleteUser()).then((state) => navigate("/"));
+            dispatch(deleteUser()).then((state) => {
+                console.log(state);
+                navigate("/");
+            });
         }
     };
 

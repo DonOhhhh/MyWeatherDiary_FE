@@ -74,7 +74,7 @@ export default function Main() {
                 dispatch(setAuthorization());
                 // console.log(axios.defaults.headers.common.Authorization);
             } else {
-                alert("token이 존재하지 않습니다.");
+                // alert("token이 존재하지 않습니다.");
                 navigate("/");
             }
         }

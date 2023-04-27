@@ -12,6 +12,7 @@ import MenuItem from "../MenuItem";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearToken } from "../../../Home/reducer/loginSlice";
+import { diaryClear } from "../../../Menu/Diarys/reducer/diarysSlice";
 
 const Container = styled.div`
     width: 100%;
@@ -104,6 +105,7 @@ export default function Sidebar({ width, isExpand, onChevronClick }) {
                     isExpand={isExpand}
                     onClick={() => {
                         dispatch(clearToken());
+                        dispatch(diaryClear());
                         navigate("/");
                     }}
                 >

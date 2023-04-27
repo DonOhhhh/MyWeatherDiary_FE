@@ -36,23 +36,23 @@ export const updateUser = createAsyncThunk(
     }
 );
 
-export const deleteUser = createAsyncThunk("profile/deleteUser", async () => {
-    try {
-        if (!axios.defaults.headers.common.Authorization) {
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${sessionStorage.getItem("token")}`;
+export const deleteUser = createAsyncThunk(
+    "profile/deleteUser",
+    async (_, { rejectWithValue }) => {
+        try {
+            if (!axios.defaults.headers.common.Authorization) {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${sessionStorage.getItem("token")}`;
+            }
+            const res = await axios.delete("" + `/user/auth`);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(`${error.message}`);
         }
-        const res = await axios.delete("" + `/user/auth`);
-        if (res.status === 200) {
-            sessionStorage.removeItem("token");
-            console.log("토큰이 지워졌습니다.");
-        }
-        return res.data;
-    } catch (error) {
-        console.log(error);
     }
-});
+);
 
 const profileSlice = createSlice({
     name: "profile",
@@ -106,10 +106,9 @@ const profileSlice = createSlice({
             state.error = "";
         });
         builder.addCase(deleteUser.rejected, (state, action) => {
+            console.log(action.error);
             state.loading = false;
             state.error = action.error.message;
-            // console.log(axios.defaults.headers.common.Authorization);
-            console.log(action.error);
         });
     },
 });
