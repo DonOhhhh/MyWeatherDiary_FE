@@ -20,6 +20,7 @@ import { Container, ContentArea, StyledTextArea } from "./components/Styled";
 import Spinner from "../../../common/components/Spinner";
 import Loading from "../../../common/components/Loading";
 import { fetchCalendar } from "./../Activity/reducer/activitySlice";
+import CommentBox from "./components/CommentBox";
 
 const Wrapper = styled.div`
     display: flex;
@@ -169,9 +170,10 @@ function EditPage() {
                                                                     ImageBox
                                                                 }
                                                             />
-                                                            <StyledTextArea
-                                                                as="textarea"
-                                                                placeholder="some comments..."
+                                                            <Field
+                                                                component={
+                                                                    CommentBox
+                                                                }
                                                                 name={`contents[${index}].comment`}
                                                             />
                                                         </RowBox>
