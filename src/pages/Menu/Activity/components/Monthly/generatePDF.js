@@ -107,5 +107,5 @@ export const generatePDF = async (data) => {
     // 마지막 페에지를 지움
     doc.deletePage(doc.getNumberOfPages());
     // Save the PDF
-    doc.save("example.pdf");
+    doc.save(`${new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString()}.pdf`);
 };

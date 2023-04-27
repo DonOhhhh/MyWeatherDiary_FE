@@ -28,7 +28,9 @@ const loginSlice = createSlice({
         },
         clearToken: (state, action) => {
             sessionStorage.removeItem("token");
+            sessionStorage.removeItem("username");
             state.token = "";
+            state.username = "";
         },
     },
     extraReducers: (builder) => {

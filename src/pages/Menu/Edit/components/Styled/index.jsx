@@ -41,7 +41,7 @@ const StyledTextArea = styled(Field)`
     font-size: 20px;
     font-weight: 400;
     overflow-y: scroll;
-    min-height: 250px;
+    min-height: 400px;
     height: 100%;
     width: 100%;
 `;
