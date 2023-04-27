@@ -41,11 +41,13 @@ export const fetchDiaryAdd = createAsyncThunk(
                 ] = `Bearer ${sessionStorage.getItem("token")}`;
             }
             let { postDate, emotion, contents } = body;
+            if (typeof postDate !== "string") {
+                postDate = new Date(
+                    postDate.getTime() + 1000 * 60 * 60 * 9
+                ).toISOString();
+            }
             const data = {
-                postDate:
-                    typeof postDate === "string"
-                        ? postDate.slice(0, 19)
-                        : postDate.toISOString().slice(0, 19),
+                postDate: postDate.slice(0, 19),
                 emotion: NumToEmotion[emotion],
                 contents,
             };
@@ -144,13 +146,12 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
             if (action.payload.data.length) {
+                console.log(action.payload.data);
                 state.page += 1;
-                const newDiaryCollection = action.payload.data
-                    .slice()
-                    .sort(
-                        (a, b) => new Date(b.postDate) - new Date(a.postDate)
-                    );
-                state.diarys.push(...newDiaryCollection);
+                state.diarys.push(...action.payload.data);
+                state.diarys.sort(
+                    (a, b) => new Date(b.postDate) - new Date(a.postDate)
+                );
             } else {
                 state.isEnd = true;
             }

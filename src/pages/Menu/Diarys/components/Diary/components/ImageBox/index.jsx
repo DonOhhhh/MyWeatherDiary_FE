@@ -5,8 +5,8 @@ const Image = styled.div`
     justify-content: center;
     align-items: center;
     min-width: 100%;
-    min-height: 600px;
-    background-color: rgba(0, 0, 0, 0.8);
+    min-height: 400px;
+    /* background-color: rgba(0, 0, 0, 0.8); */
     border-radius: 15px;
 
     background-image: url(${({ src }) => src});

@@ -14,6 +14,7 @@ import html2canvas from "html2canvas";
 import Spinner from "./../../../common/components/Spinner/index";
 import Loading from "./../../../common/components/Loading/index";
 import axios from "axios";
+import { generatePDF } from "./components/Monthly/generatePDF";
 
 const Container = styled.div`
     display: flex;
@@ -137,7 +138,7 @@ export default function Activity() {
         setOnChecked(!onChecked);
     };
 
-    const [type, setType] = useState("yearly");
+    const [type, setType] = useState("monthly");
     useEffect(() => {
         dispatch(makeFakeData(startDate));
         dispatch(fetchCalendar(KST.getFullYear()));
@@ -185,10 +186,9 @@ export default function Activity() {
             );
             return data;
         };
-
         processData().then((res) => {
+            generatePDF(res);
             dispatch(setLoaded());
-            console.log(res);
             dispatch(clearExportData());
         });
     }, [state.exportData]);

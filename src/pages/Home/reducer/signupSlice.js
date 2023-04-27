@@ -10,7 +10,6 @@ const initialState = {
 export const fetchKey = createAsyncThunk(
     "signup/generate",
     async (diaryTitle) => {
-        console.log(axios.defaults.baseURL);
         const res = await axios.post("" + `/user`, {
             role: 1,
             diaryTitle,

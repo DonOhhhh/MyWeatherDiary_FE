@@ -1,86 +1,111 @@
 import jsPDF from "jspdf";
-import { DUMMY_DATA } from "../../data";
+import { DUMMY_DATA, EmojiDataURI, FontDataURL } from "../../data";
 
-export const generatePDF = (dummy_data) => {
-    // Create a new PDF instance
-    const pdf = new jsPDF();
-
+const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     // Define the page height and width
-    const pageHeight = pdf.internal.pageSize.height;
-    const pageWidth = pdf.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
+    const pageWidth = doc.internal.pageSize.width;
 
-    // create an array of data for each PDF
-    const data = [
-        {
-            title: "PDF 1",
-            image: "https://via.placeholder.com/150",
-            body: "Page 1 Body Content",
-        },
-        {
-            title: "PDF 2",
-            image: "https://via.placeholder.com/150",
-            body: "Page 2 Body Content",
-        },
-        {
-            title: "PDF 3",
-            image: "https://via.placeholder.com/150",
-            body: "Page 3 Body Content",
-        },
-    ];
-    // Loop through each page and add content
-    // for (let i = 0; i < 3; i++) {
-    //     // Add a new page
-    //     pdf.addPage();
+    // Emotion을 삽입함.
+    const topboxHeight = pageHeight * 0.02;
+    const emotion = EmojiDataURI[diaryEmotion];
+    const emotionSize = 40;
+    doc.addImage(
+        emotion,
+        "JPEG",
+        pageWidth * 0.05,
+        topboxHeight,
+        emotionSize,
+        emotionSize
+    );
 
-    //     // Define the linear gradient background for the title
-    //     const titleGradient = pdf.linearGradient(0, 0, pageWidth, 0);
-    //     titleGradient.addColorStop(0, "#00FF00");
-    //     titleGradient.addColorStop(1, "#FFFFFF");
+    // 날짜를 삽입함.
+    let text = `${postDate}`;
+    let fontSize = 30;
+    let textWidth =
+        (doc.getStringUnitWidth(text) * fontSize) / doc.internal.scaleFactor;
+    let X = (pageWidth * 0.95 - textWidth) / 2;
+    let Y = topboxHeight + emotionSize * 0.7;
 
-    //     // Define the linear gradient background for the body
-    //     const bodyGradient = pdf.linearGradient(0, 0, pageWidth, 0);
-    //     bodyGradient.addColorStop(0, "#FFFFFF");
-    //     bodyGradient.addColorStop(1, "#00FF00");
+    doc.setFontSize(fontSize);
+    doc.text(text, X, Y);
 
-    //     // Add the title content with the gradient background
-    //     pdf.setFillColor(titleGradient);
-    //     pdf.roundedRect(10, 10, pageWidth - 20, 50, 15, 15, "F");
-    //     pdf.setTextColor("#000000");
-    //     pdf.setFontSize(18);
-    //     pdf.text(data[i], 20, 35);
+    // 요일을 삽입함.
+    text = `${new Date(postDate).toLocaleDateString("ko-KR", {
+        weekday: "short",
+    })}`;
+    fontSize = 20;
+    textWidth =
+        (doc.getStringUnitWidth(text) * fontSize) / doc.internal.scaleFactor;
+    X = pageWidth * 0.95 - emotionSize;
+    doc.setFontSize(fontSize);
+    doc.text(text, X, Y);
 
-    //     // Add the image content
-    //     pdf.addImage(data[i], "JPEG", 20, 70, 100, 100);
+    // 구분선을 삽입함.
+    const lineLength = pageWidth * 0.9;
+    const startX = (pageWidth - lineLength) / 2;
+    const endX = startX + lineLength;
+    const lineY = pageHeight * 0.03 + emotionSize;
+    doc.setLineWidth(1);
+    doc.setDrawColor(0, 0, 0);
+    doc.line(startX, lineY, endX, lineY);
 
-    //     // Add the body content with the gradient background
-    //     pdf.setFillColor(bodyGradient);
-    //     pdf.roundedRect(10, 180, pageWidth - 20, pageHeight - 200, 15, 15, "F");
-    //     pdf.setTextColor("#000000");
-    //     pdf.setFontSize(14);
-    //     pdf.text(data[i], 20, 200);
+    // 이미지를 삽입함.
 
-    //     // Move to the next page
-    //     pdf.nextPage();
-    // }
+    const getImageSize = async (newImg) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = newImg;
+            img.onload = function () {
+                const { width, height } = this;
+                resolve({
+                    width,
+                    height,
+                });
+            };
+        });
+    };
+    const { width, height } = await getImageSize(diaryImg);
+    console.log(width, height);
+    const x = (pageWidth - width) / 2;
+    const y = pageHeight * 0.1;
+    doc.addImage(diaryImg, "JPEG", x, y, width, height);
 
-    // // Save the PDF
-    // pdf.save("example.pdf");
+    // 코멘트를 삽입함.
+    text = comment;
+    fontSize = 15;
+    X = pageWidth * 0.05;
+    Y = pageHeight * 0.7;
+    doc.setFontSize(fontSize);
+    const lines = doc.splitTextToSize(text, lineLength);
+    for (const line of lines) {
+        doc.text(line, X, Y);
+        Y += fontSize * 1.2;
+    }
+};
 
-    const doc = new jsPDF();
+export const generatePDF = async (data) => {
+    // Create a new PDF instance
+    const doc = new jsPDF({
+        unit: "pt",
+        format: "a4",
+    });
 
-    // Add title to the PDF
-    doc.setFontSize(20);
-    doc.text("My Awesome PDF", 15, 15);
+    doc.addFileToVFS(
+        "NanumSquareRoundB.ttf",
+        FontDataURL["NanumSquareRoundB.ttf"]
+    );
+    doc.addFont("NanumSquareRoundB.ttf", "NanumSquareRoundB", "normal");
+    doc.setFont("NanumSquareRoundB", "normal");
 
-    // Add a divider
-    doc.setLineWidth(0.5);
-    doc.line(15, 25, 195, 25);
-
-    // Add an image to the PDF
-    const imgData = DUMMY_DATA[0].contents[0].img;
-
-    doc.addImage(imgData, "JPEG", 15, 30, 180, 160);
-
-    // Save and download the PDF
-    doc.save("my-awesome-pdf.pdf");
+    for (const { emotion, postDate, contents } of data) {
+        for (const { img, comment } of contents) {
+            await writeDiary(doc, emotion, postDate, img, comment);
+            doc.addPage();
+        }
+    }
+    // 마지막 페에지를 지움
+    doc.deletePage(doc.getNumberOfPages());
+    // Save the PDF
+    doc.save("example.pdf");
 };
