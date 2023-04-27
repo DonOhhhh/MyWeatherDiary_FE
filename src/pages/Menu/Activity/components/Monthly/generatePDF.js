@@ -51,7 +51,6 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     doc.line(startX, lineY, endX, lineY);
 
     // 이미지를 삽입함.
-
     const getImageSize = async (newImg) => {
         return new Promise((resolve) => {
             const img = new Image();
@@ -65,17 +64,16 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
             };
         });
     };
-    const { width, height } = await getImageSize(diaryImg);
-    console.log(width, height);
-    const x = (pageWidth - width) / 2;
+    const { imgWidth, imgHeight } = await getImageSize(diaryImg);
+    const x = (pageWidth - imgWidth) / 2;
     const y = pageHeight * 0.1;
-    doc.addImage(diaryImg, "JPEG", x, y, width, height);
+    doc.addImage(diaryImg, "JPEG", x, y, imgWidth, imgHeight);
 
     // 코멘트를 삽입함.
     text = comment;
     fontSize = 15;
     X = pageWidth * 0.05;
-    Y = pageHeight * 0.7;
+    Y = y + imgHeight > pageHeight * 0.7 ? y + imgHeight : pageHeight * 0.7;
     doc.setFontSize(fontSize);
     const lines = doc.splitTextToSize(text, lineLength);
     for (const line of lines) {

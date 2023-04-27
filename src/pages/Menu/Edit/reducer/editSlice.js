@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 
 const initialState = {
     id: "",
-    postDate: new Date().toISOString(),
+    postDate: null,
     emotion: "1",
     contents: [
         {

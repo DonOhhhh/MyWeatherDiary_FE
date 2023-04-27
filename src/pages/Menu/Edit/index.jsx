@@ -19,6 +19,7 @@ import { clear } from "./reducer/editSlice";
 import { Container, ContentArea, StyledTextArea } from "./components/Styled";
 import Spinner from "../../../common/components/Spinner";
 import Loading from "../../../common/components/Loading";
+import { fetchCalendar } from "./../Activity/reducer/activitySlice";
 
 const Wrapper = styled.div`
     display: flex;
@@ -113,6 +114,9 @@ function EditPage() {
         comment: "",
     });
     let pushFunction;
+    useEffect(() => {
+        dispatch(fetchCalendar(new Date().getFullYear()));
+    }, []);
 
     return (
         <Formik
