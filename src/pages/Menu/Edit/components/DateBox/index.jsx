@@ -18,7 +18,7 @@ export default function DateBox() {
             const result = state.payload.map(
                 ({ postDate }) => new Date(postDate.split(" ")[0])
             );
-            console.log(result);
+            // console.log(result);
             setExcludeDates(result);
         });
     }, []);
