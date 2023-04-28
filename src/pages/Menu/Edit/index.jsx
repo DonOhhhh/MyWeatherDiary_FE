@@ -117,9 +117,6 @@ function EditPage() {
         comment: "",
     });
     let pushFunction;
-    useEffect(() => {
-        dispatch(fetchCalendar(new Date().getFullYear()));
-    }, []);
 
     return (
         <Formik

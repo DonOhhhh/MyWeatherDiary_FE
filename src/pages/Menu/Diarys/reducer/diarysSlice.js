@@ -114,6 +114,7 @@ const diarysSlice = createSlice({
         diaryClear: (state, action) => {
             state.diarys = [];
             state.page = 0;
+            console.log(state.diarys);
             return state;
         },
         pageInc: (state, action) => {

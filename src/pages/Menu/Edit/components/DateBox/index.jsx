@@ -6,18 +6,23 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomInput from "./components/CustomInput";
 import { Container, EditItemBox } from "../Styled";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCalendar } from "../../../Activity/reducer/activitySlice";
 
 export default function DateBox() {
     const [excludeDates, setExcludeDates] = useState([]);
-    const activityState = useSelector((state) => state.activity);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        const result = activityState.calendar
-            .slice()
-            .filter(({ emotion }) => emotion !== "0")
-            .map(({ date_format }) => new Date(date_format));
-        setExcludeDates(result);
-    }, [activityState.calendar]);
+        dispatch(fetchCalendar(new Date().getFullYear())).then((state) => {
+            const result = state.payload.map(
+                ({ postDate }) => new Date(postDate.split(" ")[0])
+            );
+            console.log(result);
+            setExcludeDates(result);
+        });
+    }, []);
+
     return (
         <Container role="group" aria-labelledby="Date-box">
             <EditItemBox>

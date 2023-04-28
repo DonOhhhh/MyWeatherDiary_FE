@@ -42,11 +42,11 @@ export default function Diarys() {
     const lastPostRef = useRef();
 
     useEffect(() => {
-        if (loginState.token) {
+        if (sessionStorage.getItem("token")) {
             // console.log(sessionStorage.getItem("username"));
             dispatch(fetchDiaryGet());
         }
-    }, [loginState.token]);
+    }, []);
 
     useEffect(() => {
         if (observer.current) {
