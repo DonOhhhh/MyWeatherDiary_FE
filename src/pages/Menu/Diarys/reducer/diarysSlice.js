@@ -79,6 +79,7 @@ export const fetchDiaryUpdate = createAsyncThunk(
                 emotion: NumToEmotion[emotion],
                 contents,
             };
+            console.log("fetchDiaryUpdate");
             console.log(data);
             const res = await axios.put("" + `/diary`, data);
             return res.data;
