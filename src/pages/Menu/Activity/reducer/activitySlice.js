@@ -117,7 +117,7 @@ const activitySlice = createSlice({
                     id,
                 };
             });
-            console.log(`fetchCalendar : ${JSON.stringify(data)}`);
+            // console.log(`fetchCalendar : ${JSON.stringify(data)}`);
             state.calendar = state.calendar.map(
                 ({ date_format, emotion, selected, id }) => {
                     if (data[date_format]) {
