@@ -69,4 +69,8 @@ function ImageBox({ form: { setFieldValue }, field: { name, value } }) {
     );
 }
 
-export default ImageBox;
+function areEqual(prevProps, nextProps) {
+    return prevProps.field.value === nextProps.field.value;
+}
+
+export default React.memo(ImageBox, areEqual);
