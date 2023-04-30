@@ -73,7 +73,7 @@ export default function Diarys() {
         <Wrapper>
             <NewDiary />
             <Container>
-                {diaryState.diarys.length ? (
+                {diaryState.loading ? null : diaryState.diarys.length ? (
                     diaryState.diarys.map(
                         ({ id, postDate, emotion, contents }, i) => {
                             return i !== diaryState.diarys.length - 1 ? (

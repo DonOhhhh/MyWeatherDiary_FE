@@ -1,5 +1,44 @@
 import jsPDF from "jspdf";
-import { DUMMY_DATA, EmojiDataURI, FontDataURL } from "../../data";
+import { EmojiDataURI, FontDataURL } from "../../data";
+
+function resizeImageDataUri(dataUri, newWidth, newHeight) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.src = dataUri;
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            // Fill the canvas with a white background
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, newWidth, newHeight);
+
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+            const resizedDataUri = canvas.toDataURL("image/jpeg", 1.0);
+            resolve(resizedDataUri);
+        };
+    });
+}
+
+// 이미지를 삽입함.
+const getImageSize = async (newImg) => {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.src = newImg;
+        img.onload = function () {
+            const { width, height } = this;
+            resolve({
+                width,
+                height,
+            });
+        };
+    });
+};
 
 const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     // Define the page height and width
@@ -50,21 +89,6 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     doc.setDrawColor(0, 0, 0);
     doc.line(startX, lineY, endX, lineY);
 
-    // 이미지를 삽입함.
-    const getImageSize = async (newImg) => {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.src = newImg;
-            img.onload = function () {
-                const { width, height } = this;
-                console.log(width, height);
-                resolve({
-                    width,
-                    height,
-                });
-            };
-        });
-    };
     const { width: imgWidth, height: imgHeight } = await getImageSize(diaryImg);
 
     const maxWidth = pageWidth * 0.9;
@@ -78,9 +102,25 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     const newWidth = imgWidth * ratio;
     const newHeight = imgHeight * ratio;
 
+    const resizedDataUri = await resizeImageDataUri(
+        diaryImg,
+        newWidth,
+        newHeight
+    );
+    // console.log(resizeImageDataUri);
+
     const x = (pageWidth - newWidth) / 2;
     const y = pageHeight * 0.1 + (maxHeight - newHeight) / 2;
-    doc.addImage(diaryImg, "JPEG", x, y, newWidth, newHeight);
+    doc.addImage(
+        resizedDataUri,
+        "JPEG",
+        x,
+        y,
+        newWidth,
+        newHeight,
+        undefined,
+        "FAST"
+    );
 
     // 코멘트를 삽입함.
     text = comment;
@@ -115,8 +155,8 @@ export const generatePDF = async (data) => {
             doc.addPage();
         }
     }
-    // 마지막 페에지를 지움
+    // 마지막 페이지를 지움
     doc.deletePage(doc.getNumberOfPages());
     // Save the PDF
-    doc.save(`${new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString()}.pdf`);
+    doc.save(`${new Date().toLocaleString()}.pdf`);
 };
