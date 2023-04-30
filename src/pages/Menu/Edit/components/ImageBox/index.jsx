@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { ReactComponent as AddCircle } from "../../icons/add_circle.svg";
-import { useEffect, useState } from "react";
-import Loading from "./../../../../../common/components/Loading/index";
+import { useState } from "react";
 import Spinner from "../../../../../common/components/Spinner";
 
 const ShowBox = styled.label`
