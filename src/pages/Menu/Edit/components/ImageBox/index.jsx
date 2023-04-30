@@ -69,4 +69,4 @@ function ImageBox({ form: { setFieldValue }, field: { name, value } }) {
     );
 }
 
-export default React.memo(ImageBox);
+export default ImageBox;
