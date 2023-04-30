@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { ReactComponent as AddCircle } from "../../icons/add_circle.svg";
-import { useState } from "react";
+import React, { useState } from "react";
 import Spinner from "../../../../../common/components/Spinner";
 
 const ShowBox = styled.label`
@@ -25,10 +25,7 @@ const ShowBox = styled.label`
     }
 `;
 
-export default function ImageBox({
-    form: { setFieldValue },
-    field: { name, value },
-}) {
+function ImageBox({ form: { setFieldValue }, field: { name, value } }) {
     const reader = new FileReader();
     const [isLoading, setIsLoading] = useState(0);
 
@@ -71,3 +68,5 @@ export default function ImageBox({
         </ShowBox>
     );
 }
+
+export default React.memo(ImageBox);

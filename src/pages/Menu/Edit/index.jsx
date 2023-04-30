@@ -14,13 +14,14 @@ import EmotionBox from "./components/EmotionBox";
 import DeleteBtn from "./components/DeleteBtn";
 import styled from "@emotion/styled";
 import ImageBox from "./components/ImageBox";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { clear } from "./reducer/editSlice";
 import { Container, ContentArea, StyledTextArea } from "./components/Styled";
 import Spinner from "../../../common/components/Spinner";
 import Loading from "../../../common/components/Loading";
 import { fetchCalendar } from "./../Activity/reducer/activitySlice";
 import CommentBox from "./components/CommentBox";
+import RenderPropComponent from "./components/RenderPropComponent";
 
 const Wrapper = styled.div`
     display: flex;
@@ -98,6 +99,7 @@ function EditPage() {
     const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const onSubmit = async (values) => {
         dispatch(clear());
         dispatch(

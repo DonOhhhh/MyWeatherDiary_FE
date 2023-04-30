@@ -9,3 +9,5 @@ function RenderPropsComponent({ renderProp, ...props }) {
         return render();
     }, [render]);
 }
+
+export default React.memo(RenderPropsComponent);
