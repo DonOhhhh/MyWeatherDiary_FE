@@ -154,6 +154,9 @@ function EditPage() {
                             <DateBox />
                             <EmotionBox emotion={values.emotion} />
                         </RowBox>
+                        <div
+                            style={{ width: "100%" }}
+                        >{`컨텐츠 개수 : ${values.contents.length}`}</div>
                         <ContentArea style={{ maxHeight: "670px" }}>
                             <Container
                                 role="group"
