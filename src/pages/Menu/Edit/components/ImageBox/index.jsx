@@ -3,6 +3,7 @@ import { ReactComponent as AddCircle } from "../../icons/add_circle.svg";
 import React, { useState } from "react";
 import Spinner from "../../../../../common/components/Spinner";
 import { current } from "@reduxjs/toolkit";
+import { v4 } from "uuid";
 
 const ShowBox = styled.label`
     display: flex;
@@ -50,20 +51,34 @@ function ImageBox({
                             const files = e.target.files;
                             if (files.length === 0) {
                                 return;
-                            } else if (files.length > 1) {
-                                for (let i = 0; i < files.length - 1; i++) {
-                                    pushRef.current();
-                                }
                             }
-                            reader.readAsDataURL(files[0]);
-                            reader.onloadstart = () => {
-                                setFieldValue(name, null);
-                                setIsLoading(true);
-                            };
-                            reader.onloadend = () => setIsLoading(false);
-                            reader.onload = () => {
-                                setFieldValue(name, reader.result);
-                            };
+                            for (let i = 0; i < files.length; i++) {
+                                const reader = new FileReader();
+                                reader.readAsDataURL(files[i]);
+
+                                reader.onloadstart = () => {
+                                    if (i === 0) {
+                                        setFieldValue(name, null);
+                                        setIsLoading(true);
+                                    }
+                                };
+
+                                reader.onloadend = () => setIsLoading(false);
+
+                                reader.onload = () => {
+                                    if (i === 0) {
+                                        setFieldValue(name, reader.result);
+                                    } else {
+                                        // Create a new ContentBox with the image data
+                                        const newContent = {
+                                            id: v4(),
+                                            img: reader.result,
+                                            comment: "",
+                                        };
+                                        pushRef.current(newContent);
+                                    }
+                                };
+                            }
                         }}
                     />
                     {!value && <AddCircle />}
