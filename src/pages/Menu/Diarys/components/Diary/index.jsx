@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Divider } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { diaryImport } from "../../../Edit/reducer/editSlice";
@@ -47,7 +47,7 @@ const EmotionToNum = {
     ANGER: "4",
 };
 
-export default function Diary({ postId, postDate, emotion, contents }) {
+function Diary({ postId, postDate, emotion, contents }) {
     const [num, setNum] = useState(0);
     const [loading, setLoading] = useState(false);
     const [postContents, setPostContents] = useState(contents);
@@ -76,7 +76,7 @@ export default function Diary({ postId, postDate, emotion, contents }) {
             }
         };
         fetchContentsImg();
-    }, []);
+    }, [contents]);
     return (
         <Wrapper>
             <ButtonGroup
@@ -129,3 +129,9 @@ export default function Diary({ postId, postDate, emotion, contents }) {
         </Wrapper>
     );
 }
+
+function areEqual(prevProps, nextProps) {
+    return prevProps.postId === nextProps.postId;
+}
+
+export default React.memo(Diary, areEqual);

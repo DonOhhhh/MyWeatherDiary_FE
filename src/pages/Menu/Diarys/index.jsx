@@ -49,6 +49,7 @@ export default function Diarys() {
     }, []);
 
     useEffect(() => {
+        if (diaryState.loading) return;
         if (observer.current) {
             observer.current.disconnect();
         }
@@ -77,7 +78,7 @@ export default function Diarys() {
                     diaryState.diarys.map(
                         ({ id, postDate, emotion, contents }, i) => {
                             return i !== diaryState.diarys.length - 1 ? (
-                                <CenteredBox key={i}>
+                                <CenteredBox key={id}>
                                     <Diary
                                         postId={id}
                                         postDate={postDate}

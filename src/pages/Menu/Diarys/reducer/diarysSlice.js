@@ -148,8 +148,9 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
             if (action.payload.data.length) {
-                console.log(action.payload.data);
                 state.page += 1;
+                console.log(action.payload.data);
+                console.log(state.page);
                 state.diarys.push(...action.payload.data);
                 state.diarys.sort(
                     (a, b) => new Date(b.postDate) - new Date(a.postDate)
