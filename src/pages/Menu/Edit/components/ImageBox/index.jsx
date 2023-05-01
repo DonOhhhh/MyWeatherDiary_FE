@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { ReactComponent as AddCircle } from "../../icons/add_circle.svg";
 import React, { useState } from "react";
 import Spinner from "../../../../../common/components/Spinner";
+import { current } from "@reduxjs/toolkit";
 
 const ShowBox = styled.label`
     display: flex;
@@ -25,13 +26,16 @@ const ShowBox = styled.label`
     }
 `;
 
-function ImageBox({ form: { setFieldValue }, field: { name, value } }) {
-    const reader = new FileReader();
-    const [isLoading, setIsLoading] = useState(0);
-
+function ImageBox({
+    form: { setFieldValue },
+    field: { name, value },
+    pushRef,
+}) {
+    const [isLoading, setIsLoading] = useState(false);
+    // console.log(pushRef.current);
     return (
         <ShowBox src={value}>
-            {isLoading === 1 ? (
+            {isLoading ? (
                 <Spinner size={30} />
             ) : (
                 <>
@@ -42,16 +46,21 @@ function ImageBox({ form: { setFieldValue }, field: { name, value } }) {
                         accept="image/*"
                         multiple
                         onChange={(e) => {
+                            const reader = new FileReader();
                             const files = e.target.files;
                             if (files.length === 0) {
                                 return;
+                            } else if (files.length > 1) {
+                                for (let i = 0; i < files.length - 1; i++) {
+                                    pushRef.current();
+                                }
                             }
                             reader.readAsDataURL(files[0]);
                             reader.onloadstart = () => {
                                 setFieldValue(name, null);
-                                setIsLoading(1);
+                                setIsLoading(true);
                             };
-                            reader.onloadend = () => setIsLoading(0);
+                            reader.onloadend = () => setIsLoading(false);
                             reader.onload = () => {
                                 setFieldValue(name, reader.result);
                             };

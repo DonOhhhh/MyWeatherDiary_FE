@@ -13,15 +13,15 @@ import DateBox from "./components/DateBox";
 import EmotionBox from "./components/EmotionBox";
 import DeleteBtn from "./components/DeleteBtn";
 import styled from "@emotion/styled";
-import ImageBox from "./components/ImageBox";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { clear } from "./reducer/editSlice";
 import { Container, ContentArea, StyledTextArea } from "./components/Styled";
 import Spinner from "../../../common/components/Spinner";
 import Loading from "../../../common/components/Loading";
 import { fetchCalendar } from "./../Activity/reducer/activitySlice";
+import ImageBox from "./components/ImageBox";
 import CommentBox from "./components/CommentBox";
-import RenderPropComponent from "./components/RenderPropComponent";
+import ContentsBox from "./components/ContentsBox";
 
 const Wrapper = styled.div`
     display: flex;
@@ -95,6 +95,7 @@ const RowBox = styled.div`
 `;
 
 function EditPage() {
+    const pushRef = useRef(null);
     const initialValues = useSelector((state) => state.edit);
     const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
@@ -110,21 +111,36 @@ function EditPage() {
     };
     const validationSchema = Yup.object({
         postDate: Yup.date().required("날짜를 입력해주세요"),
-        emotion: Yup.string().required("Emotion Required"),
-        contents: Yup.array().min(1, "최소 1개 이상의 일기가 필요합니다."),
+        emotion: Yup.string()
+            .oneOf(
+                ["1", "2", "3", "4"],
+                "Emotion must be one of the following: 1, 2, 3, or 4"
+            )
+            .required("Emotion is required"),
+        contents: Yup.array()
+            .min(1, "최소 1개 이상의 컨텐츠가 필요합니다.")
+            .max(10, "최대 10개 이하로만 컨텐츠를 추가할 수 있습니다.")
+            .of(
+                Yup.object({
+                    id: Yup.string()
+                        .uuid()
+                        .required("컨텐츠의 id가 필요합니다."),
+                    img: Yup.string(),
+                    comment: Yup.string(),
+                })
+            ),
     });
     const defaultContent = (id) => ({
         id,
         img: "",
         comment: "",
     });
-    let pushFunction;
 
     return (
         <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
         >
             {({ values }) => (
                 <Wrapper>
@@ -143,49 +159,20 @@ function EditPage() {
                                 role="group"
                                 aria-labelledby="Content-box"
                             >
-                                <FieldArray name="contents">
-                                    {(fieldArrayProps) => {
-                                        const { remove, push, form } =
-                                            fieldArrayProps;
-                                        pushFunction = push;
-                                        const { contents } = form.values;
-                                        return (
-                                            <>
-                                                {contents.map((_, index) => (
-                                                    <StyledContent key={index}>
-                                                        <DeleteBtn
-                                                            onClick={() =>
-                                                                remove(index)
-                                                            }
-                                                        />
-                                                        <RowBox
-                                                            style={{
-                                                                height: "300px",
-                                                            }}
-                                                        >
-                                                            <Field
-                                                                name={`contents[${index}].img`}
-                                                                component={
-                                                                    ImageBox
-                                                                }
-                                                            />
-                                                            <Field
-                                                                component={
-                                                                    CommentBox
-                                                                }
-                                                                name={`contents[${index}].comment`}
-                                                            />
-                                                        </RowBox>
-                                                    </StyledContent>
-                                                ))}
-                                            </>
-                                        );
-                                    }}
-                                </FieldArray>
-
+                                <FieldArray
+                                    name="contents"
+                                    render={(arrayHelpers) => (
+                                        <ContentsBox
+                                            arrayHelpers={arrayHelpers}
+                                            pushRef={pushRef}
+                                        />
+                                    )}
+                                />
                                 <ErrorMessage
                                     name="contents"
-                                    component={FormError}
+                                    render={(msg) => (
+                                        <FormError errorMessage={msg} />
+                                    )}
                                 />
                             </Container>
                         </ContentArea>
@@ -200,16 +187,14 @@ function EditPage() {
                             aria-labelledby="Button-box"
                         >
                             <StyledBtn
-                                type="button"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    pushFunction(defaultContent(v4()));
+                                    pushRef.current(defaultContent(v4()));
                                 }}
                             >
                                 추가
                             </StyledBtn>
                             <StyledBtn
-                                type="submit"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (confirm("취소하시겠습니까?")) {

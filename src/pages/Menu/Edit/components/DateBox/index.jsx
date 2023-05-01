@@ -44,7 +44,10 @@ export default function DateBox() {
                     }}
                 </Field>
             </EditItemBox>
-            <ErrorMessage name="date" component={FormError} />
+            <ErrorMessage
+                name="postDate"
+                render={(msg) => <FormError errorMessage={msg} />}
+            />
         </Container>
     );
 }

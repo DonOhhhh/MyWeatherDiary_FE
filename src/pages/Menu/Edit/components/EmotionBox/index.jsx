@@ -53,7 +53,10 @@ export default function EmotionBox({ emotion }) {
                         </IconBox>
                     </label>
                 ))}
-                <ErrorMessage name="emotion" component={FormError} />
+                <ErrorMessage
+                    name="emotion"
+                    render={(msg) => <FormError errorMessage={msg} />}
+                />
             </EditItemBox>
         </Container>
     );
