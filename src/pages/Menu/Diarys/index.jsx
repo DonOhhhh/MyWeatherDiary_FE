@@ -6,6 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Spinner from "../../../common/components/Spinner";
 import { diaryClear, fetchDiaryGet, incPage } from "./reducer/diarysSlice";
 import axios from "axios";
+import { Skeleton } from "@mui/material";
+import DiarySkeleton from "./components/Diary/components/DiarySkeleton";
 
 const Wrapper = styled.div`
     display: flex;
@@ -23,8 +25,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: flex-start;
     height: 100%;
-    min-width: 400px;
-    width: 40%;
+    width: 400px;
     padding: 0;
 `;
 
@@ -53,7 +54,7 @@ export default function Diarys() {
 
         observer.current = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting) {
+                if (entries[0].isIntersecting && !diaryState.isEnd) {
                     dispatch(incPage());
                 }
             },
@@ -77,7 +78,11 @@ export default function Diarys() {
         <Wrapper>
             <NewDiary />
             <Container>
-                {diaryState.loading ? null : diaryState.diarys.length ? (
+                {diaryState.loading && diaryState.diarys.length === 0 ? (
+                    <CenteredBox>
+                        <DiarySkeleton />
+                    </CenteredBox>
+                ) : (
                     diaryState.diarys.map(
                         ({ id, postDate, emotion, contents }, i) => {
                             return i !== diaryState.diarys.length - 1 ? (
@@ -108,14 +113,15 @@ export default function Diarys() {
                             );
                         }
                     )
-                ) : (
-                    <CenteredBox>일기가 없습니다</CenteredBox>
                 )}
             </Container>
-            {diaryState.loading && (
+            {diaryState.loading && diaryState.diarys.length > 0 && (
                 <CenteredBox>
-                    <Spinner />
+                    <Spinner size={50} />
                 </CenteredBox>
+            )}
+            {!diaryState.loading && diaryState.diarys.length === 0 && (
+                <CenteredBox>일기가 존재하지 않습니다.</CenteredBox>
             )}
         </Wrapper>
     );
