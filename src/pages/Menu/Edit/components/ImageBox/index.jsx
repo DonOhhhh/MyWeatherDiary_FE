@@ -57,10 +57,8 @@ function ImageBox({
                                 reader.readAsDataURL(files[i]);
 
                                 reader.onloadstart = () => {
-                                    if (i === 0) {
-                                        setFieldValue(name, null);
-                                        setIsLoading(true);
-                                    }
+                                    setFieldValue(name, null);
+                                    setIsLoading(true);
                                 };
 
                                 reader.onloadend = () => setIsLoading(false);

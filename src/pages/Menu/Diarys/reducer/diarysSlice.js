@@ -46,6 +46,7 @@ export const fetchDiaryAdd = createAsyncThunk(
                     postDate.getTime() + 1000 * 60 * 60 * 9
                 ).toISOString();
             }
+            contents = contents.map((e, i) => ({ ...e, contentOrder: i }));
             const data = {
                 postDate: postDate.slice(0, 19),
                 emotion: NumToEmotion[emotion],
@@ -69,10 +70,11 @@ export const fetchDiaryUpdate = createAsyncThunk(
                     "Authorization"
                 ] = `Bearer ${sessionStorage.getItem("token")}`;
             }
-            const { id, postDate, emotion, contents } = body;
+            let { id, postDate, emotion, contents } = body;
             const today = new Date(
                 new Date(postDate).getTime() + 1000 * 60 * 60 * 9
             );
+            contents = contents.map((e, i) => ({ ...e, contentOrder: i }));
             const data = {
                 postId: id,
                 postDate: today.toISOString().slice(0, 19),

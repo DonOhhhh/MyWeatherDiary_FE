@@ -50,33 +50,35 @@ const EmotionToNum = {
 function Diary({ postId, postDate, emotion, contents }) {
     const [num, setNum] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [postContents, setPostContents] = useState(contents);
+    const [postContents, setPostContents] = useState(
+        contents.slice().sort((a, b) => a.contentOrder - b.contentOrder)
+    );
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    useEffect(() => {
-        const fetchContentsImg = async () => {
-            try {
-                setLoading(true);
-                const results = await Promise.all(
-                    contents.map(({ id }) =>
-                        axios.get("" + `/diary/content/${id}`)
-                    )
-                );
-                const data = results.map((result, i) => ({
-                    id: contents[i].id,
-                    img: result.data.data,
-                    comment: contents[i].comment,
-                }));
-                // console.log("fetchContentsImg");
-                // console.log(data);
-                setPostContents(data);
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchContentsImg();
-    }, [contents]);
+    // useEffect(() => {
+    //     const fetchContentsImg = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const results = await Promise.all(
+    //                 contents.map(({ id }) =>
+    //                     axios.get("" + `/diary/content/${id}`)
+    //                 )
+    //             );
+    //             const data = results.map((result, i) => ({
+    //                 id: contents[i].id,
+    //                 img: result.data.data,
+    //                 comment: contents[i].comment,
+    //             }));
+    //             console.log("fetchContentsImg");
+    //             console.log(data);
+    //             setPostContents(data);
+    //             setLoading(false);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    //     fetchContentsImg();
+    // }, [contents]);
     return (
         <Wrapper>
             <ButtonGroup
