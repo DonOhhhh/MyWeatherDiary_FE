@@ -118,7 +118,7 @@ const diarysSlice = createSlice({
             console.log(state.diarys);
             return state;
         },
-        pageInc: (state, action) => {
+        incPage: (state, action) => {
             state.page += 1;
         },
         diaryAdd: (state, action) => {
@@ -148,7 +148,7 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
             if (action.payload.data.length) {
-                state.page += 1;
+                // state.page += 1;
                 console.log(action.payload.data);
                 console.log(state.page);
                 state.diarys.push(...action.payload.data);
@@ -205,4 +205,4 @@ const diarysSlice = createSlice({
 });
 
 export default diarysSlice.reducer;
-export const { diaryClear, pageInc } = diarysSlice.actions;
+export const { diaryClear, incPage } = diarysSlice.actions;

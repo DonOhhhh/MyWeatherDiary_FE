@@ -4,7 +4,7 @@ import Diary from "./components/Diary";
 import NewDiary from "./components/NewDiary";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Spinner from "../../../common/components/Spinner";
-import { diaryClear, fetchDiaryGet, pageInc } from "./reducer/diarysSlice";
+import { diaryClear, fetchDiaryGet, incPage } from "./reducer/diarysSlice";
 import axios from "axios";
 
 const Wrapper = styled.div`
@@ -46,18 +46,15 @@ export default function Diarys() {
             // console.log(sessionStorage.getItem("username"));
             dispatch(fetchDiaryGet());
         }
-    }, []);
+    }, [diaryState.page]);
 
     useEffect(() => {
         if (diaryState.loading) return;
-        if (observer.current) {
-            observer.current.disconnect();
-        }
 
         observer.current = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
-                    dispatch(fetchDiaryGet());
+                    dispatch(incPage());
                 }
             },
             {
@@ -68,6 +65,12 @@ export default function Diarys() {
         if (lastPostRef.current) {
             observer.current.observe(lastPostRef.current);
         }
+
+        return () => {
+            if (observer.current) {
+                observer.current.disconnect();
+            }
+        };
     }, [diaryState.diarys]);
 
     return (
@@ -78,7 +81,7 @@ export default function Diarys() {
                     diaryState.diarys.map(
                         ({ id, postDate, emotion, contents }, i) => {
                             return i !== diaryState.diarys.length - 1 ? (
-                                <CenteredBox key={id}>
+                                <CenteredBox key={i}>
                                     <Diary
                                         postId={id}
                                         postDate={postDate}
