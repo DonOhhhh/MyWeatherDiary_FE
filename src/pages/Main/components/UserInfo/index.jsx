@@ -6,6 +6,7 @@ import { Buffer } from "buffer";
 import { useEffect } from "react";
 import { getUser } from "../../../Menu/Profile/reducer/profileSlice";
 import Spinner from "../../../../common/components/Spinner";
+import { Skeleton } from "@mui/material";
 
 const Container = styled.div`
     display: flex;
@@ -36,11 +37,11 @@ export default function UserInfo() {
     const dispatch = useDispatch();
     const profileState = useSelector((state) => state.profile);
     const loginState = useSelector((state) => state.login);
-    const { nickName } = useSelector((state) => state.profile);
+    const avatarSize = 40;
     const avatar = createAvatar(avataaars, {
-        seed: nickName,
+        seed: profileState.nickName,
         style: ["circle"],
-        size: 60,
+        size: avatarSize,
         backgroundType: ["gradientLinear"],
         backgroundColor: ["D5D0E5", "F3E6E8"],
         backgroundRotation: [90],
@@ -56,10 +57,22 @@ export default function UserInfo() {
 
     return (
         <Container>
-            {profileState.loading ? (
-                <div style={{ width: "100%", textAlign: "center" }}>
-                    <Spinner />
-                </div>
+            {profileState.loading || !profileState.nickName ? (
+                <>
+                    <Skeleton
+                        variant="circular"
+                        animation="wave"
+                        width={avatarSize}
+                        height={avatarSize}
+                    />
+                    <Skeleton
+                        variant="rounded"
+                        animation="wave"
+                        width={200}
+                        height={avatarSize}
+                        sx={{ borderRadius: "15px" }}
+                    />
+                </>
             ) : (
                 <>
                     <Avatar
@@ -68,7 +81,7 @@ export default function UserInfo() {
                             Buffer.from(avatar).toString("base64")
                         }
                     />
-                    <Username>{nickName} 님</Username>
+                    <Username>{profileState.nickName} 님</Username>
                 </>
             )}
         </Container>

@@ -26,8 +26,14 @@ export const fetchDiaryGet = createAsyncThunk(
         }
         const { page } = getState.getState().diarys;
         console.log(page);
-        const res = await axios.get("" + `/diary?page=${page}`);
-        return res.data;
+        try {
+            const res = await axios.get("" + `/diary?page=${page}`);
+            return res.data;
+        } catch (thrown) {
+            if (axios.isCancel(thrown)) {
+                console.log(thrown.message);
+            }
+        }
     }
 );
 
@@ -149,7 +155,7 @@ const diarysSlice = createSlice({
         });
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
-            if (action.payload.data.length) {
+            if (action.payload?.data?.length) {
                 // state.page += 1;
                 console.log(action.payload.data);
                 console.log(state.page);

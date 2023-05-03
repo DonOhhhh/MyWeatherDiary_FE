@@ -8,6 +8,7 @@ import { diaryClear, fetchDiaryGet, incPage } from "./reducer/diarysSlice";
 import axios from "axios";
 import { Skeleton } from "@mui/material";
 import DiarySkeleton from "./components/Diary/components/DiarySkeleton";
+import { source } from "../../../main";
 
 const Wrapper = styled.div`
     display: flex;
@@ -36,11 +37,18 @@ const CenteredBox = styled.div`
 
 export default function Diarys() {
     const diaryState = useSelector((state) => state.diarys);
-    const loginState = useSelector((state) => state.login);
     const dispatch = useDispatch();
 
     const observer = useRef();
     const lastPostRef = useRef();
+
+    useEffect(() => {
+        console.log("mounted!");
+        return () => {
+            console.log("unmounted!");
+            // source.cancel("fetchDiaryGet cancelled");
+        };
+    }, []);
 
     useEffect(() => {
         if (sessionStorage.getItem("token")) {

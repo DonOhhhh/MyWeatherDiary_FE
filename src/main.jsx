@@ -14,25 +14,15 @@ import Activity from "./pages/Menu/Activity";
 import axios from "axios";
 
 axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
-// axios.defaults.withCredentials = true;
-// axios.defaults.headers["Access-Control-Allow-Credentials"] = "*";
-//axios.defaults.headers["Origin"] = "http://192.168.0.47:8080";
+export const source = axios.CancelToken.source();
+axios.defaults.cancelToken = source.token;
+
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         errorElement: <h1>404 Not Found</h1>,
     },
-    // {
-    //     path: "/home",
-    //     element: <Home />,
-    //     children: [
-    //         {
-    //             path: "/home/login",
-    //             element: <Login />,
-    //         },
-    //     ],
-    // },
     {
         path: "/main",
         element: <Main />,
