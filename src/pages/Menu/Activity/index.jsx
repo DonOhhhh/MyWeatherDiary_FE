@@ -194,47 +194,54 @@ export default function Activity() {
     }, [state.exportData]);
 
     return (
-        <Container>
-            <Center>
-                <SelectContainer>
-                    <SelectType
-                        name="type"
-                        onChange={(e) => {
-                            setType(e.target.value);
-                        }}
-                        defaultValue={type}
-                    >
-                        <option name="type" value="yearly">
-                            Yearly
-                        </option>
-                        <option name="type" value="monthly">
-                            Monthly
-                        </option>
-                    </SelectType>
-                </SelectContainer>
-                <ActivityContainer>
-                    {state.loading ? (
-                        <div
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                textAlign: "center",
-                                verticalAlign: "middle",
+        <>
+            {state.exportLoading && (
+                <Loading>
+                    <Spinner size={50} />
+                </Loading>
+            )}
+            <Container>
+                <Center>
+                    <SelectContainer>
+                        <SelectType
+                            name="type"
+                            onChange={(e) => {
+                                setType(e.target.value);
                             }}
+                            defaultValue={type}
                         >
-                            <Spinner size={100} />
-                        </div>
-                    ) : type === "yearly" ? (
-                        <Yearly
-                            calendar={state.calendar}
-                            onChecked={onChecked}
-                            onCheckboxClick={handleOnChecked}
-                        />
-                    ) : (
-                        <Monthly calendar={state.calendar} />
-                    )}
-                </ActivityContainer>
-            </Center>
-        </Container>
+                            <option name="type" value="yearly">
+                                Yearly
+                            </option>
+                            <option name="type" value="monthly">
+                                Monthly
+                            </option>
+                        </SelectType>
+                    </SelectContainer>
+                    <ActivityContainer>
+                        {state.loading ? (
+                            <div
+                                style={{
+                                    width: "100%",
+                                    height: "calc(100vh - 190px)",
+                                    textAlign: "center",
+                                    verticalAlign: "middle",
+                                }}
+                            >
+                                <Spinner size={100} />
+                            </div>
+                        ) : type === "yearly" ? (
+                            <Yearly
+                                calendar={state.calendar}
+                                onChecked={onChecked}
+                                onCheckboxClick={handleOnChecked}
+                            />
+                        ) : (
+                            <Monthly calendar={state.calendar} />
+                        )}
+                    </ActivityContainer>
+                </Center>
+            </Container>
+        </>
     );
 }

@@ -96,11 +96,11 @@ const activitySlice = createSlice({
             return state;
         },
         setLoading: (state) => {
-            state.loading = true;
+            state.exportLoading = true;
             return state;
         },
         setLoaded: (state) => {
-            state.loading = false;
+            state.exportLoading = false;
             return state;
         },
     },
@@ -145,15 +145,15 @@ const activitySlice = createSlice({
             state.error = action.error;
         });
         builder.addCase(fetchSelectedDiarys.pending, (state, action) => {
-            state.loading = true;
+            state.exportLoading = true;
         });
         builder.addCase(fetchSelectedDiarys.fulfilled, (state, action) => {
             state.exportData = action.payload.data;
-            state.loading = false;
+            state.exportLoading = false;
             state.error = "";
         });
         builder.addCase(fetchSelectedDiarys.rejected, (state, action) => {
-            state.loading = false;
+            state.exportLoading = false;
             state.error = action.error;
         });
     },
