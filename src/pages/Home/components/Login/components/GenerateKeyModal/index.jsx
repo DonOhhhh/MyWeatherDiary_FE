@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { Copy, Send } from "react-feather";
 import { StyledButton, StyledField, StyledForm } from "../../../StyledFormik";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchKey } from "../../../../reducer/signupSlice";
+import { fetchKey, sendEmail } from "../../../../reducer/signupSlice";
 import Spinner from "../../../../../../common/components/Spinner";
 import CopyToClipboard from "react-copy-to-clipboard";
 
@@ -70,16 +70,12 @@ export default function GenerateKeyModal({ open, setOpen }) {
         // 서버에서 key를 받아옴.
         dispatch(fetchKey(values.diaryTitle));
     };
+
     const iconSize = 30;
     return (
         <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
             <Fade in={open}>
                 <Box sx={style}>
-                    {state.loading && (
-                        <div style={{ width: "100%", textAlign: "center" }}>
-                            <Spinner />
-                        </div>
-                    )}
                     <Formik initialValues={state} onSubmit={handleSubmit}>
                         {({ values }) =>
                             submitted ? (
@@ -94,7 +90,11 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                                 textAlign: "center",
                                                 color: "#aaa",
                                             }}
-                                            value={state.enterKey}
+                                            value={
+                                                state.fetchKeyLoading
+                                                    ? "키 가져오는 중..."
+                                                    : state.enterKey
+                                            }
                                         />
                                         <CopyToClipboard text={state.enterKey}>
                                             <IconContainer
@@ -132,10 +132,20 @@ export default function GenerateKeyModal({ open, setOpen }) {
                                                     return;
                                                 }
                                                 copyOpen && setCopyOpen(false);
-                                                setEmailOpen(true);
+                                                dispatch(
+                                                    sendEmail({
+                                                        email: values.email,
+                                                    })
+                                                ).then((_) =>
+                                                    setEmailOpen(true)
+                                                );
                                             }}
                                         >
-                                            <Send size={iconSize} />
+                                            {state.emailLoading ? (
+                                                <Spinner size={30} />
+                                            ) : (
+                                                <Send size={iconSize} />
+                                            )}
                                         </IconContainer>
                                         <Snackbar
                                             open={emailOpen}

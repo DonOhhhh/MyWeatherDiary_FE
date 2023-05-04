@@ -95,9 +95,13 @@ function Diary({ postId, postDate, emotion, contents }) {
                 }}
                 onDelete={() => {
                     if (confirm("삭제하시겠습니까?")) {
-                        dispatch(fetchDiaryDelete(postId)).then((_) => {
-                            dispatch(diaryClear());
-                            dispatch(fetchDiaryGet());
+                        dispatch(fetchDiaryDelete(postId)).then((state) => {
+                            const { payload } = state;
+                            if (payload.statusCode === 200) {
+                                console.log("DiaryDeleted!");
+                                dispatch(diaryClear());
+                                dispatch(fetchDiaryGet());
+                            }
                         });
                     }
                 }}

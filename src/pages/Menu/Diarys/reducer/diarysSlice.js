@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { v4 } from "uuid";
 
@@ -18,14 +18,14 @@ const NumToEmotion = {
 
 export const fetchDiaryGet = createAsyncThunk(
     "diarys/fetchDiaryGet",
-    async (dispatch, getState) => {
+    async (_, { getState }) => {
         if (!axios.defaults.headers.common.Authorization) {
             axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${sessionStorage.getItem("token")}`;
         }
-        const { page } = getState.getState().diarys;
-        console.log(page);
+        const { page } = getState().diarys;
+        // console.log(page);
         try {
             const res = await axios.get("" + `/diary?page=${page}`);
             return res.data;
@@ -155,16 +155,17 @@ const diarysSlice = createSlice({
         });
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
+            state.isEnd = false;
             if (action.payload?.data?.length) {
-                // state.page += 1;
                 console.log(action.payload.data);
-                console.log(state.page);
+                console.log(`${state.page}번째 page를 fetch 했습니다!`);
                 state.diarys.push(...action.payload.data);
                 state.diarys.sort(
                     (a, b) => new Date(b.postDate) - new Date(a.postDate)
                 );
             } else {
                 state.isEnd = true;
+                console.log("Diary Ended!");
             }
             state.error = "";
         });
@@ -179,6 +180,7 @@ const diarysSlice = createSlice({
             state.loading = false;
             state.page = 0;
             state.diarys = [];
+            state.isEnd = false;
             state.error = "";
         });
         builder.addCase(fetchDiaryAdd.rejected, (state, action) => {
@@ -192,6 +194,7 @@ const diarysSlice = createSlice({
             state.loading = false;
             state.page = 0;
             state.diarys = [];
+            state.isEnd = false;
             state.error = "";
         });
         builder.addCase(fetchDiaryUpdate.rejected, (state, action) => {
@@ -203,6 +206,7 @@ const diarysSlice = createSlice({
         });
         builder.addCase(fetchDiaryDelete.fulfilled, (state, action) => {
             state.loading = false;
+            state.isEnd = false;
             state.error = "";
         });
         builder.addCase(fetchDiaryDelete.rejected, (state, action) => {

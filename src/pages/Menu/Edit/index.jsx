@@ -5,6 +5,7 @@ import { v4 } from "uuid";
 import * as Yup from "yup";
 import FormError from "../../../common/components/FormError";
 import {
+    diaryClear,
     fetchDiaryAdd,
     fetchDiaryGet,
     fetchDiaryUpdate,
@@ -103,6 +104,7 @@ function EditPage() {
 
     const onSubmit = async (values) => {
         dispatch(clear());
+        dispatch(diaryClear());
         dispatch(
             location.pathname === "/main/newdiary"
                 ? fetchDiaryAdd(values)

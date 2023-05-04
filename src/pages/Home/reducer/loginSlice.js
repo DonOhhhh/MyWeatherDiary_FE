@@ -15,6 +15,9 @@ export const loginReq = createAsyncThunk(
             const res = await axios.post("" + `/user/login`, {
                 enterKey,
             });
+            if (res.data.statusCode === 500) {
+                return rejectWithValue(res.data.data);
+            }
             return res.data;
         } catch (error) {
             return rejectWithValue(error.message);

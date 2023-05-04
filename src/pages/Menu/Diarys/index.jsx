@@ -9,6 +9,7 @@ import axios from "axios";
 import { Skeleton } from "@mui/material";
 import DiarySkeleton from "./components/Diary/components/DiarySkeleton";
 import { source } from "../../../main";
+import EndOfDiary from "./components/EndOfDiary";
 
 const Wrapper = styled.div`
     display: flex;
@@ -51,8 +52,8 @@ export default function Diarys() {
     }, []);
 
     useEffect(() => {
-        if (sessionStorage.getItem("token")) {
-            // console.log(sessionStorage.getItem("username"));
+        if (!diaryState.isEnd) {
+            console.log("fetchDiaryGet Called!");
             dispatch(fetchDiaryGet());
         }
     }, [diaryState.page]);
@@ -60,9 +61,14 @@ export default function Diarys() {
     useEffect(() => {
         if (diaryState.loading) return;
 
+        if (observer.current) {
+            observer.current.disconnect();
+        }
+
         observer.current = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && !diaryState.isEnd) {
+                    console.log("page increased!");
                     dispatch(incPage());
                 }
             },
@@ -74,12 +80,6 @@ export default function Diarys() {
         if (lastPostRef.current) {
             observer.current.observe(lastPostRef.current);
         }
-
-        return () => {
-            if (observer.current) {
-                observer.current.disconnect();
-            }
-        };
     }, [diaryState.diarys]);
 
     return (
@@ -122,6 +122,9 @@ export default function Diarys() {
                         }
                     )
                 )}
+                {diaryState.diarys.length && diaryState.isEnd ? (
+                    <EndOfDiary />
+                ) : null}
             </Container>
             {diaryState.loading && diaryState.diarys.length > 0 && (
                 <CenteredBox>

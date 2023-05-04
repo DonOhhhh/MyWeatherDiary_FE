@@ -195,11 +195,6 @@ export default function Activity() {
 
     return (
         <Container>
-            {state.loading && (
-                <Loading>
-                    <Spinner size={50} />
-                </Loading>
-            )}
             <Center>
                 <SelectContainer>
                     <SelectType
@@ -218,7 +213,18 @@ export default function Activity() {
                     </SelectType>
                 </SelectContainer>
                 <ActivityContainer>
-                    {type === "yearly" ? (
+                    {state.loading ? (
+                        <div
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                textAlign: "center",
+                                verticalAlign: "middle",
+                            }}
+                        >
+                            <Spinner size={100} />
+                        </div>
+                    ) : type === "yearly" ? (
                         <Yearly
                             calendar={state.calendar}
                             onChecked={onChecked}

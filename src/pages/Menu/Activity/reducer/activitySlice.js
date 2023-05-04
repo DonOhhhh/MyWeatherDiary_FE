@@ -112,11 +112,10 @@ const activitySlice = createSlice({
             state.loading = false;
             const data = {};
             console.log(action.payload);
-            action.payload.forEach(({ id, emotion, postDate, contents }) => {
+            action.payload.forEach(({ id, emotion, postDate }) => {
                 data[postDate.split(" ", 1)[0]] = {
                     emotion: EmotionToNum[emotion],
                     id,
-                    contents,
                 };
             });
             // console.log(`fetchCalendar : ${JSON.stringify(data)}`);
@@ -128,7 +127,6 @@ const activitySlice = createSlice({
                             emotion: data[date_format].emotion,
                             selected,
                             id: data[date_format].id,
-                            contents: data[date_format].contents,
                         };
                     } else {
                         return {
@@ -136,7 +134,6 @@ const activitySlice = createSlice({
                             emotion,
                             selected,
                             id,
-                            contents: [],
                         };
                     }
                 }
