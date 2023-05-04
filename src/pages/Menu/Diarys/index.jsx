@@ -44,16 +44,19 @@ export default function Diarys() {
     const lastPostRef = useRef();
 
     useEffect(() => {
-        console.log("mounted!");
+        console.log("Diarys mounted!");
+        console.log(`isEnd: ${diaryState.isEnd}`);
         return () => {
-            console.log("unmounted!");
+            console.log("Diarys unmounted!");
+            // dispatch(diaryClear());
             // source.cancel("fetchDiaryGet cancelled");
         };
     }, []);
 
     useEffect(() => {
+        // 일기장이 아직 남아있지만 일기를 다 로드하지 않은 경우 다른 페이지로 넘어갔다가 와도 그 상태 그대로 유지되고 마지막 요소가 다 보이면 로딩도 잘 되게끔 하는 거
         if (!diaryState.isEnd) {
-            console.log("fetchDiaryGet Called!");
+            console.log("fetchDiaryGet action dispatched!");
             dispatch(fetchDiaryGet());
         }
     }, [diaryState.page]);

@@ -34,7 +34,7 @@ const EmotionToNum = {
 
 export const fetchCalendar = createAsyncThunk(
     "activity/fetchCalendar",
-    async (year) => {
+    async (year, { rejectWithValue }) => {
         try {
             if (!axios.defaults.headers.common.Authorization) {
                 axios.defaults.headers.common[
@@ -44,14 +44,17 @@ export const fetchCalendar = createAsyncThunk(
             const result = await axios.get("" + `/diary/activity/${year}`);
             return result.data;
         } catch (error) {
-            console.log(error);
+            if (axios.isCancel(error)) {
+                console.log("Axios Cancelled by cancel signal");
+            }
+            return rejectWithValue("fetchCalendar cancelled!");
         }
     }
 );
 
 export const fetchSelectedDiarys = createAsyncThunk(
     "activity/fetchSelectedDiarys",
-    async (data) => {
+    async (data, { rejectWithValue }) => {
         try {
             if (!axios.defaults.headers.common.Authorization) {
                 axios.defaults.headers.common[
@@ -61,7 +64,10 @@ export const fetchSelectedDiarys = createAsyncThunk(
             const res = await axios.post("" + `/diary/activity`, data);
             return res.data;
         } catch (error) {
-            console.log(error);
+            if (axios.isCancel(error)) {
+                console.log("Axios cancelled by cancel signal");
+            }
+            return rejectWithValue("fetchSelectedDiarys cancelled!");
         }
     }
 );
@@ -141,8 +147,9 @@ const activitySlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchCalendar.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
-            state.error = action.error;
+            state.error = action.payload;
         });
         builder.addCase(fetchSelectedDiarys.pending, (state, action) => {
             state.exportLoading = true;
@@ -153,8 +160,9 @@ const activitySlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchSelectedDiarys.rejected, (state, action) => {
+            console.log(action);
             state.exportLoading = false;
-            state.error = action.error;
+            state.error = action.payload;
         });
     },
 });

@@ -18,7 +18,7 @@ const NumToEmotion = {
 
 export const fetchDiaryGet = createAsyncThunk(
     "diarys/fetchDiaryGet",
-    async (_, { getState }) => {
+    async (_, { getState, rejectWithValue }) => {
         if (!axios.defaults.headers.common.Authorization) {
             axios.defaults.headers.common[
                 "Authorization"
@@ -31,8 +31,9 @@ export const fetchDiaryGet = createAsyncThunk(
             return res.data;
         } catch (thrown) {
             if (axios.isCancel(thrown)) {
-                console.log(thrown.message);
+                console.log("Axios cancelled by cancel signal");
             }
+            return rejectWithValue("FetchDiaryGet failed");
         }
     }
 );
@@ -62,8 +63,10 @@ export const fetchDiaryAdd = createAsyncThunk(
             const res = await axios.post("" + `/diary`, data);
             return res.data;
         } catch (error) {
-            console.log(error);
-            return rejectWithValue(error.message);
+            if (axios.isCancel(error)) {
+                console.log("Axios cancelled by cancel signal");
+            }
+            return rejectWithValue("fetchDiaryAdd failed");
         }
     }
 );
@@ -92,8 +95,10 @@ export const fetchDiaryUpdate = createAsyncThunk(
             const res = await axios.put("" + `/diary`, data);
             return res.data;
         } catch (error) {
-            console.log(error);
-            return rejectWithValue(error.message);
+            if (axios.isCancel(error)) {
+                console.log("Axios cancelled by cancel signal");
+            }
+            return rejectWithValue("fetchDiaryUpdate failed");
         }
     }
 );
@@ -110,8 +115,10 @@ export const fetchDiaryDelete = createAsyncThunk(
             const res = await axios.delete("" + `/diary/${postId}`);
             return res.data;
         } catch (error) {
-            console.log(error);
-            return rejectWithValue(error.message);
+            if (axios.isCancel(error)) {
+                console.log("Axios cancelled by cancel signal");
+            }
+            return rejectWithValue("fetchDiaryDelete failed");
         }
     }
 );
@@ -123,7 +130,7 @@ const diarysSlice = createSlice({
         diaryClear: (state, action) => {
             state.diarys = [];
             state.page = 0;
-            console.log(state.diarys);
+            state.isEnd = false;
             return state;
         },
         incPage: (state, action) => {
@@ -156,8 +163,9 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
             state.isEnd = false;
+            console.log(action.payload);
             if (action.payload?.data?.length) {
-                console.log(action.payload.data);
+                // console.log(action.payload.data);
                 console.log(`${state.page}번째 page를 fetch 했습니다!`);
                 state.diarys.push(...action.payload.data);
                 state.diarys.sort(
@@ -170,8 +178,9 @@ const diarysSlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchDiaryGet.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
-            state.error = action.error;
+            state.error = action.payload;
         });
         builder.addCase(fetchDiaryAdd.pending, (state) => {
             state.loading = true;
@@ -184,8 +193,9 @@ const diarysSlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchDiaryAdd.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
-            state.error = action.error;
+            state.error = action.payload;
         });
         builder.addCase(fetchDiaryUpdate.pending, (state, action) => {
             state.loading = true;
@@ -198,8 +208,9 @@ const diarysSlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchDiaryUpdate.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
-            state.error = action.error;
+            state.error = action.payload;
         });
         builder.addCase(fetchDiaryDelete.pending, (state) => {
             state.loading = true;
@@ -210,8 +221,9 @@ const diarysSlice = createSlice({
             state.error = "";
         });
         builder.addCase(fetchDiaryDelete.rejected, (state, action) => {
+            console.log(action);
             state.loading = false;
-            state.error = action.error;
+            state.error = action.payload;
         });
     },
 });
