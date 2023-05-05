@@ -5,11 +5,9 @@ import NewDiary from "./components/NewDiary";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Spinner from "../../../common/components/Spinner";
 import { diaryClear, fetchDiaryGet, incPage } from "./reducer/diarysSlice";
-import axios from "axios";
-import { Skeleton } from "@mui/material";
 import DiarySkeleton from "./components/Diary/components/DiarySkeleton";
-import { source } from "../../../main";
 import EndOfDiary from "./components/EndOfDiary";
+import { fetchDiaryGetRef } from "./../../../main";
 
 const Wrapper = styled.div`
     display: flex;
@@ -39,25 +37,44 @@ const CenteredBox = styled.div`
 export default function Diarys() {
     const diaryState = useSelector((state) => state.diarys);
     const dispatch = useDispatch();
+    const [hasMounted, setHasMounted] = useState(false);
 
     const observer = useRef();
     const lastPostRef = useRef();
 
     useEffect(() => {
         console.log("Diarys mounted!");
-        console.log(`isEnd: ${diaryState.isEnd}`);
         return () => {
-            console.log("Diarys unmounted!");
-            // dispatch(diaryClear());
-            // source.cancel("fetchDiaryGet cancelled");
+            console.log("Diarys unmounted! and fetchDiaryGet aborted!");
+            diaryState.loading && fetchDiaryGetRef.current.abort();
         };
     }, []);
 
     useEffect(() => {
-        // 일기장이 아직 남아있지만 일기를 다 로드하지 않은 경우 다른 페이지로 넘어갔다가 와도 그 상태 그대로 유지되고 마지막 요소가 다 보이면 로딩도 잘 되게끔 하는 거
+        /*
+        일기장이 아직 남아있지만 일기를 다 로드하지 않은 경우 다른 페이지로 넘어갔다가 와도 그 상태 그대로 유지되고 마지막 요소가 다 보이면 로딩도 잘 되게끔 하는 거
+        1) 일기장을 처음 로드했을 경우
+            isEnd : false, page: 0, ref: null, diarys.length: 0, 다음페이지 로드 가능, 마운트시 로드 O
+        2) 일기장을 로드했었지만 끝까지 로드하진 않았을 경우
+            isEnd : false, page: n, ref: promise, diarys.length: not 0, 다음페이지 로드 가능, 마운트시 로드 X
+        3) 일기장을 로드했었고 끝까지 로드한 경우
+            isEnd: true, page: n, ref: promise, diarys.length: not 0, 다음페이지 로드 불가능, 마운트시 로드 X
+        */
+        console.log(
+            `isEnd: ${diaryState.isEnd}, fetchDiaryGetRef: ${fetchDiaryGetRef.current}, hasMounted: ${hasMounted}`
+        );
         if (!diaryState.isEnd) {
-            console.log("fetchDiaryGet action dispatched!");
-            dispatch(fetchDiaryGet());
+            // 마운트시
+            if (!hasMounted) {
+                if (fetchDiaryGetRef.current === null) {
+                    fetchDiaryGetRef.current = dispatch(fetchDiaryGet());
+                }
+                setHasMounted(true);
+            }
+            // 다음 페이지 로드시
+            else {
+                fetchDiaryGetRef.current = dispatch(fetchDiaryGet());
+            }
         }
     }, [diaryState.page]);
 
@@ -83,7 +100,7 @@ export default function Diarys() {
         if (lastPostRef.current) {
             observer.current.observe(lastPostRef.current);
         }
-    }, [diaryState.diarys]);
+    }, [diaryState.diarys, diaryState.isEnd]);
 
     return (
         <Wrapper>

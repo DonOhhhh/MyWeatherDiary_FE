@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -14,8 +14,7 @@ import Activity from "./pages/Menu/Activity";
 import axios from "axios";
 
 axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
-export const source = axios.CancelToken.source();
-axios.defaults.cancelToken = source.token;
+export const fetchDiaryGetRef = React.createRef(null);
 
 const router = createBrowserRouter([
     {

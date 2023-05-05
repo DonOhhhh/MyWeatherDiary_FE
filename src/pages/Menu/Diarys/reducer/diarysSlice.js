@@ -26,6 +26,7 @@ export const fetchDiaryGet = createAsyncThunk(
         }
         const { page } = getState().diarys;
         // console.log(page);
+        console.log("fetchDiaryGet action dispatched!");
         try {
             const res = await axios.get("" + `/diary?page=${page}`);
             return res.data;
