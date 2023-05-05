@@ -3,6 +3,8 @@ import Bulb from "../../icons/UserInfoIcons/bulb.svg";
 import Email from "../../icons/UserInfoIcons/email.svg";
 import Work from "../../icons/UserInfoIcons/work.svg";
 import InfoItem from "../../components/InfoItem";
+import { useSelector } from "react-redux";
+import { Skeleton } from "@mui/material";
 
 const Container = styled.div`
     display: flex;
@@ -16,9 +18,21 @@ const Container = styled.div`
 
 export default function MiddleBox({ middleBoxInfo }) {
     const { diaryTitle, email, job } = middleBoxInfo;
+    const { loading } = useSelector((state) => state.profile);
     return (
         <Container>
-            <InfoItem svgUrl={Bulb} text={diaryTitle} />
+            {loading ? (
+                <Skeleton
+                    variant="rounded"
+                    animation="wave"
+                    sx={{ width: "100%", height: "40px", borderRadius: "10px" }}
+                />
+            ) : (
+                <>
+                    <InfoItem svgUrl={Bulb} text={diaryTitle} />
+                </>
+            )}
+
             {/* {email && <InfoItem svgUrl={Email} text={email} />} */}
             {/* {job && <InfoItem svgUrl={Work} text={job} />} */}
         </Container>

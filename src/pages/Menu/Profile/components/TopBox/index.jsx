@@ -2,7 +2,8 @@ import { avataaars } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 import styled from "@emotion/styled";
 import { Buffer } from "buffer";
-import { Button } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
     display: flex;
@@ -27,6 +28,7 @@ const UsernameBox = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 `;
 
 const Username = styled.div`
@@ -49,19 +51,56 @@ export default function TopBox({ username }) {
         backgroundType: ["gradientLinear"],
         backgroundRotation: [90],
     }).toString();
+    const { loading } = useSelector((state) => state.profile);
 
     return (
         <Container>
-            <Avatar
-                src={
-                    "data:image/svg+xml;base64," +
-                    Buffer.from(avatar).toString("base64")
-                }
-            />
-            <UsernameBox>
-                <Username>{username}</Username>
-                <Username>{"님의 일기장"}</Username>
-            </UsernameBox>
+            {loading ? (
+                <>
+                    <Skeleton
+                        variant="rounded"
+                        animation="wave"
+                        sx={{
+                            width: "150px",
+                            height: "150px",
+                            borderRadius: "10px",
+                        }}
+                    />
+                    <UsernameBox>
+                        <Skeleton
+                            variant="rounded"
+                            animation="wave"
+                            sx={{
+                                width: "200px",
+                                height: "40px",
+                                borderRadius: "10px",
+                            }}
+                        />
+                        <Skeleton
+                            variant="rounded"
+                            animation="wave"
+                            sx={{
+                                width: "100px",
+                                height: "40px",
+                                borderRadius: "10px",
+                            }}
+                        />
+                    </UsernameBox>
+                </>
+            ) : (
+                <>
+                    <Avatar
+                        src={
+                            "data:image/svg+xml;base64," +
+                            Buffer.from(avatar).toString("base64")
+                        }
+                    />
+                    <UsernameBox>
+                        <Username>{username}</Username>
+                        <Username>{"님의 일기장"}</Username>
+                    </UsernameBox>
+                </>
+            )}
         </Container>
     );
 }
