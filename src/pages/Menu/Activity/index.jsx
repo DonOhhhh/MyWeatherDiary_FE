@@ -161,7 +161,7 @@ export default function Activity() {
             console.log(`fetchContentsImg started!`);
             const sortedContents = contents
                 .slice()
-                .sort((a, b) => b.contentOrder - a.contentOrder);
+                .sort((a, b) => a.contentOrder - b.contentOrder);
             console.log(sortedContents);
             const results = await Promise.all(
                 sortedContents.map(({ id }) =>
@@ -181,7 +181,9 @@ export default function Activity() {
     }, []);
 
     const processData = useCallback(async (exportData) => {
-        const data = exportData.slice();
+        const data = exportData
+            .slice()
+            .sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
         console.log(data);
         const result = await Promise.all(
             data.map(async ({ emotion, postDate, contents }) => {

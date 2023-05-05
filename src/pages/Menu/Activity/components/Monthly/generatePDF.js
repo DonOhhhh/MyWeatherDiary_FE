@@ -146,7 +146,7 @@ const writeDiary = async (
     if (comment) {
         // 구분선을 삽입함.
         if (diaryImg) {
-            lineY = newHeight + y + 10;
+            lineY = newHeight + y + 20;
             doc.line(startX, lineY, endX, lineY);
         }
 
@@ -154,7 +154,7 @@ const writeDiary = async (
         text = comment;
         fontSize = 15;
         X = pageWidth * 0.05;
-        Y = lineY + 20;
+        Y = lineY + 40;
         doc.setFontSize(fontSize);
         const lineHeight = fontSize + 5;
         const lines = doc.splitTextToSize(text, lineLength);
