@@ -7,7 +7,6 @@ import Spinner from "../../../common/components/Spinner";
 import { diaryClear, fetchDiaryGet, incPage } from "./reducer/diarysSlice";
 import DiarySkeleton from "./components/Diary/components/DiarySkeleton";
 import EndOfDiary from "./components/EndOfDiary";
-import { fetchDiaryGetRef } from "./../../../main";
 
 const Wrapper = styled.div`
     display: flex;
@@ -41,12 +40,13 @@ export default function Diarys() {
 
     const observer = useRef();
     const lastPostRef = useRef();
+    const fetchDiaryGetRef = useRef(null);
 
     useEffect(() => {
         console.log("Diarys mounted!");
         return () => {
-            console.log("Diarys unmounted! and fetchDiaryGet aborted!");
-            diaryState.loading && fetchDiaryGetRef.current.abort();
+            console.log("Diarys unmounted!");
+            fetchDiaryGetRef.current?.abort();
         };
     }, []);
 
@@ -54,19 +54,20 @@ export default function Diarys() {
         /*
         일기장이 아직 남아있지만 일기를 다 로드하지 않은 경우 다른 페이지로 넘어갔다가 와도 그 상태 그대로 유지되고 마지막 요소가 다 보이면 로딩도 잘 되게끔 하는 거
         1) 일기장을 처음 로드했을 경우
-            isEnd : false, page: 0, ref: null, diarys.length: 0, 다음페이지 로드 가능, 마운트시 로드 O
+            isEnd : false, hasLoaded: false, 다음페이지 로드 가능, 마운트시 로드 O
         2) 일기장을 로드했었지만 끝까지 로드하진 않았을 경우
-            isEnd : false, page: n, ref: promise, diarys.length: not 0, 다음페이지 로드 가능, 마운트시 로드 X
+            isEnd : false, hasLoaded: true, 다음페이지 로드 가능, 마운트시 로드 X
         3) 일기장을 로드했었고 끝까지 로드한 경우
-            isEnd: true, page: n, ref: promise, diarys.length: not 0, 다음페이지 로드 불가능, 마운트시 로드 X
+            isEnd: true, hasLoaded: true, 다음페이지 로드 불가능, 마운트시 로드 X
         */
+        const { isEnd, hasLoaded } = diaryState;
         console.log(
-            `isEnd: ${diaryState.isEnd}, fetchDiaryGetRef: ${fetchDiaryGetRef.current}, hasMounted: ${hasMounted}`
+            `isEnd: ${isEnd}, hasLoaded: ${hasLoaded}, hasMounted: ${hasMounted}, fetchDiaryGetRef: ${fetchDiaryGetRef.current}`
         );
         if (!diaryState.isEnd) {
             // 마운트시
             if (!hasMounted) {
-                if (fetchDiaryGetRef.current === null) {
+                if (!diaryState.hasLoaded) {
                     fetchDiaryGetRef.current = dispatch(fetchDiaryGet());
                 }
                 setHasMounted(true);

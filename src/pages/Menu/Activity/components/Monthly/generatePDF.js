@@ -40,7 +40,14 @@ const getImageSize = async (newImg) => {
     });
 };
 
-const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
+const writeDiary = async (
+    doc,
+    diaryEmotion,
+    postDate,
+    diaryImg,
+    comment,
+    contentsNum = null
+) => {
     // Define the page height and width
     const pageHeight = doc.internal.pageSize.height;
     const pageWidth = doc.internal.pageSize.width;
@@ -69,6 +76,12 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     doc.setFontSize(fontSize);
     doc.text(text, X, Y);
 
+    // contentsNum이 있으면 삽입함.
+    if (contentsNum) {
+        doc.setFontSize(20);
+        doc.text(contentsNum, X + textWidth + 20, Y);
+    }
+
     // 요일을 삽입함.
     text = `${new Date(postDate).toLocaleDateString("ko-KR", {
         weekday: "short",
@@ -84,11 +97,12 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
     const lineLength = pageWidth * 0.9;
     const startX = (pageWidth - lineLength) / 2;
     const endX = startX + lineLength;
-    const lineY = pageHeight * 0.03 + emotionSize;
+    let lineY = pageHeight * 0.03 + emotionSize;
     doc.setLineWidth(1);
     doc.setDrawColor(0, 0, 0);
     doc.line(startX, lineY, endX, lineY);
 
+    // 이미지의 넓이와 높이를 구함.
     const { width: imgWidth, height: imgHeight } = await getImageSize(diaryImg);
 
     const maxWidth = pageWidth * 0.9;
@@ -99,43 +113,61 @@ const writeDiary = async (doc, diaryEmotion, postDate, diaryImg, comment) => {
 
     const ratio = Math.min(widthRatio, heightRatio);
 
+    // 영역에 맞춘 이미지의 새로운 넓이와 높이를 구함.
     const newWidth = imgWidth * ratio;
     const newHeight = imgHeight * ratio;
 
-    const resizedDataUri = await resizeImageDataUri(
-        diaryImg,
-        newWidth,
-        newHeight
-    );
-    // console.log(resizeImageDataUri);
-
     const x = (pageWidth - newWidth) / 2;
     const y = pageHeight * 0.1 + (maxHeight - newHeight) / 2;
-    doc.addImage(
-        resizedDataUri,
-        "JPEG",
-        x,
-        y,
-        newWidth,
-        newHeight,
-        undefined,
-        "FAST"
-    );
 
-    // 코멘트를 삽입함.
-    text = comment;
-    fontSize = 15;
-    X = pageWidth * 0.05;
-    Y = pageHeight * 0.75;
-    doc.setFontSize(fontSize);
-    const lines = doc.splitTextToSize(text, lineLength);
-    for (const line of lines) {
-        doc.text(line, X, Y);
-        Y += fontSize * 1.2;
+    if (diaryImg) {
+        // 새로운 넓이와 높이에 맞게 이미지를 resize함.
+        const resizedDataUri = await resizeImageDataUri(
+            diaryImg,
+            newWidth,
+            newHeight
+        );
+        // console.log(resizeImageDataUri);
+
+        // 이미지를 삽입함.
+        doc.addImage(
+            resizedDataUri,
+            "JPEG",
+            x,
+            y,
+            newWidth,
+            newHeight,
+            undefined,
+            "FAST"
+        );
+    }
+
+    // comment가 존재한다면
+    if (comment) {
+        // 구분선을 삽입함.
+        if (diaryImg) {
+            lineY = newHeight + y + 10;
+            doc.line(startX, lineY, endX, lineY);
+        }
+
+        // 코멘트를 삽입함.
+        text = comment;
+        fontSize = 15;
+        X = pageWidth * 0.05;
+        Y = lineY + 20;
+        doc.setFontSize(fontSize);
+        const lineHeight = fontSize + 5;
+        const lines = doc.splitTextToSize(text, lineLength);
+        let i = 0;
+        for (const line of lines) {
+            doc.text(line, X, Y + lineHeight * i);
+            Y += fontSize * 1.2;
+        }
     }
 };
 
 export const generatePDF = async (data) => {
+    // console.log(data);
     // Create a new PDF instance
     const doc = new jsPDF({
         unit: "pt",
@@ -150,9 +182,18 @@ export const generatePDF = async (data) => {
     doc.setFont("NanumSquareRoundB", "normal");
 
     for (const { emotion, postDate, contents } of data) {
+        let i = 0;
         for (const { img, comment } of contents) {
-            await writeDiary(doc, emotion, postDate, img, comment);
+            await writeDiary(
+                doc,
+                emotion,
+                postDate,
+                img,
+                comment,
+                `(${i + 1} / ${contents.length})`
+            );
             doc.addPage();
+            i++;
         }
     }
     // 마지막 페이지를 지움

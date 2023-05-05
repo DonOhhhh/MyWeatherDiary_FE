@@ -355,6 +355,7 @@ function Monthly({ calendar }) {
                                 alert("날짜를 선택해주세요");
                                 return;
                             }
+                            console.log("Export to PDF started!");
                             actionDispatch(
                                 fetchSelectedDiarys(selectedDiaryIds)
                             );

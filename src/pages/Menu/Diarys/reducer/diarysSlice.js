@@ -6,6 +6,7 @@ const initialState = {
     diarys: [],
     loading: false,
     isEnd: false,
+    hasLoaded: false,
     page: 0,
 };
 
@@ -132,6 +133,7 @@ const diarysSlice = createSlice({
             state.diarys = [];
             state.page = 0;
             state.isEnd = false;
+            state.hasLoaded = false;
             return state;
         },
         incPage: (state, action) => {
@@ -164,6 +166,7 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryGet.fulfilled, (state, action) => {
             state.loading = false;
             state.isEnd = false;
+            state.hasLoaded = true;
             console.log(action.payload);
             if (action.payload?.data?.length) {
                 // console.log(action.payload.data);
@@ -191,6 +194,7 @@ const diarysSlice = createSlice({
             state.page = 0;
             state.diarys = [];
             state.isEnd = false;
+            state.hasLoaded = false;
             state.error = "";
         });
         builder.addCase(fetchDiaryAdd.rejected, (state, action) => {
@@ -206,6 +210,7 @@ const diarysSlice = createSlice({
             state.page = 0;
             state.diarys = [];
             state.isEnd = false;
+            state.hasLoaded = false;
             state.error = "";
         });
         builder.addCase(fetchDiaryUpdate.rejected, (state, action) => {
@@ -219,6 +224,7 @@ const diarysSlice = createSlice({
         builder.addCase(fetchDiaryDelete.fulfilled, (state, action) => {
             state.loading = false;
             state.isEnd = false;
+            state.hasLoaded = false;
             state.error = "";
         });
         builder.addCase(fetchDiaryDelete.rejected, (state, action) => {

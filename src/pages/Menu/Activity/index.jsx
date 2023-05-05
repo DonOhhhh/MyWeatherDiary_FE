@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Monthly from "./components/Monthly";
 import Yearly from "./components/Yearly";
 import { useDispatch, useSelector } from "react-redux";
@@ -146,50 +146,64 @@ export default function Activity() {
         dispatch(fetchCalendar(KST.getFullYear()));
     }, []);
 
-    useEffect(() => {
-        if (!state.exportData?.length) return;
-
-        dispatch(setLoading());
-        const EmotionToNum = {
+    const EmotionToNum = useMemo(
+        () => ({
             HAPPY: "1",
             SAD: "2",
             NEUTRAL: "3",
             ANGER: "4",
-        };
+        }),
+        []
+    );
 
-        const fetchContentsImg = async (contents) => {
-            try {
-                const results = await Promise.all(
-                    contents.map(({ id }) =>
-                        axios.get("" + `/diary/content/${id}`)
-                    )
-                );
-                let data = results.map((result, i) => ({
-                    id: contents[i].id,
-                    img: result.data.data,
-                    comment: contents[i].comment,
-                }));
-                return data;
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        const processData = async () => {
-            const result = state.exportData.slice();
-            const data = await Promise.all(
-                result.map(async ({ emotion, postDate, contents }) => {
-                    return {
-                        postDate: postDate.slice(0, 10),
-                        emotion: EmotionToNum[emotion],
-                        contents: await fetchContentsImg(contents),
-                    };
-                })
+    const fetchContentsImg = useCallback(async (contents) => {
+        try {
+            console.log(`fetchContentsImg started!`);
+            const sortedContents = contents
+                .slice()
+                .sort((a, b) => b.contentOrder - a.contentOrder);
+            console.log(sortedContents);
+            const results = await Promise.all(
+                sortedContents.map(({ id }) =>
+                    axios.get("" + `/diary/content/${id}`)
+                )
             );
+            let data = results.map((result, i) => ({
+                id: sortedContents[i].id,
+                img: result.data.data,
+                comment: sortedContents[i].comment,
+                contentOrder: sortedContents[i].contentOrder + 1,
+            }));
             return data;
-        };
-        processData().then((res) => {
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+
+    const processData = useCallback(async (exportData) => {
+        const data = exportData.slice();
+        console.log(data);
+        const result = await Promise.all(
+            data.map(async ({ emotion, postDate, contents }) => {
+                return {
+                    postDate: postDate.slice(0, 10),
+                    emotion: EmotionToNum[emotion],
+                    contents: await fetchContentsImg(contents),
+                };
+            })
+        );
+        return result;
+    }, []);
+
+    useEffect(() => {
+        if (!state.exportData?.length) return;
+
+        dispatch(setLoading());
+        console.log(`processData executed`);
+        processData(state.exportData).then((res) => {
+            // console.log("generatePDF started!");
             generatePDF(res);
+            console.log("generatePDF finished!");
             dispatch(setLoaded());
             dispatch(clearExportData());
         });

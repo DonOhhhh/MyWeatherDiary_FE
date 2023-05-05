@@ -74,6 +74,7 @@ export const fetchSelectedDiarys = createAsyncThunk(
 
 const initialState = {
     calendar: makeInitialCalendar(),
+    exportData: [],
 };
 
 const activitySlice = createSlice({
@@ -155,6 +156,7 @@ const activitySlice = createSlice({
             state.exportLoading = true;
         });
         builder.addCase(fetchSelectedDiarys.fulfilled, (state, action) => {
+            console.log("fetchSelectedDiarys fulfilled!");
             state.exportData = action.payload.data;
             state.exportLoading = false;
             state.error = "";
