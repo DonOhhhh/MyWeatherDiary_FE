@@ -157,8 +157,27 @@ function EditPage() {
                             <EmotionBox emotion={values.emotion} />
                         </RowBox>
                         <div
-                            style={{ width: "100%" }}
-                        >{`컨텐츠 개수 : ${values.contents.length}`}</div>
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: "30px",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{ width: "fit-content" }}
+                            >{`컨텐츠 개수 : ${values.contents.length}`}</div>
+                            <ErrorMessage
+                                name="contents"
+                                render={(msg) => (
+                                    <FormError
+                                        style={{ width: "fit-content" }}
+                                        errorMessage={msg}
+                                    />
+                                )}
+                            />
+                        </div>
                         <ContentArea style={{ maxHeight: "670px" }}>
                             <Container
                                 role="group"
@@ -171,12 +190,6 @@ function EditPage() {
                                             arrayHelpers={arrayHelpers}
                                             pushRef={pushRef}
                                         />
-                                    )}
-                                />
-                                <ErrorMessage
-                                    name="contents"
-                                    render={(msg) => (
-                                        <FormError errorMessage={msg} />
                                     )}
                                 />
                             </Container>

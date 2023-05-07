@@ -8,6 +8,6 @@ const Container = styled.div`
     padding-left: 10px;
 `;
 
-export default function FormError({ errorMessage }) {
-    return <Container>{errorMessage}</Container>;
+export default function FormError({ children, ...props }) {
+    return <Container {...props}>{children}</Container>;
 }

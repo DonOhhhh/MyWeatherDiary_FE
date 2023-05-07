@@ -25,7 +25,6 @@ const Wrapper = styled.div`
 
 function CustomInput({ value, onClick }, ref) {
     const activityState = useSelector((state) => state.activity);
-    console.log(activityState.loading);
     return (
         <Container>
             {activityState.loading ? (
