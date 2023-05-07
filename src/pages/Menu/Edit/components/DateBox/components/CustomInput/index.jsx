@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { useSelector } from "react-redux";
+import Spinner from "../../../../../../../common/components/Spinner";
 
 const Container = styled.div`
     display: flex;
@@ -22,9 +23,9 @@ const Wrapper = styled.div`
     }
 `;
 
-function CustomInput({ value, onClick }) {
+function CustomInput({ value, onClick }, ref) {
     const activityState = useSelector((state) => state.activity);
-
+    console.log(activityState.loading);
     return (
         <Container>
             {activityState.loading ? (
@@ -38,4 +39,4 @@ function CustomInput({ value, onClick }) {
     );
 }
 
-export default CustomInput;
+export default React.forwardRef(CustomInput);

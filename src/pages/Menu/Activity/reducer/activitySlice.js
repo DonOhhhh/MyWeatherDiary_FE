@@ -32,6 +32,11 @@ const EmotionToNum = {
     ANGER: "4",
 };
 
+const initialState = {
+    calendar: makeInitialCalendar(),
+    exportData: [],
+};
+
 export const fetchCalendar = createAsyncThunk(
     "activity/fetchCalendar",
     async (year, { rejectWithValue }) => {
@@ -71,11 +76,6 @@ export const fetchSelectedDiarys = createAsyncThunk(
         }
     }
 );
-
-const initialState = {
-    calendar: makeInitialCalendar(),
-    exportData: [],
-};
 
 const activitySlice = createSlice({
     name: "activity",
