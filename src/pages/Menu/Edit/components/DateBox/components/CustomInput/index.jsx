@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
     display: flex;
@@ -21,14 +22,20 @@ const Wrapper = styled.div`
     }
 `;
 
-function CustomInput({ value, onClick }, ref) {
+function CustomInput({ value, onClick }) {
+    const activityState = useSelector((state) => state.activity);
+
     return (
         <Container>
-            <Wrapper onClick={onClick}>
-                {value || "날짜를 선택해주세요"}
-            </Wrapper>
+            {activityState.loading ? (
+                <Spinner size={30} />
+            ) : (
+                <Wrapper onClick={onClick}>
+                    {value || "날짜를 선택해주세요"}
+                </Wrapper>
+            )}
         </Container>
     );
 }
 
-export default React.forwardRef(CustomInput);
+export default CustomInput;
