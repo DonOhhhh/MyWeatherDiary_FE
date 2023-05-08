@@ -82,7 +82,9 @@ const activitySlice = createSlice({
     initialState,
     reducers: {
         makeFakeData: (state, { payload: startDate }) => {
+            state.loading = true;
             state.calendar = makeInitialCalendar(startDate);
+            state.loading = false;
             return state;
         },
         check: (state, { payload: date }) => {

@@ -141,7 +141,7 @@ export default function Activity() {
 
     const [type, setType] = useState("monthly");
     useEffect(() => {
-        !state.calendar.length && dispatch(makeFakeData(startDate));
+        dispatch(makeFakeData(startDate));
         console.log("fetchCalendar action dispatched!");
         dispatch(fetchCalendar(KST.getFullYear()));
     }, []);

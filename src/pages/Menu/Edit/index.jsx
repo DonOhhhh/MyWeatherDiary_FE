@@ -121,16 +121,16 @@ function EditPage() {
             .required("Emotion is required"),
         contents: Yup.array()
             .min(1, "최소 1개 이상의 컨텐츠가 필요합니다.")
-            .max(10, "최대 10개 이하로만 컨텐츠를 추가할 수 있습니다.")
-            .of(
-                Yup.object({
-                    id: Yup.string()
-                        .uuid()
-                        .required("컨텐츠의 id가 필요합니다."),
-                    img: Yup.string(),
-                    comment: Yup.string(),
-                })
-            ),
+            .max(10, "최대 10개 이하로만 컨텐츠를 추가할 수 있습니다."),
+        // .of(
+        //     Yup.object({
+        //         id: Yup.string()
+        //             .uuid()
+        //             .required("컨텐츠의 id가 필요합니다."),
+        //         img: Yup.string().nullable(),
+        //         comment: Yup.string().nullable(),
+        //     })
+        // ),
     });
     const defaultContent = (id) => ({
         id,
