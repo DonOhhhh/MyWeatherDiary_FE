@@ -81,7 +81,6 @@ export default function Diarys() {
 
     useEffect(() => {
         if (diaryState.loading) return;
-
         if (observer.current) {
             observer.current.disconnect();
         }
@@ -94,7 +93,7 @@ export default function Diarys() {
                 }
             },
             {
-                threshold: [1],
+                threshold: [0.5],
             }
         );
 
