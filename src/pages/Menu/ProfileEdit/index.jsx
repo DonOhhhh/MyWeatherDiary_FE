@@ -109,7 +109,7 @@ export default function ProfileEdit() {
                     </StyledLabel>
                     <StyledField name="nickName" placeholder="nickName" />
                     <ErrorMessage name="nickName">
-                        {(errMsg) => <FormError errorMessage={errMsg} />}
+                        {(errMsg) => <FormError>{errMsg}</FormError>}
                     </ErrorMessage>
 
                     <StyledLabel htmlFor="diaryTitle">
@@ -117,13 +117,13 @@ export default function ProfileEdit() {
                     </StyledLabel>
                     <StyledField name="diaryTitle" placeholder="Diary Topic" />
                     <ErrorMessage name="diaryTitle">
-                        {(errMsg) => <FormError errorMessage={errMsg} />}
+                        {(errMsg) => <FormError>{errMsg}</FormError>}
                     </ErrorMessage>
 
                     {/* <StyledLabel htmlFor="email">Email</StyledLabel>
                     <StyledField name="email" placeholder="email" />
                     <ErrorMessage name="email">
-                        {(errMsg) => <FormError errorMessage={errMsg} />}
+                        {(errMsg) => <FormError>{errMsg}</FormError>}
                     </ErrorMessage>
 
                     <StyledLabel htmlFor="job">Job</StyledLabel>

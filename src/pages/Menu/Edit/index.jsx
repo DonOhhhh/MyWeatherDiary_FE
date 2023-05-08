@@ -171,10 +171,9 @@ function EditPage() {
                             <ErrorMessage
                                 name="contents"
                                 render={(msg) => (
-                                    <FormError
-                                        style={{ width: "fit-content" }}
-                                        errorMessage={msg}
-                                    />
+                                    <FormError style={{ width: "fit-content" }}>
+                                        {msg}
+                                    </FormError>
                                 )}
                             />
                         </div>

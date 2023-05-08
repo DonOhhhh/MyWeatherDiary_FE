@@ -55,7 +55,7 @@ export default function EmotionBox({ emotion }) {
                 ))}
                 <ErrorMessage
                     name="emotion"
-                    render={(msg) => <FormError errorMessage={msg} />}
+                    render={(msg) => <FormError>{msg}</FormError>}
                 />
             </EditItemBox>
         </Container>

@@ -46,9 +46,7 @@ export default function DateBox() {
             </EditItemBox>
             <ErrorMessage
                 name="postDate"
-                render={(msg) => (
-                    <FormError errorMessage={"날짜를 선택해주세요"} />
-                )}
+                render={(msg) => <FormError>{"날짜를 선택해주세요"}</FormError>}
             />
         </Container>
     );

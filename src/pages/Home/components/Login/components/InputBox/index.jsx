@@ -17,7 +17,7 @@ export default function InputBox() {
         <Wrapper>
             <StyledField name="enterKey" placeholder="enter your key..." />
             <ErrorMessage name="enterKey">
-                {(errorMsg) => <FormError errorMessage={errorMsg} />}
+                {(errorMsg) => <FormError>{errorMsg}</FormError>}
             </ErrorMessage>
         </Wrapper>
     );
