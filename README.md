@@ -10,3 +10,7 @@ yarn install
 yarn run dev
 ```
 - localhost:3000번 포트로 접속
+
+## 프로젝트 개요
+
+[링크](https://www.slideshare.net/DonOh4/5pptx-257750414)
